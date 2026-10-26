@@ -1,0 +1,1191 @@
+﻿
+/* ==========================================================
+   NOVIX | COSMIC BLACK HOLE
+   Inspiracion visual: agujero negro cinematografico
+   Mantiene las clases originales de Ingresos
+   ========================================================== */
+
+:root {
+    color-scheme: dark;
+    --income-bg: #030305;
+    --income-panel: #0b0b10;
+    --income-border: #383844;
+    --income-text: #f4f4f7;
+    --income-muted: #a4a4b3;
+    --income-silver: #e6e6f2;
+    --income-danger: #fecaca;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: #030305;
+}
+
+body {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background: radial-gradient(ellipse at 75% 25%, #24243b18, transparent 45%), radial-gradient(ellipse at 20% 80%, #7777a20b, transparent 40%), #030305;
+    color: var(--income-text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ==========================================================
+   UNIVERSO Y PROFUNDIDAD ESPACIAL
+   ========================================================== */
+
+.dashboard-universe {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    isolation: isolate;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 74% 36%, #4e4e8b12, transparent 40%), radial-gradient(ellipse at 15% 75%, #c5c5ff08, transparent 36%), #030305;
+}
+
+    /* Agujero negro: disco de acrecion visto en perspectiva */
+
+    .dashboard-universe::before {
+        content: "";
+        position: absolute;
+        z-index: 1;
+        top: 39%;
+        left: 76%;
+        width: min(76vw, 1000px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: conic-gradient( from 0deg, transparent 0deg, #7777a51a 24deg, #bfc3f2a0 43deg, #ffffff 48deg, #7777b8b0 54deg, #45456f55 68deg, transparent 94deg, transparent 154deg, #7f80b955 190deg, #e5e5ff 211deg, #ffffff 218deg, #7777b8a0 225deg, transparent 252deg, transparent 310deg, #b4b5ed80 337deg, transparent 360deg );
+        -webkit-mask: radial-gradient( ellipse, transparent 0 20%, #000 27% 43%, transparent 57% );
+        mask: radial-gradient( ellipse, transparent 0 20%, #000 27% 43%, transparent 57% );
+        transform: translate(-50%, -50%) rotate(-17deg) scaleY(.43);
+        filter: blur(3px) drop-shadow(0 0 20px #b6b8ff42);
+        opacity: .85;
+        animation: novixDiskRotation 65s linear infinite;
+    }
+
+    /* Horizonte de sucesos: el centro oscuro */
+
+    .dashboard-universe::after {
+        content: "";
+        position: absolute;
+        z-index: 2;
+        top: 39%;
+        left: 76%;
+        width: min(25vw, 310px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient( circle, #000 0 36%, #010103 38% 43%, #55557135 45%, #bfc0e9 47%, #ffffff 48%, #a9a9e2 49%, #68688e70 52%, transparent 62% );
+        box-shadow: 0 0 18px #d7d7ff30, 0 0 45px #9999dd25, 0 0 100px #6e6eae18;
+        transform: translate(-50%, -50%);
+        animation: novixHorizonGlow 6s ease-in-out infinite alternate;
+    }
+
+/* ==========================================================
+   CAPAS DE ESTRELLAS
+   ========================================================== */
+
+.star-layer {
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-repeat: repeat;
+    pointer-events: none;
+}
+
+.stars-distant {
+    z-index: 0;
+    opacity: .5;
+    background-image: radial-gradient(1px 1px at 30px 50px, #fff 99%, transparent), radial-gradient(1px 1px at 150px 170px, #d8d8ff 99%, transparent), radial-gradient(1px 1px at 260px 90px, #fff 99%, transparent), radial-gradient(1px 1px at 330px 240px, #c5c8ff 99%, transparent);
+    background-size: 370px 290px;
+    animation: novixStarsDrift 160s linear infinite;
+}
+
+.stars-middle {
+    z-index: 0;
+    opacity: .65;
+    background-image: radial-gradient(1.5px 1.5px at 75px 110px, #fff 99%, transparent), radial-gradient(2px 2px at 210px 220px, #d9d9ff 99%, transparent), radial-gradient(1px 1px at 300px 40px, #fff 99%, transparent);
+    background-size: 410px 340px;
+    animation: novixStarsDrift 110s linear infinite reverse, novixStarTwinkle 5s ease-in-out infinite alternate;
+}
+
+.stars-near {
+    z-index: 3;
+    opacity: .4;
+    background-image: radial-gradient(2px 2px at 90px 190px, #fff 99%, transparent), radial-gradient(1.5px 1.5px at 350px 100px, #dfe4ff 99%, transparent), radial-gradient(2px 2px at 440px 290px, #ffffff 99%, transparent);
+    background-size: 500px 400px;
+    animation: novixStarsDrift 85s linear infinite, novixStarTwinkle 4s ease-in-out infinite alternate;
+}
+
+/* ==========================================================
+   NEBULOSAS
+   ========================================================== */
+
+.nebula {
+    position: absolute;
+    z-index: 0;
+    width: min(55vw, 650px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: .12;
+    mix-blend-mode: screen;
+    will-change: transform;
+}
+
+.nebula-one {
+    top: 5%;
+    left: -18%;
+    background: radial-gradient( circle, #7777c9 0%, #49497c 30%, transparent 72% );
+    animation: novixNebulaFloat 26s ease-in-out infinite alternate;
+}
+
+.nebula-two {
+    top: 45%;
+    right: -20%;
+    background: radial-gradient( circle, #d4d4ef 0%, #62628d 28%, transparent 72% );
+    animation: novixNebulaFloat 32s ease-in-out infinite alternate-reverse;
+}
+
+/* Estrellas fugaces */
+
+.shooting-star {
+    position: absolute;
+    z-index: 4;
+    width: 130px;
+    height: 1px;
+    opacity: 0;
+    background: linear-gradient( 90deg, transparent, #ffffff, #dce4ff, transparent );
+    box-shadow: 0 0 9px #ffffff8c;
+    transform: rotate(-32deg);
+}
+
+.shooting-star-one {
+    top: 15%;
+    left: 12%;
+    animation: novixShootingStar 13s linear infinite;
+}
+
+.shooting-star-two {
+    top: 55%;
+    left: 58%;
+    animation: novixShootingStar 17s linear 6s infinite;
+}
+
+/* ==========================================================
+   ESTRUCTURA EXISTENTE
+   ========================================================== */
+
+.dashboard-layout {
+    position: relative;
+    z-index: 5;
+}
+
+.dashboard-content {
+    position: relative;
+    z-index: 5;
+    min-width: 0;
+}
+
+.income-content {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    min-width: 0;
+    padding: 28px clamp(16px, 3vw, 42px);
+    animation: incomeEntrance .8s ease both;
+}
+
+/* ==========================================================
+   ENCABEZADO
+   ========================================================== */
+
+.income-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.income-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--income-muted);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 13px;
+}
+
+    .income-eyebrow::before {
+        content: "";
+        width: 24px;
+        height: 1px;
+        background: var(--income-silver);
+        box-shadow: 0 0 12px #fff;
+    }
+
+.income-header h1 {
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.1;
+    margin: 0 0 12px;
+    letter-spacing: -1.2px;
+    font-weight: 600;
+}
+
+    .income-header h1 span {
+        color: var(--income-muted);
+    }
+
+.income-header p {
+    color: var(--income-muted);
+    font-size: 13px;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0;
+}
+
+.income-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 17px;
+    border: 1px solid #555562;
+    border-radius: 8px;
+    color: var(--income-text);
+    background: #09090de8;
+    text-decoration: none;
+    font-size: 12px;
+    transition: .3s ease;
+}
+
+    .income-back:hover {
+        border-color: #e4e4f2;
+        box-shadow: 0 0 24px #c8c8ff20;
+        transform: translateY(-2px);
+    }
+
+/* ==========================================================
+   TARJETAS FINANCIERAS
+   ========================================================== */
+
+.income-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.income-stat {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 21px;
+    min-height: 120px;
+    border: 1px solid #444451;
+    border-radius: 13px;
+    background: radial-gradient(circle at 95% 0, #bcbcff12, transparent 42%), linear-gradient(145deg, #111116ed, #07070aef);
+    box-shadow: 0 12px 35px #0009, inset 0 1px 0 #ffffff0c;
+    transition: .35s ease;
+    animation: statReveal .7s ease both;
+}
+
+    .income-stat:nth-child(2) {
+        animation-delay: .12s;
+    }
+
+    .income-stat:nth-child(3) {
+        animation-delay: .24s;
+    }
+
+    .income-stat::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: -80px;
+        right: -65px;
+        width: 150px;
+        height: 150px;
+        border: 1px solid #d6d6ff12;
+        border-radius: 50%;
+        box-shadow: 0 0 30px #bcbcff06;
+    }
+
+    .income-stat::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        inset: 0;
+        background: linear-gradient( 115deg, transparent 25%, #ffffff06 48%, transparent 70% );
+        transform: translateX(-100%);
+        transition: transform .8s ease;
+    }
+
+    .income-stat:hover {
+        transform: translateY(-5px);
+        border-color: #aaaacb;
+        box-shadow: 0 18px 45px #000b, 0 0 25px #b8b8ff14, inset 0 1px 0 #ffffff16;
+    }
+
+        .income-stat:hover::after {
+            transform: translateX(100%);
+        }
+
+.income-stat-label {
+    display: block;
+    color: var(--income-muted);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+}
+
+.income-stat strong {
+    display: block;
+    font-size: clamp(21px, 2.2vw, 29px);
+    font-weight: 600;
+    letter-spacing: -.5px;
+    overflow-wrap: anywhere;
+}
+
+.income-stat small {
+    display: block;
+    margin-top: 9px;
+    color: #898997;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.income-stat-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    height: 2px;
+    background: linear-gradient(90deg, #7777b9, #fff, #b9b9ff);
+    box-shadow: 0 0 15px #d7d7ff80;
+    animation: linePulse 3s ease-in-out infinite alternate;
+}
+
+/* ==========================================================
+   PANELES
+   ========================================================== */
+
+.income-panel {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    margin-bottom: 24px;
+    padding: clamp(20px, 3vw, 30px);
+    border: 1px solid #42424f;
+    border-radius: 15px;
+    background: radial-gradient(ellipse at 100% 0, #bdbdff0b, transparent 45%), linear-gradient(145deg, #0e0e13f2, #070709f5);
+    box-shadow: 0 20px 50px #0008, inset 0 1px 0 #ffffff0b;
+    animation: panelReveal .7s ease both;
+}
+
+    .income-panel::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 8%;
+        width: 35%;
+        height: 1px;
+        background: linear-gradient( 90deg, transparent, #e4e4ff, transparent );
+        box-shadow: 0 0 12px #bdbdff40;
+        opacity: .8;
+        pointer-events: none;
+    }
+
+    .income-panel::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: -40%;
+        width: 30%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #fff, transparent);
+        opacity: 0;
+        pointer-events: none;
+        animation: novixPanelShimmer 10s ease-in-out infinite;
+    }
+
+.income-panel-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 24px;
+}
+
+.income-heading-icon {
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    border: 1px solid #626276;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #ffffff10, #ffffff03);
+    color: #ededff;
+    font-size: 20px;
+    box-shadow: 0 0 18px #bdbdff0b;
+}
+
+.income-panel-heading h2,
+.income-history-heading h2 {
+    margin: 0 0 7px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.income-panel-heading p,
+.income-history-heading p {
+    margin: 0;
+    color: #9898a7;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+/* ==========================================================
+   FORMULARIO
+   ========================================================== */
+
+.income-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.income-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    min-width: 0;
+}
+
+    .income-field.full {
+        grid-column: 1 / -1;
+    }
+
+    .income-field label {
+        color: #d4d4df;
+        font-size: 11px;
+        letter-spacing: .5px;
+    }
+
+    .income-field input,
+    .income-field select {
+        width: 100%;
+        min-height: 45px;
+        padding: 12px 14px;
+        border: 1px solid #41414d;
+        border-radius: 8px;
+        outline: none;
+        background: #07070a;
+        color: var(--income-text);
+        font-family: inherit;
+        font-size: 12px;
+        transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+
+        .income-field input:hover,
+        .income-field select:hover {
+            border-color: #77778e;
+        }
+
+        .income-field input:focus,
+        .income-field select:focus {
+            border-color: #c9c9f0;
+            background: #101016;
+            box-shadow: 0 0 0 3px #ffffff09, 0 0 22px #aaaaff14;
+        }
+
+        .income-field input::placeholder {
+            color: #777783;
+        }
+
+        .income-field select option {
+            background: #101016;
+            color: var(--income-text);
+        }
+
+        .income-field input[type="date"] {
+            color-scheme: dark;
+        }
+
+.income-submit {
+    grid-column: 1 / -1;
+}
+
+.income-button {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 47px;
+    padding: 13px 20px;
+    border: 1px solid #f1f1ff;
+    border-radius: 8px;
+    background: linear-gradient(110deg, #f0f0f4, #b9b9ca);
+    color: #08080b;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+    .income-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 70%;
+        height: 100%;
+        background: linear-gradient( 90deg, transparent, #ffffffd0, transparent );
+        transition: left .6s ease;
+    }
+
+    .income-button:hover::before {
+        left: 130%;
+    }
+
+    .income-button:hover {
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 30px #d9d9ff24;
+    }
+
+    .income-button:active {
+        transform: translateY(0);
+    }
+
+/* ==========================================================
+   ALERTAS
+   ========================================================== */
+
+.income-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #68687b;
+    border-radius: 9px;
+    background: #ffffff08;
+    color: #ededf6;
+    font-size: 12px;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    animation: panelReveal .4s ease both;
+}
+
+    .income-alert strong {
+        flex-shrink: 0;
+    }
+
+    .income-alert.error {
+        border-color: #793e46;
+        color: var(--income-danger);
+        background: #7f1d1d18;
+    }
+
+/* ==========================================================
+   HISTORIAL
+   ========================================================== */
+
+.income-history-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.income-count {
+    padding: 8px 11px;
+    border: 1px solid #454553;
+    border-radius: 7px;
+    color: #dedeea;
+    background: #ffffff06;
+    font-size: 10px;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+
+.income-table-wrap {
+    overflow-x: auto;
+    border: 1px solid #343440;
+    border-radius: 9px;
+    scrollbar-width: thin;
+    scrollbar-color: #66667d #101014;
+}
+
+.income-table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+}
+
+    .income-table th {
+        padding: 15px 14px;
+        background: #ffffff05;
+        color: #a1a1b0;
+        text-align: left;
+        font-size: 9px;
+        font-weight: 600;
+        letter-spacing: 1.2px;
+        white-space: nowrap;
+    }
+
+    .income-table td {
+        padding: 16px 14px;
+        border-top: 1px solid #30303a;
+        color: #e4e4ed;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+    .income-table tbody tr {
+        transition: background .25s ease;
+    }
+
+        .income-table tbody tr:hover {
+            background: #bdbdff08;
+        }
+
+.income-id {
+    color: #a1a1b0 !important;
+}
+
+.income-category {
+    display: inline-block;
+    padding: 6px 9px;
+    border: 1px solid #555565;
+    border-radius: 5px;
+    background: #ffffff06;
+    color: #e0e0ee;
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.income-amount {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.income-delete-form {
+    margin: 0;
+}
+
+.income-delete-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid #713f46;
+    border-radius: 7px;
+    background: linear-gradient(145deg, #251316, #140b0d);
+    color: var(--income-danger);
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: .25s ease;
+}
+
+    .income-delete-button:hover {
+        border-color: #fca5a5;
+        background: #451a20;
+        box-shadow: 0 0 17px #ef444422;
+        transform: translateY(-2px);
+    }
+
+.income-empty {
+    padding: 38px 20px !important;
+    text-align: center;
+    color: #a1a1b0 !important;
+}
+
+.income-empty-icon {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: #e4e4f5;
+    animation: emptyFloat 3s ease-in-out infinite;
+}
+
+/* ==========================================================
+   PIE DE PAGINA
+   ========================================================== */
+
+.income-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+    padding: 18px 2px 4px;
+    color: #858592;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================
+   MODAL DE ELIMINACION
+   ========================================================== */
+
+.novix-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #000000d9;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s ease, visibility .3s ease;
+}
+
+    .novix-modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+.novix-modal {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    padding: 32px;
+    overflow: hidden;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0, #c8c8ff12, transparent 55%), linear-gradient(145deg, #17171e, #08080c);
+    border: 1px solid #68687b;
+    border-radius: 18px;
+    box-shadow: 0 25px 100px #000000d9, 0 0 35px #bdbdff0b;
+    transform: translateY(18px) scale(.96);
+    transition: transform .3s ease;
+}
+
+    .novix-modal::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 15%;
+        width: 70%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #fff, transparent);
+        box-shadow: 0 0 14px #ffffff60;
+    }
+
+.novix-modal-overlay.active .novix-modal {
+    transform: translateY(0) scale(1);
+}
+
+.novix-modal-icon {
+    display: grid;
+    place-items: center;
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 22px;
+    border: 1px solid #82474f;
+    border-radius: 50%;
+    color: #ffb5bd;
+    background: radial-gradient(circle, #6e242b55, #1b0d0f);
+    box-shadow: 0 0 28px #ef444420;
+    font-size: 30px;
+    animation: novixWarningPulse 2s ease-in-out infinite;
+}
+
+.novix-modal-tag {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--income-muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+}
+
+.novix-modal h2 {
+    margin: 0 0 12px;
+    color: var(--income-text);
+    font-size: 23px;
+}
+
+.novix-modal p {
+    max-width: 320px;
+    margin: 0 auto 27px;
+    color: var(--income-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.novix-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.novix-modal-button {
+    min-height: 44px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.novix-modal-cancel {
+    color: #e4e4ed;
+    border: 1px solid #51515f;
+    background: #ffffff08;
+}
+
+    .novix-modal-cancel:hover {
+        border-color: #b1b1c6;
+        background: #ffffff12;
+    }
+
+.novix-modal-delete {
+    color: #fff1f2;
+    border: 1px solid #a34b56;
+    background: linear-gradient(135deg, #702a33, #3c171c);
+}
+
+    .novix-modal-delete:hover {
+        background: linear-gradient(135deg, #923b46, #571d25);
+        box-shadow: 0 0 24px #ef444430;
+        transform: translateY(-2px);
+    }
+
+.novix-modal-button:disabled {
+    opacity: .6;
+    cursor: wait;
+    transform: none;
+}
+
+/* ==========================================================
+   ANIMACIONES
+   ========================================================== */
+
+@keyframes novixDiskRotation {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: 360deg;
+    }
+}
+
+@keyframes novixHorizonGlow {
+    from {
+        filter: brightness(.8);
+        opacity: .7;
+    }
+
+    to {
+        filter: brightness(1.25);
+        opacity: 1;
+    }
+}
+
+@keyframes novixStarsDrift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-120px, 80px, 0);
+    }
+}
+
+@keyframes novixStarTwinkle {
+    from {
+        opacity: .25;
+    }
+
+    to {
+        opacity: .75;
+    }
+}
+
+@keyframes novixNebulaFloat {
+    from {
+        transform: translate3d(-12px, -8px, 0) scale(.96);
+    }
+
+    to {
+        transform: translate3d(35px, 24px, 0) scale(1.08);
+    }
+}
+
+@keyframes novixShootingStar {
+    0%, 72%, 100% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(-32deg);
+    }
+
+    75% {
+        opacity: .8;
+    }
+
+    83% {
+        opacity: 0;
+        transform: translate(260px, 160px) rotate(-32deg);
+    }
+}
+
+@keyframes novixPanelShimmer {
+    0%, 15% {
+        left: -40%;
+        opacity: 0;
+    }
+
+    25% {
+        opacity: .65;
+    }
+
+    55% {
+        left: 110%;
+        opacity: 0;
+    }
+
+    100% {
+        left: 110%;
+        opacity: 0;
+    }
+}
+
+@keyframes incomeEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes statReveal {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes panelReveal {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes linePulse {
+    from {
+        opacity: .45;
+        width: 30%;
+    }
+
+    to {
+        opacity: 1;
+        width: 65%;
+    }
+}
+
+@keyframes emptyFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes novixWarningPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px #ef444415;
+    }
+
+    50% {
+        box-shadow: 0 0 32px #ef444435;
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width: 1000px) {
+    .income-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .income-stat:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .dashboard-universe::before {
+        left: 78%;
+        width: 95vw;
+        opacity: .65;
+    }
+
+    .dashboard-universe::after {
+        left: 78%;
+        width: 30vw;
+    }
+}
+
+@media (max-width: 850px) {
+    .income-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .income-stat:last-child {
+        grid-column: auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .income-content {
+        padding: 22px 14px;
+    }
+
+    .income-header {
+        align-items: flex-start;
+    }
+
+        .income-header h1 {
+            font-size: 30px;
+        }
+
+    .income-back {
+        width: 100%;
+    }
+
+    .income-form {
+        grid-template-columns: 1fr;
+    }
+
+    .income-field.full,
+    .income-submit {
+        grid-column: auto;
+    }
+
+    .income-panel {
+        padding: 20px 15px;
+    }
+
+    .income-history-heading {
+        align-items: flex-start;
+    }
+
+    .income-footer {
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .dashboard-universe::before {
+        top: 25%;
+        left: 78%;
+        width: 125vw;
+        opacity: .48;
+    }
+
+    .dashboard-universe::after {
+        top: 25%;
+        left: 78%;
+        width: 43vw;
+        opacity: .75;
+    }
+
+    .nebula {
+        width: 85vw;
+        filter: blur(60px);
+        opacity: .08;
+    }
+
+    .shooting-star {
+        width: 75px;
+    }
+}
+
+@media (max-width: 420px) {
+    .novix-modal {
+        padding: 25px 20px;
+    }
+
+    .novix-modal-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .income-eyebrow {
+        font-size: 9px;
+        letter-spacing: 1.4px;
+    }
+
+    .income-stat {
+        padding: 18px;
+    }
+}
+
+/* Accesibilidad */
+
+@media (prefers-reduced-motion: reduce) {
+    .stars-distant,
+    .stars-middle,
+    .stars-near,
+    .nebula,
+    .shooting-star,
+    .dashboard-universe::before,
+    .dashboard-universe::after,
+    .income-content,
+    .income-stat,
+    .income-panel,
+    .income-alert,
+    .income-stat-line,
+    .income-empty-icon,
+    .novix-modal-icon {
+        animation: none !important;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

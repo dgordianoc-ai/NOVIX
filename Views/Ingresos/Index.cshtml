@@ -1,0 +1,530 @@
+﻿
+@model List<NOVIX.Models.MovimientoFinanciero>
+
+@{
+    Layout = null;
+    ViewData["Title"] = "NOVIX | Ingresos";
+
+    var cultura = System.Globalization.CultureInfo.GetCultureInfo("es-GT");
+
+    decimal totalIngresos = Model == null
+        ? 0m
+        : Model.Sum(ingreso => ingreso.Monto);
+
+    int cantidadIngresos = Model == null ? 0 : Model.Count;
+
+    decimal promedioIngresos = cantidadIngresos == 0
+        ? 0m
+        : totalIngresos / cantidadIngresos;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030305" />
+
+    <title>NOVIX | Ingresos</title>
+
+    <link rel="stylesheet"
+          href="~/css/dashboard.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/ingresos.css"
+          asp-append-version="true" />
+</head>
+
+<body class="income-blackhole-page">
+
+    <!-- UNIVERSO ASTRAL -->
+    <div class="dashboard-universe" aria-hidden="true">
+        <div class="cosmic-stars cosmic-stars-far"></div>
+        <div class="cosmic-stars cosmic-stars-mid"></div>
+        <div class="cosmic-stars cosmic-stars-near"></div>
+
+        <div class="cosmic-nebula cosmic-nebula-one"></div>
+        <div class="cosmic-nebula cosmic-nebula-two"></div>
+
+        <!-- AGUJERO NEGRO -->
+        <div class="blackhole-scene">
+            <div class="blackhole-aura"></div>
+
+            <div class="blackhole-gravity">
+                <div class="gravity-ring gravity-ring-one"></div>
+                <div class="gravity-ring gravity-ring-two"></div>
+                <div class="gravity-ring gravity-ring-three"></div>
+            </div>
+
+            <div class="blackhole-disc blackhole-disc-back"></div>
+
+            <div class="blackhole-core">
+                <div class="blackhole-shadow"></div>
+            </div>
+
+            <div class="blackhole-disc blackhole-disc-front"></div>
+
+            <div class="blackhole-lens"></div>
+            <div class="blackhole-glint"></div>
+        </div>
+
+        <!-- PARTÍCULAS -->
+        <div class="cosmic-particles particles-one"></div>
+        <div class="cosmic-particles particles-two"></div>
+
+        <!-- ESTRELLAS FUGACES -->
+        <div class="shooting-star shooting-star-one"></div>
+        <div class="shooting-star shooting-star-two"></div>
+    </div>
+
+    <div class="dashboard-layout">
+
+        <!-- BARRA LATERAL -->
+        <aside class="dashboard-sidebar">
+            <a class="dashboard-brand" href="/Dashboard">
+                <h2>NOVIX<span>.</span></h2>
+                <p>FINANCIAL INTELLIGENCE</p>
+            </a>
+
+            <p class="sidebar-label">MENÚ PRINCIPAL</p>
+
+            <nav class="dashboard-nav">
+                <a href="/Dashboard">
+                    <span class="nav-symbol">◈</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/Ingresos" class="active">
+                    <span class="nav-symbol">↗</span>
+                    <span>Ingresos</span>
+                </a>
+
+                <a href="/Gastos">
+                    <span class="nav-symbol">↘</span>
+                    <span>Gastos</span>
+                </a>
+
+               <a href="/Registros/Index">
+                    <span class="nav-symbol">▤</span>
+                    <span>Registros</span>
+                </a>
+
+                <a href="/Home/Analisis">
+                    <span class="nav-symbol">◷</span>
+                    <span>Análisis</span>
+                </a>
+
+                <a href="/Home/Reportes">
+                    <span class="nav-symbol">▧</span>
+                    <span>Reportes</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="admin-status">
+                    <div class="admin-avatar">A</div>
+
+                    <div class="admin-info">
+                        <strong>Administrador</strong>
+                        <span>Sesión de demostración</span>
+                    </div>
+
+                    <span class="status-indicator"></span>
+                </div>
+
+                <a href="/Home/Login" class="logout-link">
+                    <span class="nav-symbol">↪</span>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="dashboard-content">
+
+            <header class="dashboard-topbar">
+                <div class="dashboard-breadcrumb">
+                    NOVIX <span>/</span> <strong>Ingresos</strong>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-status">
+                        <span class="live-indicator"></span>
+                        SISTEMA EN LÍNEA
+                    </div>
+
+                    <div class="dashboard-date">
+                        @DateTime.Now.ToString("dd/MM/yyyy")
+                    </div>
+                </div>
+            </header>
+
+            <div class="income-content">
+
+                <!-- ENCABEZADO -->
+                <header class="income-header">
+                    <div>
+                        <div class="income-eyebrow">
+                            <span class="income-orbit-icon">◉</span>
+                            MÓDULO FINANCIERO / CAPITAL ENTRANTE
+                        </div>
+
+                        <h1>Ingresos <span>financieros.</span></h1>
+
+                        <p>
+                            Registra y consulta las entradas de dinero.
+                            Cada operación se almacena en la base central de NOVIX.
+                        </p>
+                    </div>
+
+                    <a href="/Dashboard" class="income-back">
+                        <span>←</span>
+                        Volver al Dashboard
+                    </a>
+                </header>
+
+                <!-- MENSAJES -->
+                @if (TempData["Mensaje"] != null)
+                {
+                    <div class="income-alert">
+                        <strong>✓</strong>
+                        @TempData["Mensaje"]
+                    </div>
+                }
+
+                @if (TempData["Error"] != null || ViewBag.Error != null)
+                {
+                    <div class="income-alert error">
+                        <strong>!</strong>
+                        @(TempData["Error"] ?? ViewBag.Error)
+                    </div>
+                }
+
+                <!-- ESTADÍSTICAS -->
+                <section class="income-summary">
+
+                    <article class="income-stat">
+                        <span class="income-stat-label">CAPITAL RECIBIDO</span>
+
+                        <strong>
+                            Q @totalIngresos.ToString("N2", cultura)
+                        </strong>
+
+                        <small>Total de ingresos registrados</small>
+                        <span class="income-stat-line"></span>
+                    </article>
+
+                    <article class="income-stat">
+                        <span class="income-stat-label">OPERACIONES</span>
+
+                        <strong>@cantidadIngresos</strong>
+
+                        <small>Ingresos almacenados en NOVIXDB</small>
+                        <span class="income-stat-line"></span>
+                    </article>
+
+                    <article class="income-stat">
+                        <span class="income-stat-label">PROMEDIO POR INGRESO</span>
+
+                        <strong>
+                            Q @promedioIngresos.ToString("N2", cultura)
+                        </strong>
+
+                        <small>Promedio de las operaciones registradas</small>
+                        <span class="income-stat-line"></span>
+                    </article>
+
+                </section>
+
+                <!-- FORMULARIO -->
+                <section class="income-panel">
+
+                    <div class="income-panel-heading">
+                        <div class="income-heading-icon">↗</div>
+
+                        <div>
+                            <h2>Registrar nuevo ingreso</h2>
+                            <p>Introduce los datos de la operación financiera.</p>
+                        </div>
+                    </div>
+
+                    <form asp-controller="Ingresos"
+                          asp-action="Crear"
+                          method="post"
+                          class="income-form">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="income-field">
+                            <label for="Fecha">FECHA DEL INGRESO</label>
+
+                            <input type="date"
+                                   id="Fecha"
+                                   name="Fecha"
+                                   value="@DateTime.Today.ToString("yyyy-MM-dd")"
+                                   required />
+                        </div>
+
+                        <div class="income-field">
+                            <label for="Monto">MONTO EN QUETZALES (Q)</label>
+
+                            <input type="number"
+                                   id="Monto"
+                                   name="Monto"
+                                   min="0.01"
+                                   max="9999999999.99"
+                                   step="0.01"
+                                   placeholder="0.00"
+                                   required />
+                        </div>
+
+                        <div class="income-field full">
+                            <label for="Descripcion">DESCRIPCIÓN</label>
+
+                            <input type="text"
+                                   id="Descripcion"
+                                   name="Descripcion"
+                                   maxlength="200"
+                                   placeholder="Ej. Salario mensual, venta de producto..."
+                                   required />
+                        </div>
+
+                        <div class="income-field full">
+                            <label for="Categoria">CATEGORÍA</label>
+
+                            <select id="Categoria"
+                                    name="Categoria"
+                                    required>
+
+                                <option value="">Selecciona una categoría</option>
+                                <option value="Salario">Salario</option>
+                                <option value="Ventas">Ventas</option>
+                                <option value="Servicios">Servicios</option>
+                                <option value="Negocio">Negocio</option>
+                                <option value="Inversiones">Inversiones</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                        </div>
+
+                        <div class="income-submit">
+                            <button type="submit" class="income-button">
+                                <span>＋</span>
+                                Guardar ingreso en NOVIX
+                            </button>
+                        </div>
+
+                    </form>
+                </section>
+
+                <!-- HISTORIAL -->
+                <section class="income-panel">
+
+                    <div class="income-history-heading">
+                        <div>
+                            <h2>Historial de ingresos</h2>
+                            <p>
+                                Movimientos consultados desde la base de datos central.
+                            </p>
+                        </div>
+
+                        <span class="income-count">
+                            @cantidadIngresos REGISTROS
+                        </span>
+                    </div>
+
+                    <div class="income-table-wrap">
+                        <table class="income-table">
+
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>FECHA</th>
+                                    <th>DESCRIPCIÓN</th>
+                                    <th>CATEGORÍA</th>
+                                    <th>MONTO</th>
+                                    <th>ACCIONES</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (Model != null && Model.Count > 0)
+                                {
+                                    foreach (var ingreso in Model)
+                                    {
+                                        <tr>
+                                            <td class="income-id">
+                                                @ingreso.Id
+                                            </td>
+
+                                            <td>
+                                                @ingreso.Fecha.ToString("dd/MM/yyyy")
+                                            </td>
+
+                                            <td>@ingreso.Descripcion</td>
+
+                                            <td>
+                                                <span class="income-category">
+                                                    @ingreso.Categoria
+                                                </span>
+                                            </td>
+
+                                            <td class="income-amount">
+                                                Q @ingreso.Monto.ToString("N2", cultura)
+                                            </td>
+
+                                            <td>
+                                                <form asp-controller="Ingresos"
+                                                      asp-action="Eliminar"
+                                                      method="post"
+                                                      class="income-delete-form js-delete-income">
+
+                                                    @Html.AntiForgeryToken()
+
+                                                    <input type="hidden"
+                                                           name="id"
+                                                           value="@ingreso.Id" />
+
+                                                    <button type="submit"
+                                                            class="income-delete-button">
+                                                        <span>×</span>
+                                                        Eliminar
+                                                    </button>
+
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="income-empty">
+                                            <span class="income-empty-icon">◌</span>
+                                            Todavía no hay ingresos registrados.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                </section>
+
+                <footer class="income-footer">
+                    <span>© @DateTime.Now.Year NOVIX</span>
+                    <span>PRECISIÓN · VISIÓN · CONTROL</span>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN -->
+    <div class="novix-modal-overlay"
+         id="novixDeleteModal"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="novixDeleteTitle"
+         aria-describedby="novixDeleteDescription"
+         aria-hidden="true">
+
+        <div class="novix-modal">
+            <div class="novix-modal-icon" aria-hidden="true">×</div>
+
+            <span class="novix-modal-tag">NOVIX SECURITY SYSTEM</span>
+
+            <h2 id="novixDeleteTitle">¿Eliminar ingreso?</h2>
+
+            <p id="novixDeleteDescription">
+                Este ingreso se eliminará de tu historial financiero.
+                Esta acción no se puede deshacer.
+            </p>
+
+            <div class="novix-modal-actions">
+                <button type="button"
+                        class="novix-modal-button novix-modal-cancel"
+                        id="novixCancelDelete">
+                    Cancelar
+                </button>
+
+                <button type="button"
+                        class="novix-modal-button novix-modal-delete"
+                        id="novixConfirmDelete">
+                    Eliminar ingreso
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT DE CONFIRMACIÓN -->
+    <script>
+        (() => {
+            const modal = document.getElementById("novixDeleteModal");
+            const cancelButton = document.getElementById("novixCancelDelete");
+            const confirmButton = document.getElementById("novixConfirmDelete");
+
+            let selectedForm = null;
+            let previousFocus = null;
+
+            function closeModal() {
+                modal.classList.remove("active");
+                modal.setAttribute("aria-hidden", "true");
+                document.body.style.overflow = "";
+
+                selectedForm = null;
+
+                if (previousFocus) {
+                    previousFocus.focus();
+                    previousFocus = null;
+                }
+
+                confirmButton.disabled = false;
+                confirmButton.textContent = "Eliminar ingreso";
+            }
+
+            document.querySelectorAll(".js-delete-income").forEach(form => {
+                form.addEventListener("submit", event => {
+                    event.preventDefault();
+
+                    selectedForm = form;
+                    previousFocus = document.activeElement;
+
+                    modal.classList.add("active");
+                    modal.setAttribute("aria-hidden", "false");
+                    document.body.style.overflow = "hidden";
+
+                    cancelButton.focus();
+                });
+            });
+
+            cancelButton.addEventListener("click", closeModal);
+
+            confirmButton.addEventListener("click", () => {
+                if (selectedForm) {
+                    const formToSubmit = selectedForm;
+
+                    confirmButton.disabled = true;
+                    confirmButton.textContent = "Eliminando...";
+
+                    formToSubmit.submit();
+                }
+            });
+
+            modal.addEventListener("click", event => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener("keydown", event => {
+                if (event.key === "Escape" &&
+                    modal.classList.contains("active")) {
+                    closeModal();
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>

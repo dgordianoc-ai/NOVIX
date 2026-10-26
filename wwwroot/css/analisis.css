@@ -1,0 +1,1194 @@
+﻿
+/* =====================================================
+   NOVIX | ANALISIS ASTRAL
+   Negro profundo + plata metalica + blanco estelar
+===================================================== */
+
+:root {
+    --space-black: #030305;
+    --panel-black: rgba(7, 7, 11, 0.88);
+    --panel-light: rgba(27, 28, 34, 0.82);
+    --silver: #c8cbd4;
+    --silver-light: #f4f5f8;
+    --silver-dark: #777d89;
+    --text-main: #f5f6fa;
+    --text-muted: #b7bac4;
+    --border-silver: rgba(222, 226, 237, 0.24);
+    --silver-glow: rgba(225, 230, 242, 0.12);
+}
+
+/* Fondo general */
+html,
+body {
+    min-height: 100%;
+    background: #030305;
+}
+
+    body:has(.analisis-page) {
+        margin: 0;
+        color: var(--text-main);
+        background: #030305 !important;
+    }
+
+        /* Evita el marco blanco del contenedor MVC */
+        body:has(.analisis-page) main,
+        body:has(.analisis-page) main.container,
+        body:has(.analisis-page) main.container-fluid,
+        body:has(.analisis-page) .container,
+        body:has(.analisis-page) .container-fluid {
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navegacion */
+        body:has(.analisis-page) nav.navbar,
+        body:has(.analisis-page) header .navbar {
+            background: rgba(3, 3, 5, 0.97) !important;
+            border-bottom: 1px solid rgba(225, 230, 242, 0.24);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+        }
+
+        body:has(.analisis-page) .navbar .navbar-brand,
+        body:has(.analisis-page) .navbar .nav-link {
+            color: #e8eaf0 !important;
+        }
+
+        body:has(.analisis-page) .navbar .nav-link {
+            transition: color .25s ease, text-shadow .25s ease;
+        }
+
+            body:has(.analisis-page) .navbar .nav-link:hover {
+                color: #fff !important;
+                text-shadow: 0 0 12px rgba(255, 255, 255, .65);
+            }
+
+        body:has(.analisis-page) footer {
+            color: #a7aab4;
+            background: #030305;
+            border-color: var(--border-silver) !important;
+        }
+
+/* Pagina principal */
+.analisis-page {
+    position: relative;
+    isolation: isolate;
+    min-height: 100vh;
+    padding: clamp(24px, 3.2vw, 56px);
+    overflow: hidden;
+    color: var(--text-main);
+    background: #030305;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+    .analisis-page * {
+        box-sizing: border-box;
+    }
+
+/* Galaxia */
+.cosmos-background {
+    position: absolute;
+    z-index: -2;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: #030305;
+    background-image: linear-gradient( 180deg, rgba(0, 0, 0, 0.10) 0%, rgba(0, 0, 0, 0.18) 35%, rgba(0, 0, 0, 0.58) 100% ), url("/imagen/galaxia-novix.png");
+    background-size: cover;
+    background-position: center 38%;
+    background-repeat: no-repeat;
+}
+
+/* Oscurece suavemente detras del contenido */
+.analisis-page::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient( ellipse at 75% 30%, transparent 0%, rgba(0, 0, 0, 0.10) 42%, rgba(0, 0, 0, 0.44) 100% );
+}
+
+/* Estrellas complementarias */
+.stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-repeat: repeat;
+}
+
+.stars-one {
+    opacity: .34;
+    background-image: radial-gradient(1px 1px at 35px 55px, #fff 99%, transparent), radial-gradient(2px 2px at 155px 145px, #dfe3ed 99%, transparent), radial-gradient(1px 1px at 270px 75px, #fff 99%, transparent), radial-gradient(1px 1px at 320px 225px, #bfc5d0 99%, transparent);
+    background-size: 390px 290px;
+    animation: novixStars 100s linear infinite;
+}
+
+.stars-two {
+    opacity: .23;
+    background-image: radial-gradient(2px 2px at 85px 125px, #fff 99%, transparent), radial-gradient(1px 1px at 220px 45px, #e5e8ef 99%, transparent), radial-gradient(1px 1px at 305px 210px, #fff 99%, transparent);
+    background-size: 350px 260px;
+    animation: novixStars 130s linear infinite reverse;
+}
+
+/* Agujero negro decorativo de respaldo */
+.black-hole {
+    position: absolute;
+    top: 90px;
+    right: -210px;
+    width: 500px;
+    height: 500px;
+    opacity: .15;
+    pointer-events: none;
+}
+
+.black-hole-core {
+    position: absolute;
+    inset: 30%;
+    border-radius: 50%;
+    background: #000;
+    box-shadow: 0 0 70px 35px #000;
+}
+
+.black-hole-ring {
+    position: absolute;
+    inset: 12%;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    transform: scaleY(.4) rotate(-25deg);
+}
+
+.ring-one {
+    border-top-color: #fff;
+    border-bottom-color: #9fa4af;
+    box-shadow: 0 0 22px rgba(255, 255, 255, .40);
+    animation: novixOrbit 24s linear infinite;
+}
+
+.ring-two {
+    inset: 5%;
+    border-top-color: #c8cbd4;
+    border-bottom-color: #fff;
+    animation: novixOrbit 32s linear infinite reverse;
+}
+
+/* Capas de contenido */
+.analysis-header,
+.analysis-intro,
+.analysis-cards,
+.analysis-grid,
+.insight-panel {
+    position: relative;
+    z-index: 1;
+}
+
+/* Encabezado */
+.analysis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 48px;
+}
+
+.eyebrow,
+.section-label {
+    color: #d9dce4;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2.8px;
+    text-transform: uppercase;
+}
+
+.analysis-header h1 {
+    margin: 14px 0;
+    color: #fff;
+    font-size: clamp(34px, 4.5vw, 58px);
+    font-weight: 300;
+    letter-spacing: -1.8px;
+    text-shadow: 0 0 30px rgba(255, 255, 255, .13);
+}
+
+    .analysis-header h1 span {
+        color: #c8cbd4;
+        text-shadow: 0 0 24px rgba(230, 235, 245, .28);
+    }
+
+.analysis-header p,
+.analysis-intro p {
+    color: #c0c3cc;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 17px;
+    border: 1px solid var(--border-silver);
+    border-radius: 30px;
+    background: rgba(7, 7, 11, .78);
+    color: #e7e9ef;
+    font-size: 10px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+    backdrop-filter: blur(15px);
+}
+
+.status-light {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eef0f5;
+    box-shadow: 0 0 12px rgba(255, 255, 255, .85);
+    animation: novixPulse 3s ease-in-out infinite;
+}
+
+/* Introduccion */
+.analysis-intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+    .analysis-intro h2,
+    .panel-heading h2,
+    .insight-panel h2 {
+        margin: 10px 0;
+        color: #f5f6fa;
+        font-size: 22px;
+        font-weight: 400;
+    }
+
+.orbit-icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid rgba(225, 230, 242, .42);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 25px;
+    box-shadow: 0 0 25px rgba(255, 255, 255, .09);
+    background: rgba(8, 8, 12, .38);
+}
+
+/* Tarjetas */
+.analysis-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.analysis-card {
+    position: relative;
+    padding: 27px;
+    overflow: hidden;
+    border: 1px solid rgba(220, 225, 237, .25);
+    border-radius: 17px;
+    background: linear-gradient( 135deg, rgba(30, 31, 37, .90), rgba(5, 5, 9, .91) );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 15px 45px rgba(0, 0, 0, .25);
+    backdrop-filter: blur(18px);
+    transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+    .analysis-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 12%;
+        width: 45%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e5e8ef, transparent);
+        opacity: .42;
+    }
+
+    .analysis-card::after {
+        content: "";
+        position: absolute;
+        top: -85px;
+        right: -70px;
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        background: rgba(225, 230, 242, .08);
+        filter: blur(48px);
+        pointer-events: none;
+    }
+
+    .analysis-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(240, 243, 250, .54);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, .40), 0 0 24px rgba(220, 225, 237, .07);
+    }
+
+.card-top,
+.card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.card-top {
+    color: #d1d3dc;
+    font-size: 12px;
+}
+
+.card-icon {
+    color: #fff;
+    font-size: 24px;
+    text-shadow: 0 0 12px rgba(255, 255, 255, .30);
+}
+
+.analysis-card h3 {
+    margin: 26px 0;
+    color: #fff;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 300;
+    letter-spacing: -1px;
+}
+
+.card-bottom {
+    justify-content: flex-start;
+    color: #bfc2cc;
+    font-size: 11px;
+}
+
+/* Todos los indicadores en tonos plateados */
+.mini-orb,
+.legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #dfe2e9;
+    box-shadow: 0 0 10px rgba(255, 255, 255, .58);
+}
+
+.green-orb,
+.red-orb,
+.purple-orb,
+.income-dot,
+.expense-dot,
+.balance-dot {
+    background: #dfe2e9;
+    box-shadow: 0 0 10px rgba(255, 255, 255, .58);
+}
+
+/* Paneles */
+.analysis-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr);
+    gap: 22px;
+}
+
+.hologram-panel {
+    position: relative;
+    min-width: 0;
+    padding: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(215, 220, 232, .24);
+    border-radius: 19px;
+    background: linear-gradient( 145deg, rgba(15, 15, 20, .90), rgba(4, 4, 8, .93) );
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .055), 0 15px 45px rgba(0, 0, 0, .25);
+    backdrop-filter: blur(20px);
+}
+
+    .hologram-panel::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 8%;
+        width: 45%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e6e9f0, transparent);
+        opacity: .36;
+        pointer-events: none;
+    }
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+    .panel-heading h2 {
+        margin-bottom: 0;
+    }
+
+.panel-symbol {
+    color: #e5e7ee;
+    font-size: 25px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, .42);
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    margin-top: 25px;
+}
+
+.panel-note {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 16px 0 0;
+    color: #b6b9c3;
+    font-size: 10px;
+    line-height: 1.7;
+}
+
+/* Grafica circular */
+.donut-container {
+    display: grid;
+    place-items: center;
+    padding: 30px 0;
+}
+
+.donut-chart {
+    display: grid;
+    place-items: center;
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    background: conic-gradient( #f4f5f8 0deg 120deg, #a7abb5 120deg 240deg, #555a65 240deg 360deg );
+    box-shadow: 0 0 32px rgba(255, 255, 255, .10), inset 0 0 12px rgba(255, 255, 255, .06);
+    animation: novixGlow 5s ease-in-out infinite;
+}
+
+.donut-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 126px;
+    height: 126px;
+    border: 1px solid rgba(220, 225, 237, .20);
+    border-radius: 50%;
+    background: #08080b;
+}
+
+    .donut-center span {
+        color: #fff;
+        font-size: 28px;
+        font-weight: 300;
+    }
+
+    .donut-center small {
+        margin-top: 5px;
+        color: #b9bdc7;
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+/* Leyenda */
+.legend {
+    display: grid;
+    gap: 15px;
+}
+
+    .legend > div {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: #c9cbd3;
+        font-size: 11px;
+    }
+
+    .legend strong {
+        margin-left: auto;
+        color: #fff;
+        font-weight: 500;
+    }
+
+/* Panel de inteligencia financiera */
+.insight-panel {
+    display: flex;
+    align-items: center;
+    gap: 21px;
+    margin-top: 22px;
+}
+
+.insight-symbol {
+    display: grid;
+    place-items: center;
+    width: 55px;
+    height: 55px;
+    flex-shrink: 0;
+    border: 1px solid rgba(220, 225, 237, .34);
+    border-radius: 15px;
+    color: #fff;
+    font-size: 25px;
+    background: rgba(255, 255, 255, .035);
+    box-shadow: 0 0 25px rgba(255, 255, 255, .045);
+}
+
+.insight-panel h2 {
+    margin: 9px 0;
+}
+
+.insight-panel p {
+    max-width: 750px;
+    margin: 0;
+    color: #b8bbc5;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.insight-orbit {
+    margin-left: auto;
+    color: rgba(225, 229, 238, .30);
+    font-size: 60px;
+    animation: novixOrbit 25s linear infinite;
+}
+
+/* Animaciones */
+@keyframes novixStars {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-290px);
+    }
+}
+
+@keyframes novixOrbit {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: 360deg;
+    }
+}
+
+@keyframes novixPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .45;
+    }
+}
+
+@keyframes novixGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 5px rgba(255, 255, 255, .04));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 16px rgba(255, 255, 255, .15));
+    }
+}
+
+/* Adaptacion a pantallas medianas */
+@media (max-width: 1000px) {
+    .analisis-page {
+        padding: 28px;
+    }
+
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Adaptacion a telefonos */
+@media (max-width: 650px) {
+    .analisis-page {
+        padding: 22px 15px;
+    }
+
+    .analysis-header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 38px;
+    }
+
+        .analysis-header h1 {
+            font-size: 36px;
+        }
+
+    .analysis-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .analysis-card,
+    .hologram-panel {
+        padding: 21px;
+    }
+
+    .analysis-intro h2,
+    .panel-heading h2 {
+        font-size: 19px;
+    }
+
+    .chart-container {
+        height: 235px;
+    }
+
+    .insight-orbit {
+        display: none;
+    }
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .analisis-page *,
+    .analisis-page *::before,
+    .analisis-page *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+/* =====================================================
+   NOVIX | UNIVERSO VIVO
+   Estrellas, particulas, meteoritos y paneles flotantes
+===================================================== */
+
+/* Profundidad espacial */
+.analisis-page {
+    --space-silver: rgba(235, 239, 248, 0.9);
+}
+
+    /* Movimiento suave de las estrellas existentes */
+    .analisis-page .stars-one {
+        animation: novixStarTravel 85s linear infinite;
+    }
+
+    .analisis-page .stars-two {
+        animation: novixStarTravel 115s linear infinite reverse;
+    }
+
+    /* Parpadeo sutil de las estrellas */
+    .analisis-page .stars-one,
+    .analisis-page .stars-two {
+        will-change: transform, opacity;
+    }
+
+@keyframes novixStarTravel {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0.18;
+    }
+
+    25% {
+        opacity: 0.42;
+    }
+
+    50% {
+        transform: translate3d(-25px, -100px, 0);
+        opacity: 0.28;
+    }
+
+    75% {
+        opacity: 0.48;
+    }
+
+    100% {
+        transform: translate3d(0, -290px, 0);
+        opacity: 0.18;
+    }
+}
+
+/* Brillo metálico que recorre los paneles */
+.analysis-card,
+.hologram-panel {
+    background-size: 100% 100%;
+    transition: transform 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+}
+
+    .analysis-card:hover,
+    .hologram-panel:hover {
+        border-color: rgba(240, 243, 250, 0.58);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 0 28px rgba(225, 230, 242, 0.09), 0 18px 45px rgba(0, 0, 0, 0.42);
+    }
+
+    .analysis-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Reflejo plateado animado en el borde superior */
+    .analysis-card::before,
+    .hologram-panel::before {
+        background: linear-gradient( 90deg, transparent, rgba(255, 255, 255, 0.72), rgba(190, 198, 213, 0.55), transparent );
+        background-size: 200% 100%;
+        animation: novixSilverSweep 8s ease-in-out infinite;
+    }
+
+@keyframes novixSilverSweep {
+    0%, 100% {
+        background-position: 100% 0;
+        opacity: 0.18;
+    }
+
+    50% {
+        background-position: 0 0;
+        opacity: 0.65;
+    }
+}
+
+/* Sensación de bloques holográficos flotantes */
+.analysis-card {
+    animation: novixFloat 7s ease-in-out infinite;
+}
+
+    .analysis-card:nth-child(2) {
+        animation-delay: -2s;
+    }
+
+    .analysis-card:nth-child(3) {
+        animation-delay: -4s;
+    }
+
+@keyframes novixFloat {
+    0%, 100% {
+        translate: 0 0;
+    }
+
+    50% {
+        translate: 0 -4px;
+    }
+}
+
+/* Movimiento orbital de los elementos astrales */
+.analisis-page .black-hole-ring {
+    transform-origin: center;
+    will-change: transform;
+}
+
+.analisis-page .ring-one {
+    animation: novixBlackHole 18s linear infinite;
+}
+
+.analisis-page .ring-two {
+    animation: novixBlackHole 26s linear infinite reverse;
+}
+
+@keyframes novixBlackHole {
+    from {
+        transform: rotate(0deg) scaleY(0.4);
+    }
+
+    to {
+        transform: rotate(360deg) scaleY(0.4);
+    }
+}
+
+/* Destellos de los indicadores */
+.analisis-page .status-light,
+.analisis-page .mini-orb,
+.analisis-page .legend-dot {
+    animation: novixStarPulse 3s ease-in-out infinite;
+}
+
+@keyframes novixStarPulse {
+    0%, 100% {
+        opacity: 0.65;
+        filter: brightness(0.85);
+    }
+
+    50% {
+        opacity: 1;
+        filter: brightness(1.45);
+    }
+}
+
+/* Respeto a usuarios que prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    .analisis-page *,
+    .analisis-page *::before,
+    .analisis-page *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================
+   NOVIX - ANIMACIONES ESPACIALES VISIBLES
+========================================== */
+
+/* Estrellas que parpadean sobre la galaxia */
+.analisis-page .stars-one {
+    background-image: radial-gradient(2px 2px at 40px 60px, #fff 99%, transparent), radial-gradient(3px 3px at 180px 150px, #fff 99%, transparent), radial-gradient(2px 2px at 300px 90px, #dfe5f2 99%, transparent), radial-gradient(2px 2px at 100px 220px, #fff 99%, transparent);
+    background-size: 360px 280px;
+    animation: estrellasViajeras 18s linear infinite, brilloEstelar 3s ease-in-out infinite alternate;
+}
+
+.analisis-page .stars-two {
+    background-image: radial-gradient(2px 2px at 80px 100px, #fff 99%, transparent), radial-gradient(3px 3px at 240px 200px, #dfe5f2 99%, transparent), radial-gradient(1px 1px at 310px 40px, #fff 99%, transparent);
+    background-size: 330px 250px;
+    animation: estrellasViajeras 25s linear infinite reverse, brilloEstelar 4s ease-in-out infinite alternate;
+}
+
+@keyframes estrellasViajeras {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 360px 280px;
+    }
+}
+
+@keyframes brilloEstelar {
+    from {
+        opacity: .25;
+    }
+
+    to {
+        opacity: .95;
+    }
+}
+
+/* Meteoritos visibles que atraviesan la pantalla */
+.analisis-page .space-meteor {
+    position: absolute;
+    display: block;
+    width: 180px;
+    height: 2px;
+    border-radius: 50%;
+    background: linear-gradient( 90deg, transparent, rgba(220, 225, 240, .5), #fff );
+    box-shadow: 0 0 12px rgba(255, 255, 255, .65);
+    opacity: 0;
+    transform: rotate(-35deg);
+    animation: meteoritoCruzando 7s linear infinite;
+}
+
+.analisis-page .meteor-a {
+    top: 12%;
+    left: -220px;
+    animation-delay: 1s;
+}
+
+.analisis-page .meteor-b {
+    top: 35%;
+    left: -220px;
+    animation-delay: 4s;
+    animation-duration: 9s;
+}
+
+.analisis-page .meteor-c {
+    top: 62%;
+    left: -220px;
+    animation-delay: 6s;
+    animation-duration: 11s;
+}
+
+@keyframes meteoritoCruzando {
+    0% {
+        left: -220px;
+        top: 8%;
+        opacity: 0;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    65% {
+        opacity: .9;
+    }
+
+    100% {
+        left: 110%;
+        top: 75%;
+        opacity: 0;
+    }
+}
+
+/* Paneles con flotación suave y escalonada */
+.analisis-page .analysis-card {
+    animation: panelFlotante 5s ease-in-out infinite;
+}
+
+    .analisis-page .analysis-card:nth-child(2) {
+        animation-delay: -1.7s;
+    }
+
+    .analisis-page .analysis-card:nth-child(3) {
+        animation-delay: -3.3s;
+    }
+
+@keyframes panelFlotante {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
+/* Brillo plateado en los paneles */
+.analisis-page .analysis-card,
+.analisis-page .hologram-panel {
+    transition: border-color .35s ease, box-shadow .35s ease;
+}
+
+    .analisis-page .analysis-card:hover,
+    .analisis-page .hologram-panel:hover {
+        border-color: rgba(255, 255, 255, .75);
+        box-shadow: 0 0 25px rgba(255, 255, 255, .10), inset 0 0 22px rgba(255, 255, 255, .035);
+    }
+
+/* Agujero negro decorativo */
+.analisis-page .black-hole-ring {
+    animation: anilloOrbital 12s linear infinite !important;
+}
+
+.analisis-page .ring-two {
+    animation-duration: 18s !important;
+    animation-direction: reverse !important;
+}
+
+@keyframes anilloOrbital {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: 360deg;
+    }
+}
+
+/* Accesibilidad: respetar movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .analisis-page .stars-one,
+    .analisis-page .stars-two,
+    .analisis-page .space-meteor,
+    .analisis-page .analysis-card,
+    .analisis-page .black-hole-ring {
+        animation: none !important;
+    }
+}
+
+/* =====================================================
+   NOVIX COSMOS EXTREME
+   Animaciones espaciales de alta visibilidad
+===================================================== */
+
+/* ESTRELLAS GRANDES Y BRILLANTES */
+.analisis-page .stars-one,
+.analisis-page .stars-two {
+    position: absolute;
+    inset: -20%;
+    pointer-events: none;
+    background-repeat: repeat;
+    will-change: background-position, opacity;
+}
+
+.analisis-page .stars-one {
+    opacity: .95;
+    background-image: radial-gradient(3px 3px at 45px 70px, #fff 99%, transparent), radial-gradient(2px 2px at 160px 180px, #fff 99%, transparent), radial-gradient(4px 4px at 280px 100px, #fff 99%, transparent), radial-gradient(2px 2px at 350px 230px, #dce3f5 99%, transparent), radial-gradient(3px 3px at 110px 280px, #fff 99%, transparent);
+    background-size: 400px 320px;
+    animation: cosmicStarsFast 12s linear infinite, cosmicStarsFlash 2s ease-in-out infinite alternate;
+}
+
+.analisis-page .stars-two {
+    opacity: .75;
+    background-image: radial-gradient(2px 2px at 90px 120px, #fff 99%, transparent), radial-gradient(3px 3px at 230px 50px, #e5e9f5 99%, transparent), radial-gradient(2px 2px at 310px 240px, #fff 99%, transparent), radial-gradient(4px 4px at 180px 280px, #fff 99%, transparent);
+    background-size: 350px 300px;
+    animation: cosmicStarsFast 18s linear infinite reverse, cosmicStarsFlash 2.8s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes cosmicStarsFast {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 400px 320px;
+    }
+}
+
+@keyframes cosmicStarsFlash {
+    from {
+        opacity: .3;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* METEORITOS GRANDES Y VISIBLES */
+.analisis-page .space-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.analisis-page .space-meteor {
+    position: absolute;
+    display: block;
+    width: clamp(180px, 22vw, 360px);
+    height: 3px;
+    border-radius: 50%;
+    opacity: 0;
+    background: linear-gradient( 90deg, transparent 0%, rgba(210, 218, 235, .3) 25%, #fff 100% );
+    box-shadow: 0 0 8px #fff, 0 0 20px rgba(220, 230, 255, .9), 0 0 45px rgba(220, 230, 255, .55);
+    transform: rotate(-28deg);
+    animation: cosmicMeteorStrike 5s linear infinite;
+}
+
+.analisis-page .meteor-a {
+    top: 12%;
+    left: -400px;
+    animation-delay: 0s;
+}
+
+.analisis-page .meteor-b {
+    top: 38%;
+    left: -400px;
+    width: 260px;
+    animation-delay: 2.2s;
+}
+
+.analisis-page .meteor-c {
+    top: 62%;
+    left: -400px;
+    width: 320px;
+    animation-delay: 4.1s;
+}
+
+@keyframes cosmicMeteorStrike {
+    0% {
+        transform: translate(-10vw, -10vh) rotate(-28deg);
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 1;
+    }
+
+    45% {
+        opacity: .95;
+    }
+
+    65%, 100% {
+        transform: translate(125vw, 65vh) rotate(-28deg);
+        opacity: 0;
+    }
+}
+
+/* ESTRELLAS DESTELLANTES EXTRA */
+.analisis-page .space-star {
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    box-shadow: 0 0 8px 3px rgba(255, 255, 255, .8), 0 0 22px 5px rgba(220, 230, 255, .45);
+    animation: cosmicStarPulse 1.5s ease-in-out infinite alternate;
+}
+
+.analisis-page .star-a {
+    top: 18%;
+    left: 15%;
+}
+
+.analisis-page .star-b {
+    top: 25%;
+    left: 72%;
+    animation-delay: -.5s;
+}
+
+.analisis-page .star-c {
+    top: 58%;
+    left: 42%;
+    animation-delay: -.9s;
+}
+
+.analisis-page .star-d {
+    top: 75%;
+    left: 86%;
+    animation-delay: -.3s;
+}
+
+.analisis-page .star-e {
+    top: 88%;
+    left: 25%;
+    animation-delay: -.7s;
+}
+
+@keyframes cosmicStarPulse {
+    from {
+        transform: scale(.5);
+        opacity: .3;
+        filter: brightness(.8);
+    }
+
+    to {
+        transform: scale(2.5);
+        opacity: 1;
+        filter: brightness(2);
+    }
+}
+
+/* TARJETAS CON FLOTACIÓN MÁS NOTORIA */
+.analisis-page .analysis-card {
+    animation: cosmicPanelFloat 3.8s ease-in-out infinite;
+    will-change: transform;
+}
+
+    .analisis-page .analysis-card:nth-child(2) {
+        animation-delay: -1.2s;
+    }
+
+    .analisis-page .analysis-card:nth-child(3) {
+        animation-delay: -2.4s;
+    }
+
+@keyframes cosmicPanelFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-9px);
+    }
+}
+
+/* REFLEJOS PLATEADOS EN MOVIMIENTO */
+.analisis-page .analysis-card::before,
+.analisis-page .hologram-panel::before {
+    animation: cosmicSilverLight 3s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicSilverLight {
+    from {
+        opacity: .15;
+        filter: brightness(.7);
+    }
+
+    to {
+        opacity: .95;
+        filter: brightness(1.8);
+    }
+}
+
+/* RESPETAR PREFERENCIAS DE MOVIMIENTO REDUCIDO */
+@media (prefers-reduced-motion: reduce) {
+    .analisis-page .stars-one,
+    .analisis-page .stars-two,
+    .analisis-page .space-meteor,
+    .analisis-page .space-star,
+    .analisis-page .analysis-card {
+        animation: none !important;
+    }
+}

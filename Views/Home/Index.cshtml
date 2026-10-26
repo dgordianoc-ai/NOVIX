@@ -1,0 +1,2097 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "NOVIX | Financial Management";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030305" />
+
+    <title>NOVIX | Financial Management</title>
+
+    <link rel="stylesheet"
+          href="~/css/novix.css"
+          asp-append-version="true" />
+
+    <style>
+        /* ==========================================
+           CONFIGURACIÓN GENERAL
+        ========================================== */
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 15px;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        body.explorer-open {
+            overflow-x: hidden;
+        }
+
+        /* ==========================================
+           EXPLORADOR NOVIX
+        ========================================== */
+
+        .explore-section {
+            position: relative;
+            z-index: 2;
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            padding: 32px 7% 35px;
+            color: #f3f3f6;
+            background:
+                radial-gradient(
+                    ellipse at 50% 10%,
+                    rgba(210, 210, 225, .09),
+                    transparent 43%
+                ),
+                #050507;
+            border-top: 1px solid #29292f;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .explore-section.is-visible {
+            display: block;
+            animation: explorerEnter .55s ease forwards;
+        }
+
+        .explore-section.is-leaving {
+            display: block;
+            pointer-events: none;
+            animation: explorerLeave .4s ease forwards;
+        }
+
+        @@keyframes explorerEnter {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes explorerLeave {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+        }
+
+        /* ==========================================
+           ENCABEZADO DEL EXPLORADOR
+        ========================================== */
+
+        .explore-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            max-width: 1250px;
+            margin: 0 auto 30px;
+        }
+
+        .explore-brand {
+            color: #eeeeF3;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 4px;
+        }
+
+        .explore-brand span {
+            color: #8e8e99;
+        }
+
+        .explore-close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 11px 16px;
+            color: #e5e5eb;
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid #383840;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            transition:
+                background .25s ease,
+                color .25s ease,
+                transform .25s ease;
+        }
+
+        .explore-close:hover {
+            color: #050507;
+            background: #f0f0f4;
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           TÍTULO Y DESCRIPCIÓN
+        ========================================== */
+
+        .explore-heading {
+            max-width: 850px;
+            margin: 0 auto 30px;
+            text-align: center;
+        }
+
+        .explore-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #b8b8c2;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+        }
+
+        .explore-eyebrow::before {
+            content: "";
+            width: 25px;
+            height: 1px;
+            background: #d7d7df;
+        }
+
+        .explore-heading h2 {
+            margin: 16px 0 12px;
+            color: #f5f5f7;
+            font-size: clamp(34px, 4vw, 52px);
+            font-weight: 500;
+            letter-spacing: -2px;
+            line-height: 1.08;
+        }
+
+        .explore-heading h2 span {
+            color: #92929e;
+        }
+
+        .explore-heading p {
+            max-width: 570px;
+            margin: 0 auto;
+            color: #a1a1ad;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .explore-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            margin-top: 15px;
+            color: #81818d;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+        }
+
+        .explore-status-dot {
+            width: 6px;
+            height: 6px;
+            background: #e8e8ef;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(255, 255, 255, .7);
+            animation: statusPulse 2s infinite;
+        }
+
+        @@keyframes statusPulse {
+            0%, 100% {
+                opacity: .45;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ==========================================
+           TARJETAS
+        ========================================== */
+
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            max-width: 1250px;
+            margin: 0 auto;
+        }
+
+        .explore-card {
+            --card-delay: 0ms;
+
+            position: relative;
+            isolation: isolate;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-width: 0;
+            min-height: 205px;
+            padding: 22px 24px;
+            overflow: hidden;
+            text-align: left;
+            color: #f2f2f5;
+            background:
+                radial-gradient(
+                    ellipse at 90% 0%,
+                    rgba(220, 220, 235, .075),
+                    transparent 45%
+                ),
+                linear-gradient(145deg, #141417, #09090b 75%);
+            border: 1px solid #303038;
+            border-radius: 10px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(18px);
+            animation:
+                cardReveal .55s ease forwards;
+            animation-delay: var(--card-delay);
+            transition:
+                border-color .3s ease,
+                transform .3s ease,
+                box-shadow .3s ease,
+                background .3s ease;
+        }
+
+        .explore-card::before {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            top: -100%;
+            left: -60%;
+            width: 60%;
+            height: 300%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, .05),
+                transparent
+            );
+            transform: rotate(25deg);
+            transition: left .7s ease;
+            pointer-events: none;
+        }
+
+        .explore-card:hover::before {
+            left: 130%;
+        }
+
+        .explore-card:hover,
+        .explore-card:focus-visible {
+            outline: none;
+            border-color: #858590;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, .4);
+        }
+
+        .explore-card:focus-visible {
+            box-shadow: 0 0 0 2px #ededf2;
+        }
+
+        .explore-card.is-active {
+            border-color: #c5c5d0;
+            background:
+                radial-gradient(
+                    ellipse at 90% 0%,
+                    rgba(230, 230, 240, .11),
+                    transparent 50%
+                ),
+                #111114;
+        }
+
+        @@keyframes cardReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .explore-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .explore-card-number {
+            color: #92929e;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .explore-card-icon {
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            width: 38px;
+            height: 38px;
+            color: #ededf2;
+            background: rgba(255, 255, 255, .035);
+            border: 1px solid #41414b;
+            border-radius: 7px;
+            font-size: 20px;
+            transition:
+                transform .3s ease,
+                background .3s ease;
+        }
+
+        .explore-card:hover .explore-card-icon,
+        .explore-card.is-active .explore-card-icon {
+            transform: rotate(-8deg) scale(1.05);
+            background: rgba(255, 255, 255, .09);
+        }
+
+        .explore-card h3 {
+            margin: 15px 0 7px;
+            color: #f3f3f6;
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: -.5px;
+        }
+
+        .explore-card-description {
+            display: block;
+            max-width: 430px;
+            margin: 0;
+            color: #a3a3af;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .explore-card-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 16px;
+            color: #b9b9c3;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+        }
+
+        .explore-card-arrow {
+            display: inline-grid;
+            place-items: center;
+            flex-shrink: 0;
+            width: 27px;
+            height: 27px;
+            border: 1px solid #40404a;
+            border-radius: 50%;
+            font-size: 15px;
+            transition:
+                transform .3s ease,
+                background .3s ease;
+        }
+
+        .explore-card:hover .explore-card-arrow,
+        .explore-card.is-active .explore-card-arrow {
+            transform: rotate(45deg);
+            color: #08080a;
+            background: #eeeeF2;
+        }
+
+        /* ==========================================
+           INFORMACIÓN EXPANDIBLE DE LAS TARJETAS
+        ========================================== */
+
+        .explore-details {
+            display: grid;
+            grid-template-rows: 0fr;
+            width: 100%;
+            opacity: 0;
+            transition:
+                grid-template-rows .35s ease,
+                opacity .3s ease;
+        }
+
+        .explore-card.is-active .explore-details {
+            grid-template-rows: 1fr;
+            opacity: 1;
+        }
+
+        .explore-details-inner {
+            overflow: hidden;
+        }
+
+        .explore-details p {
+            margin: 14px 0 0;
+            padding-top: 14px;
+            color: #dedee5;
+            border-top: 1px solid #35353d;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .explore-details strong {
+            color: #fff;
+        }
+
+        /* ==========================================
+           PARTE INFERIOR DEL EXPLORADOR
+        ========================================== */
+
+        .explore-hint {
+            margin-top: 22px;
+            color: #777783;
+            text-align: center;
+            font-size: 9px;
+            letter-spacing: 1.4px;
+        }
+
+        .explore-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            max-width: 1250px;
+            margin: 30px auto 0;
+            padding-top: 18px;
+            border-top: 1px solid #29292f;
+        }
+
+        .explore-bottom p {
+            margin: 0;
+            color: #888894;
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        .explore-login {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            min-height: 43px;
+            padding: 0 20px;
+            color: #08080a;
+            background: #f0f0f4;
+            border: 1px solid #f0f0f4;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1.3px;
+            transition:
+                background .25s ease,
+                transform .25s ease;
+        }
+
+        .explore-login:hover {
+            transform: translateY(-2px);
+            background: #fff;
+        }
+
+        .explore-login span {
+            font-size: 16px;
+        }
+
+        /* ==========================================
+           ACADEMIA FINANCIERA
+        ========================================== */
+
+        .academy {
+            position: relative;
+            z-index: 3;
+            display: none;
+            min-height: 100vh;
+            padding: 45px 6%;
+            color: #f5f5f7;
+            background:
+                radial-gradient(
+                    ellipse at 50% 0%,
+                    rgba(210, 210, 230, .10),
+                    transparent 45%
+                ),
+                #050507;
+            border-top: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        .academy.is-open {
+            display: block;
+            animation: academyEnter .45s ease both;
+        }
+
+        @@keyframes academyEnter {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .academy-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            max-width: 1200px;
+            margin: 0 auto 28px;
+        }
+
+        .academy-label,
+        .academy-eyebrow {
+            color: #aaaab7;
+            font-size: 10px;
+            letter-spacing: 3px;
+        }
+
+        .academy-close,
+        .lesson-button {
+            padding: 11px 16px;
+            color: #f5f5f7;
+            background: #111115;
+            border: 1px solid #44444f;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all .25s ease;
+        }
+
+        .academy-close:hover,
+        .lesson-button:hover {
+            color: #050507;
+            background: #f0f0f4;
+            transform: translateY(-2px);
+        }
+
+        .academy-intro {
+            max-width: 850px;
+            margin: 0 auto 25px;
+            text-align: center;
+        }
+
+        .academy-intro h2 {
+            margin: 16px 0;
+            font-size: clamp(32px, 4vw, 54px);
+            font-weight: 300;
+            letter-spacing: -2px;
+        }
+
+        .academy-intro h2 span {
+            color: #c9c9d3;
+        }
+
+        .academy-intro p {
+            color: #a5a5b2;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .academy-progress {
+            max-width: 800px;
+            margin: 25px auto;
+        }
+
+        .academy-progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+            color: #bcbcc7;
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .academy-progress-track {
+            height: 3px;
+            overflow: hidden;
+            background: #25252c;
+        }
+
+        .academy-progress-fill {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #777783, #fff);
+            transition: width .35s ease;
+        }
+
+        .academy-layout {
+            display: grid;
+            grid-template-columns: minmax(220px, .7fr) minmax(0, 1.5fr);
+            gap: 22px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .academy-modules {
+            display: grid;
+            gap: 9px;
+        }
+
+        .academy-module {
+            width: 100%;
+            padding: 15px;
+            text-align: left;
+            color: #d9d9e2;
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid #303039;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all .25s ease;
+        }
+
+        .academy-module:hover,
+        .academy-module.is-active {
+            border-color: #b9b9c8;
+            background: rgba(255, 255, 255, .075);
+            transform: translateX(3px);
+        }
+
+        .academy-module span {
+            display: block;
+            margin-bottom: 7px;
+            color: #888895;
+            font-size: 9px;
+            letter-spacing: 1.5px;
+        }
+
+        .academy-module strong {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .lesson-panel {
+            min-height: 400px;
+            padding: clamp(22px, 4vw, 38px);
+            background:
+                radial-gradient(
+                    ellipse at 100% 0%,
+                    rgba(255, 255, 255, .07),
+                    transparent 45%
+                ),
+                #101014;
+            border: 1px solid #393941;
+            border-radius: 8px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, .25);
+        }
+
+        .lesson-number {
+            color: #92929f;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        .lesson-panel h3 {
+            margin: 18px 0;
+            font-size: clamp(24px, 3vw, 35px);
+            font-weight: 400;
+        }
+
+        .lesson-text {
+            color: #b4b4c0;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .lesson-example {
+            margin-top: 22px;
+            padding: 18px;
+            background: rgba(255, 255, 255, .025);
+            border: 1px solid #303039;
+            border-radius: 5px;
+        }
+
+        .lesson-example h4 {
+            margin: 0 0 12px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .lesson-example p {
+            color: #b7b7c3;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .lesson-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .lesson-button:disabled {
+            opacity: .3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .practice-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px;
+            margin-top: 18px;
+        }
+
+        .practice-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .practice-field label {
+            color: #b8b8c4;
+            font-size: 11px;
+        }
+
+        .practice-field input,
+        .practice-field select {
+            width: 100%;
+            min-height: 42px;
+            padding: 10px;
+            color: #f5f5f7;
+            background: #08080b;
+            border: 1px solid #41414b;
+            border-radius: 4px;
+        }
+
+        .practice-field input:focus,
+        .practice-field select:focus {
+            outline: 1px solid #c6c6d2;
+            border-color: #c6c6d2;
+        }
+
+        .practice-field select option {
+            color: #fff;
+            background: #08080b;
+        }
+
+        .practice-full {
+            grid-column: 1 / -1;
+        }
+
+        .practice-result {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .practice-metric {
+            min-width: 0;
+            padding: 13px;
+            background: rgba(255, 255, 255, .035);
+            border: 1px solid #33333c;
+            border-radius: 4px;
+        }
+
+        .practice-metric span {
+            display: block;
+            margin-bottom: 8px;
+            color: #a1a1ad;
+            font-size: 10px;
+        }
+
+        .practice-metric strong {
+            font-size: clamp(13px, 1.8vw, 20px);
+            overflow-wrap: anywhere;
+        }
+
+        .practice-message {
+            margin-top: 14px;
+            color: #d8d8e2;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .academy-finish {
+            max-width: 1200px;
+            margin: 25px auto 0;
+            padding-top: 18px;
+            color: #92929e;
+            border-top: 1px solid #29292f;
+            font-size: 10px;
+            line-height: 1.8;
+        }
+
+        /* ==========================================
+           PANTALLAS CON POCA ALTURA
+           Evita dejar las tarjetas demasiado abajo.
+        ========================================== */
+
+        @@media (max-height: 800px) and (min-width: 761px) {
+            .explore-section {
+                padding-top: 22px;
+                padding-bottom: 25px;
+            }
+
+            .explore-topline {
+                margin-bottom: 22px;
+            }
+
+            .explore-heading {
+                margin-bottom: 22px;
+            }
+
+            .explore-heading h2 {
+                margin-top: 11px;
+                margin-bottom: 9px;
+                font-size: clamp(32px, 3.8vw, 45px);
+            }
+
+            .explore-heading p {
+                line-height: 1.55;
+            }
+
+            .explore-status {
+                margin-top: 11px;
+            }
+
+            .explore-grid {
+                gap: 12px;
+            }
+
+            .explore-card {
+                min-height: 180px;
+                padding: 18px 21px;
+            }
+
+            .explore-card h3 {
+                margin-top: 12px;
+                margin-bottom: 5px;
+                font-size: 19px;
+            }
+
+            .explore-card-description {
+                font-size: 11px;
+                line-height: 1.55;
+            }
+
+            .explore-card-bottom {
+                padding-top: 12px;
+            }
+
+            .explore-bottom {
+                margin-top: 20px;
+                padding-top: 12px;
+            }
+
+            .explore-hint {
+                margin-top: 14px;
+            }
+        }
+
+        /* ==========================================
+           TABLETAS
+        ========================================== */
+
+        @@media (max-width: 900px) {
+            .explore-section {
+                padding-right: 4%;
+                padding-left: 4%;
+            }
+
+            .explore-card {
+                padding: 20px;
+            }
+
+            .academy-layout {
+                grid-template-columns: minmax(180px, .7fr) minmax(0, 1.5fr);
+            }
+        }
+
+        /* ==========================================
+           CELULARES
+        ========================================== */
+
+        @@media (max-width: 760px) {
+            .explore-section {
+                padding: 28px 18px;
+            }
+
+            .explore-topline {
+                margin-bottom: 32px;
+            }
+
+            .explore-heading {
+                margin-bottom: 25px;
+            }
+
+            .explore-heading h2 {
+                font-size: clamp(31px, 8vw, 43px);
+                letter-spacing: -1.5px;
+            }
+
+            .explore-heading p {
+                font-size: 12px;
+            }
+
+            .explore-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .explore-card {
+                min-height: 190px;
+                padding: 21px;
+            }
+
+            .explore-card h3 {
+                font-size: 21px;
+            }
+
+            .explore-bottom {
+                align-items: stretch;
+                flex-direction: column;
+                margin-top: 28px;
+            }
+
+            .explore-login {
+                width: 100%;
+            }
+
+            .academy {
+                padding: 35px 18px;
+            }
+
+            .academy-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .academy-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .academy-modules {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .lesson-panel {
+                min-height: 0;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .explore-topline {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .explore-close {
+                width: 100%;
+            }
+
+            .practice-form,
+            .practice-result {
+                grid-template-columns: 1fr;
+            }
+
+            .practice-full {
+                grid-column: auto;
+            }
+
+            .academy-modules {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-actions {
+                flex-direction: column;
+            }
+
+            .lesson-button {
+                width: 100%;
+            }
+        }
+
+        /* ==========================================
+           ACCESIBILIDAD
+        ========================================== */
+
+        @@media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .explore-section,
+            .explore-card,
+            .explore-status-dot,
+            .academy.is-open {
+                animation: none !important;
+            }
+
+            .explore-section {
+                opacity: 1;
+                transform: none;
+            }
+
+            .explore-card {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .explore-details,
+            .academy-module,
+            .lesson-button,
+            .academy-progress-fill {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="space-background">
+        <canvas id="starfield"></canvas>
+        <div class="nebula nebula-one"></div>
+        <div class="nebula nebula-two"></div>
+        <div class="background-grid"></div>
+    </div>
+
+    <header class="topbar">
+        <a class="brand" href="/Home/Index">
+            <span class="brand-name">NOVIX<span class="brand-dot">.</span></span>
+            <span class="brand-caption">FINANCIAL INTELLIGENCE</span>
+        </a>
+
+        <div class="topbar-center">
+            <span class="connection-indicator"></span>
+            SISTEMA FINANCIERO
+            <span class="topbar-divider">/</span>
+            <span class="topbar-muted">NÚCLEO CENTRAL</span>
+        </div>
+
+        <a class="topbar-link" href="/Home/Login">
+            ACCEDER <span>↗</span>
+        </a>
+    </header>
+
+    <main>
+        <section class="hero" id="welcome">
+            <div class="hero-content">
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    TECNOLOGÍA PARA UNA NUEVA ERA
+                </div>
+
+                <h1>
+                    El control<br />
+                    de tu <span>universo.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Una nueva perspectiva para administrar tus finanzas.
+                    Controla movimientos, supervisa resultados y convierte
+                    los datos de tu empresa en decisiones inteligentes.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="/Home/Login" class="button button-primary">
+                        <span>ENTRAR AL SISTEMA</span>
+                        <span class="button-arrow">↗</span>
+                    </a>
+
+                    <a href="#explorar-novix"
+                       class="button button-secondary"
+                       id="btnExplorarNovix">
+                        EXPLORAR NOVIX <span aria-hidden="true">↘</span>
+                    </a>
+                </div>
+
+                <div class="hero-footer" id="sistema">
+                    <div class="feature">
+                        <span class="feature-icon">✧</span>
+                        <div>
+                            <strong>CONTROL</strong>
+                            <span>Financiero</span>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">⌘</span>
+                        <div>
+                            <strong>ANÁLISIS</strong>
+                            <span>Inteligente</span>
+                        </div>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">◈</span>
+                        <div>
+                            <strong>GESTIÓN</strong>
+                            <span>Centralizada</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section class="planet-stage" aria-label="Planeta 3D interactivo">
+                <div class="planet-label planet-label-top">
+                    <span class="label-point"></span>
+                    NOVIX / ORBITAL CORE
+                </div>
+
+                <div id="planet-container">
+                    <div class="planet-loading" id="planet-loading">
+                        <span class="loading-ring"></span>
+                        <span id="loading-message">INICIALIZANDO NÚCLEO 3D</span>
+                    </div>
+                </div>
+
+                <div class="planet-caption">
+                    <span class="caption-line"></span>
+                    <div>
+                        <strong>01 — NOVIX CORE</strong>
+                        <span>INTERACTÚA CON EL UNIVERSO</span>
+                    </div>
+                </div>
+
+                <div class="planet-hint">
+                    <span class="mouse-icon">◎</span>
+                    ARRASTRA PARA ROTAR
+                </div>
+            </section>
+        </section>
+
+        <!-- ==========================================
+             EXPLORADOR NOVIX
+        ========================================== -->
+
+        <section class="explore-section"
+                 id="explorar-novix"
+                 aria-labelledby="explore-title">
+
+            <div class="explore-topline">
+                <div class="explore-brand">NOVIX<span>.</span> / EXPLORER</div>
+
+                <button type="button"
+                        class="explore-close"
+                        id="btnVolverNovix">
+                    <span aria-hidden="true">↖</span>
+                    VOLVER AL UNIVERSO
+                </button>
+            </div>
+
+            <div class="explore-heading">
+                <span class="explore-eyebrow">CENTRO DE EXPLORACIÓN</span>
+
+                <h2 id="explore-title">
+                    Explora tu <span>universo financiero.</span>
+                </h2>
+
+                <p>
+                    Descubre las herramientas de NOVIX. Selecciona cada módulo
+                    para conocer su función y cómo te ayuda a comprender tus
+                    movimientos financieros.
+                </p>
+
+                <div class="explore-status">
+                    <span class="explore-status-dot"></span>
+                    MÓDULOS DISPONIBLES PARA EXPLORACIÓN
+                </div>
+            </div>
+
+            <div class="explore-grid">
+                <button type="button"
+                        class="explore-card"
+                        style="--card-delay: 50ms">
+
+                    <span class="explore-card-top">
+                        <span class="explore-card-number">01 / CONTROL</span>
+                        <span class="explore-card-icon" aria-hidden="true">◎</span>
+                    </span>
+
+                    <h3>Control financiero</h3>
+
+                    <span class="explore-card-description">
+                        Una visión centralizada para comprender y organizar
+                        los movimientos financieros.
+                    </span>
+
+                    <span class="explore-details">
+                        <span class="explore-details-inner">
+                            <p>
+                                <strong>¿Qué hace?</strong><br />
+                                Permite revisar ingresos, gastos y movimientos
+                                registrados para conocer la situación financiera.
+                            </p>
+                        </span>
+                    </span>
+
+                    <span class="explore-card-bottom">
+                        <span>EXPLORAR MÓDULO</span>
+                        <span class="explore-card-arrow">↗</span>
+                    </span>
+                </button>
+
+                <button type="button"
+                        class="explore-card"
+                        style="--card-delay: 100ms">
+
+                    <span class="explore-card-top">
+                        <span class="explore-card-number">02 / ENTRADAS</span>
+                        <span class="explore-card-icon" aria-hidden="true">↗</span>
+                    </span>
+
+                    <h3>Ingresos</h3>
+
+                    <span class="explore-card-description">
+                        Identifica y consulta el dinero que entra a tu actividad financiera.
+                    </span>
+
+                    <span class="explore-details">
+                        <span class="explore-details-inner">
+                            <p>
+                                <strong>¿Qué puedes hacer?</strong><br />
+                                Registrar ingresos con fecha, descripción,
+                                categoría y monto para consultar cuánto dinero
+                                recibes durante un periodo.
+                            </p>
+                        </span>
+                    </span>
+
+                    <span class="explore-card-bottom">
+                        <span>EXPLORAR MÓDULO</span>
+                        <span class="explore-card-arrow">↗</span>
+                    </span>
+                </button>
+
+                <button type="button"
+                        class="explore-card"
+                        style="--card-delay: 150ms">
+
+                    <span class="explore-card-top">
+                        <span class="explore-card-number">03 / SALIDAS</span>
+                        <span class="explore-card-icon" aria-hidden="true">↘</span>
+                    </span>
+
+                    <h3>Gastos</h3>
+
+                    <span class="explore-card-description">
+                        Lleva un seguimiento de los recursos utilizados
+                        y consulta los gastos registrados.
+                    </span>
+
+                    <span class="explore-details">
+                        <span class="explore-details-inner">
+                            <p>
+                                <strong>¿Qué puedes hacer?</strong><br />
+                                Registrar gastos y clasificarlos por categoría
+                                para entender en qué utilizas tu dinero.
+                            </p>
+                        </span>
+                    </span>
+
+                    <span class="explore-card-bottom">
+                        <span>EXPLORAR MÓDULO</span>
+                        <span class="explore-card-arrow">↗</span>
+                    </span>
+                </button>
+
+                <button type="button"
+                        class="explore-card"
+                        style="--card-delay: 200ms">
+
+                    <span class="explore-card-top">
+                        <span class="explore-card-number">04 / INTELIGENCIA</span>
+                        <span class="explore-card-icon" aria-hidden="true">⌘</span>
+                    </span>
+
+                    <h3>Análisis financiero</h3>
+
+                    <span class="explore-card-description">
+                        Interpreta el comportamiento financiero mediante
+                        representaciones visuales.
+                    </span>
+
+                    <span class="explore-details">
+                        <span class="explore-details-inner">
+                            <p>
+                                <strong>¿Qué permite comprender?</strong><br />
+                                Comparar periodos y categorías puede ayudarte
+                                a identificar tendencias y oportunidades de mejora.
+                            </p>
+                        </span>
+                    </span>
+
+                    <span class="explore-card-bottom">
+                        <span>EXPLORAR MÓDULO</span>
+                        <span class="explore-card-arrow">↗</span>
+                    </span>
+                </button>
+
+                <button type="button"
+                        class="explore-card"
+                        style="--card-delay: 250ms">
+
+                    <span class="explore-card-top">
+                        <span class="explore-card-number">05 / INFORMES</span>
+                        <span class="explore-card-icon" aria-hidden="true">▤</span>
+                    </span>
+
+                    <h3>Reportes financieros</h3>
+
+                    <span class="explore-card-description">
+                        Consulta resúmenes de movimientos, ingresos,
+                        gastos y resultados.
+                    </span>
+
+                    <span class="explore-details">
+                        <span class="explore-details-inner">
+                            <p>
+                                <strong>¿Qué encontrarás?</strong><br />
+                                Información organizada en resúmenes que facilita
+                                la revisión de los movimientos financieros.
+                            </p>
+                        </span>
+                    </span>
+
+                    <span class="explore-card-bottom">
+                        <span>EXPLORAR MÓDULO</span>
+                        <span class="explore-card-arrow">↗</span>
+                    </span>
+                </button>
+
+                <button type="button"
+                        class="explore-card"
+                        style="--card-delay: 300ms">
+
+                    <span class="explore-card-top">
+                        <span class="explore-card-number">06 / VISIÓN</span>
+                        <span class="explore-card-icon" aria-hidden="true">✧</span>
+                    </span>
+
+                    <h3>Universo NOVIX</h3>
+
+                    <span class="explore-card-description">
+                        Conoce la identidad visual y la experiencia astral de NOVIX.
+                    </span>
+
+                    <span class="explore-details">
+                        <span class="explore-details-inner">
+                            <p>
+                                <strong>Una experiencia diferente.</strong><br />
+                                El planeta interactivo, las órbitas, las estrellas
+                                y los paneles monocromáticos forman parte
+                                de la experiencia visual.
+                            </p>
+                        </span>
+                    </span>
+
+                    <span class="explore-card-bottom">
+                        <span>EXPLORAR MÓDULO</span>
+                        <span class="explore-card-arrow">↗</span>
+                    </span>
+                </button>
+            </div>
+
+            <div class="explore-hint">
+                SELECCIONA UNA TARJETA PARA ABRIR SU LECCIÓN INTERACTIVA
+            </div>
+
+            <div class="explore-bottom">
+                <p>
+                    NOVIX FINANCIAL INTELLIGENCE<br />
+                    PRECISIÓN · VISIÓN · CONTROL
+                </p>
+
+                <a href="/Home/Login" class="explore-login">
+                    ENTRAR AL SISTEMA <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             ACADEMIA FINANCIERA INTERACTIVA
+        ========================================== -->
+
+        <section class="academy"
+                 id="novix-academy"
+                 aria-labelledby="academy-title"
+                 aria-hidden="true">
+
+            <div class="academy-header">
+                <div class="academy-label">NOVIX / FINANCIAL ACADEMY</div>
+
+                <button type="button"
+                        class="academy-close"
+                        id="academy-close">
+                    ↖ VOLVER AL EXPLORADOR
+                </button>
+            </div>
+
+            <div class="academy-intro">
+                <div class="academy-eyebrow">APRENDIZAJE INTERACTIVO</div>
+
+                <h2 id="academy-title">
+                    Comprende tu <span>universo financiero.</span>
+                </h2>
+
+                <p>
+                    Avanza por las lecciones, practica con información ficticia
+                    y observa cómo cambian los resultados. Los ejercicios son
+                    demostrativos y no guardan datos en la base de datos.
+                </p>
+            </div>
+
+            <div class="academy-progress">
+                <div class="academy-progress-info">
+                    <span>PROGRESO DE APRENDIZAJE</span>
+                    <span id="academy-progress-text">Lección 1 de 6</span>
+                </div>
+
+                <div class="academy-progress-track">
+                    <div class="academy-progress-fill"
+                         id="academy-progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="academy-layout">
+                <nav class="academy-modules" aria-label="Lecciones financieras">
+                    <button type="button"
+                            class="academy-module is-active"
+                            data-lesson="0">
+                        <span>LECCIÓN 01</span>
+                        <strong>Control financiero</strong>
+                    </button>
+
+                    <button type="button"
+                            class="academy-module"
+                            data-lesson="1">
+                        <span>LECCIÓN 02</span>
+                        <strong>Ingresos</strong>
+                    </button>
+
+                    <button type="button"
+                            class="academy-module"
+                            data-lesson="2">
+                        <span>LECCIÓN 03</span>
+                        <strong>Gastos</strong>
+                    </button>
+
+                    <button type="button"
+                            class="academy-module"
+                            data-lesson="3">
+                        <span>LECCIÓN 04</span>
+                        <strong>Balance financiero</strong>
+                    </button>
+
+                    <button type="button"
+                            class="academy-module"
+                            data-lesson="4">
+                        <span>LECCIÓN 05</span>
+                        <strong>Análisis financiero</strong>
+                    </button>
+
+                    <button type="button"
+                            class="academy-module"
+                            data-lesson="5">
+                        <span>LECCIÓN 06</span>
+                        <strong>Reportes</strong>
+                    </button>
+                </nav>
+
+                <article class="lesson-panel" aria-live="polite">
+                    <div class="lesson-number" id="lesson-number">
+                        LECCIÓN 01 / 06
+                    </div>
+
+                    <h3 id="lesson-title">¿Qué es el control financiero?</h3>
+
+                    <div class="lesson-text" id="lesson-text"></div>
+
+                    <div class="lesson-example" id="lesson-example"></div>
+
+                    <div class="lesson-actions">
+                        <button type="button"
+                                class="lesson-button"
+                                id="lesson-prev"
+                                disabled>
+                            ← Anterior
+                        </button>
+
+                        <button type="button"
+                                class="lesson-button"
+                                id="lesson-next">
+                            Siguiente →
+                        </button>
+                    </div>
+                </article>
+            </div>
+
+            <div class="academy-finish">
+                NOVIX FINANCIAL INTELLIGENCE · Los montos de las prácticas
+                son ficticios y se calculan únicamente en esta página.
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <span>© @DateTime.Now.Year NOVIX</span>
+        <span class="footer-center">PRECISIÓN · VISIÓN · CONTROL</span>
+        <span class="footer-status">
+            <span class="connection-indicator"></span>
+            SISTEMA DISPONIBLE
+        </span>
+    </footer>
+
+    <!-- CARGA DE THREE.JS PARA EL PLANETA 3D -->
+    <script>
+        window.novixThreeReady = new Promise((resolve, reject) => {
+            if (window.THREE) {
+                resolve(window.THREE);
+                return;
+            }
+
+            const sources = [
+                "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js",
+                "https://unpkg.com/three@0.160.0/build/three.min.js"
+            ];
+
+            let index = 0;
+
+            function loadNext() {
+                if (index >= sources.length) {
+                    reject(new Error("No se pudo cargar Three.js."));
+                    return;
+                }
+
+                const script = document.createElement("script");
+                script.src = sources[index++];
+                script.async = true;
+
+                script.onload = () => {
+                    if (window.THREE) {
+                        resolve(window.THREE);
+                    } else {
+                        script.remove();
+                        loadNext();
+                    }
+                };
+
+                script.onerror = () => {
+                    script.remove();
+                    loadNext();
+                };
+
+                document.head.appendChild(script);
+            }
+
+            loadNext();
+        });
+    </script>
+
+    <script src="~/js/novix.js" asp-append-version="true"></script>
+
+    <!-- FUNCIONAMIENTO DEL EXPLORADOR Y DE LAS LECCIONES -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const exploreButton = document.getElementById("btnExplorarNovix");
+            const exploreSection = document.getElementById("explorar-novix");
+            const welcomeSection = document.getElementById("welcome");
+            const backButton = document.getElementById("btnVolverNovix");
+            const cards = Array.from(document.querySelectorAll(".explore-card"));
+            const academy = document.getElementById("novix-academy");
+            const academyClose = document.getElementById("academy-close");
+            const moduleButtons = Array.from(document.querySelectorAll(".academy-module"));
+
+            const progressText = document.getElementById("academy-progress-text");
+            const progressFill = document.getElementById("academy-progress-fill");
+            const lessonNumber = document.getElementById("lesson-number");
+            const lessonTitle = document.getElementById("lesson-title");
+            const lessonText = document.getElementById("lesson-text");
+            const lessonExample = document.getElementById("lesson-example");
+            const previousButton = document.getElementById("lesson-prev");
+            const nextButton = document.getElementById("lesson-next");
+
+            let currentLesson = 0;
+            let closeTimer;
+
+            const lessons = [
+                {
+                    title: "¿Qué es el control financiero?",
+                    text: "El control financiero consiste en organizar y revisar el dinero que entra y sale. Su propósito es conocer la situación económica, identificar hábitos y tomar decisiones con información clara.",
+                    example: `
+                        <h4>IDEA PRINCIPAL</h4>
+                        <p>Imagina que durante un mes recibes Q 5,000 y utilizas Q 3,200. Al registrar ambas cantidades puedes saber que quedan Q 1,800 antes de considerar otros compromisos.</p>
+                        <p><strong>Recuerda:</strong> registrar los movimientos permite entender de dónde viene el dinero y en qué se utiliza.</p>
+                    `
+                },
+                {
+                    title: "Comprende los ingresos",
+                    text: "Un ingreso es dinero que recibes. Puede provenir de un salario, una venta, un servicio o cualquier otra actividad. Registrar cada ingreso permite conocer el total recibido durante un periodo.",
+                    example: `
+                        <h4>PRÁCTICA DE INGRESOS</h4>
+                        <p>Modifica los montos y observa cómo cambia el total de este ejemplo ficticio.</p>
+
+                        <div class="practice-form">
+                            <div class="practice-field">
+                                <label for="practice-income">Nuevo ingreso (Q)</label>
+                                <input id="practice-income" type="number" min="0" step="0.01" value="1200">
+                            </div>
+
+                            <div class="practice-field">
+                                <label for="practice-income-base">Ingresos anteriores (Q)</label>
+                                <input id="practice-income-base" type="number" min="0" step="0.01" value="3500">
+                            </div>
+                        </div>
+
+                        <div class="practice-result">
+                            <div class="practice-metric">
+                                <span>INGRESOS ANTERIORES</span>
+                                <strong id="income-base-result">Q 3,500.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>NUEVO INGRESO</span>
+                                <strong id="income-new-result">Q 1,200.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>TOTAL</span>
+                                <strong id="income-total-result">Q 4,700.00</strong>
+                            </div>
+                        </div>
+
+                        <p class="practice-message" id="income-message">
+                            El total se actualiza cuando modificas los valores.
+                        </p>
+                    `
+                },
+                {
+                    title: "Identifica y organiza los gastos",
+                    text: "Un gasto representa dinero utilizado para pagar bienes, servicios u obligaciones. Clasificarlos por categoría ayuda a reconocer en qué se consume la mayor parte de los recursos.",
+                    example: `
+                        <h4>PRÁCTICA DE GASTOS</h4>
+                        <p>Prueba cambiar los montos para comparar los gastos ficticios con el presupuesto disponible.</p>
+
+                        <div class="practice-form">
+                            <div class="practice-field">
+                                <label for="practice-expense-one">Alimentación (Q)</label>
+                                <input id="practice-expense-one" type="number" min="0" step="0.01" value="650">
+                            </div>
+
+                            <div class="practice-field">
+                                <label for="practice-expense-two">Transporte (Q)</label>
+                                <input id="practice-expense-two" type="number" min="0" step="0.01" value="300">
+                            </div>
+
+                            <div class="practice-field practice-full">
+                                <label for="practice-expense-budget">Presupuesto (Q)</label>
+                                <input id="practice-expense-budget" type="number" min="0" step="0.01" value="1200">
+                            </div>
+                        </div>
+
+                        <div class="practice-result">
+                            <div class="practice-metric">
+                                <span>GASTOS TOTALES</span>
+                                <strong id="expense-total-result">Q 950.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>PRESUPUESTO</span>
+                                <strong id="expense-budget-result">Q 1,200.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>DISPONIBLE</span>
+                                <strong id="expense-remaining-result">Q 250.00</strong>
+                            </div>
+                        </div>
+
+                        <p class="practice-message" id="expense-message">
+                            Los cálculos son ilustrativos.
+                        </p>
+                    `
+                },
+                {
+                    title: "Calcula tu balance financiero",
+                    text: "El balance básico se obtiene restando los gastos de los ingresos. Si el resultado es positivo, los ingresos superan a los gastos; si es negativo, los gastos son mayores. Este cálculo no representa por sí solo una evaluación completa de la salud financiera.",
+                    example: `
+                        <h4>CALCULADORA DE BALANCE</h4>
+
+                        <div class="practice-form">
+                            <div class="practice-field">
+                                <label for="practice-balance-income">Total de ingresos (Q)</label>
+                                <input id="practice-balance-income" type="number" min="0" step="0.01" value="5000">
+                            </div>
+
+                            <div class="practice-field">
+                                <label for="practice-balance-expenses">Total de gastos (Q)</label>
+                                <input id="practice-balance-expenses" type="number" min="0" step="0.01" value="3200">
+                            </div>
+                        </div>
+
+                        <div class="practice-result">
+                            <div class="practice-metric">
+                                <span>INGRESOS</span>
+                                <strong id="balance-income-result">Q 5,000.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>GASTOS</span>
+                                <strong id="balance-expenses-result">Q 3,200.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>BALANCE</span>
+                                <strong id="balance-total-result">Q 1,800.00</strong>
+                            </div>
+                        </div>
+
+                        <p class="practice-message" id="balance-message">
+                            Tus ingresos superan a tus gastos en este ejemplo.
+                        </p>
+                    `
+                },
+                {
+                    title: "Interpreta el análisis financiero",
+                    text: "El análisis financiero convierte los registros en información útil. Comparar periodos, categorías y porcentajes puede ayudarte a detectar cambios y formular preguntas sobre tus hábitos de consumo.",
+                    example: `
+                        <h4>EJEMPLO DE INTERPRETACIÓN</h4>
+                        <p>Supón que recibes Q 4,000 y gastas Q 3,000. Utilizas el 75 % de tus ingresos en gastos y queda una diferencia del 25 %.</p>
+
+                        <div class="practice-result">
+                            <div class="practice-metric">
+                                <span>INGRESOS</span>
+                                <strong>Q 4,000.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>GASTOS</span>
+                                <strong>Q 3,000.00</strong>
+                            </div>
+
+                            <div class="practice-metric">
+                                <span>DIFERENCIA</span>
+                                <strong>25 %</strong>
+                            </div>
+                        </div>
+
+                        <p>La interpretación correcta no es solo ver el resultado: también hay que revisar las categorías, el periodo y los objetivos financieros.</p>
+                    `
+                },
+                {
+                    title: "¿Para qué sirven los reportes?",
+                    text: "Los reportes presentan los movimientos de forma resumida, por ejemplo mediante tablas, totales o gráficos. Son útiles para consultar información de un periodo y comunicar los resultados con claridad.",
+                    example: `
+                        <h4>RESUMEN DEL EJEMPLO</h4>
+                        <p>Imagina que el reporte mensual muestra Q 5,000 de ingresos, Q 3,200 de gastos y Q 1,800 de diferencia. Antes de tomar decisiones, verifica que el periodo esté bien seleccionado y que todos los movimientos estén incluidos.</p>
+                        <p><strong>Has completado el recorrido básico de NOVIX.</strong> Puedes volver a cualquier lección desde el menú para repasar sus conceptos.</p>
+                    `
+                }
+            ];
+
+            function formatMoney(value) {
+                const amount = Number(value);
+
+                return "Q " + (Number.isFinite(amount) ? amount : 0)
+                    .toLocaleString("es-GT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
+            }
+
+            function getNumber(id) {
+                const input = document.getElementById(id);
+
+                if (!input) {
+                    return 0;
+                }
+
+                const value = Number(input.value);
+
+                return Number.isFinite(value) && value >= 0 ? value : 0;
+            }
+
+            function setText(id, value) {
+                const element = document.getElementById(id);
+
+                if (element) {
+                    element.textContent = value;
+                }
+            }
+
+            function updatePractice() {
+                const incomeInput = document.getElementById("practice-income");
+
+                if (incomeInput) {
+                    const base = getNumber("practice-income-base");
+                    const extra = getNumber("practice-income");
+
+                    setText("income-base-result", formatMoney(base));
+                    setText("income-new-result", formatMoney(extra));
+                    setText("income-total-result", formatMoney(base + extra));
+
+                    setText(
+                        "income-message",
+                        "El total de ingresos de este ejemplo es " +
+                        formatMoney(base + extra) + "."
+                    );
+                }
+
+                const expenseInput = document.getElementById("practice-expense-one");
+
+                if (expenseInput) {
+                    const first = getNumber("practice-expense-one");
+                    const second = getNumber("practice-expense-two");
+                    const budget = getNumber("practice-expense-budget");
+                    const total = first + second;
+                    const remaining = budget - total;
+
+                    setText("expense-total-result", formatMoney(total));
+                    setText("expense-budget-result", formatMoney(budget));
+                    setText("expense-remaining-result", formatMoney(remaining));
+
+                    setText(
+                        "expense-message",
+                        remaining >= 0
+                            ? "Estás dentro del presupuesto por " + formatMoney(remaining) + "."
+                            : "Has superado el presupuesto por " + formatMoney(Math.abs(remaining)) + "."
+                    );
+                }
+
+                const balanceInput = document.getElementById("practice-balance-income");
+
+                if (balanceInput) {
+                    const income = getNumber("practice-balance-income");
+                    const expenses = getNumber("practice-balance-expenses");
+                    const balance = income - expenses;
+
+                    setText("balance-income-result", formatMoney(income));
+                    setText("balance-expenses-result", formatMoney(expenses));
+                    setText("balance-total-result", formatMoney(balance));
+
+                    let message;
+
+                    if (balance > 0) {
+                        message = "Tus ingresos superan a tus gastos por " +
+                            formatMoney(balance) + ".";
+                    } else if (balance < 0) {
+                        message = "Tus gastos superan a tus ingresos por " +
+                            formatMoney(Math.abs(balance)) + ".";
+                    } else {
+                        message = "Tus ingresos y gastos son iguales.";
+                    }
+
+                    setText("balance-message", message);
+                }
+            }
+
+            function renderLesson() {
+                const lesson = lessons[currentLesson];
+
+                lessonNumber.textContent =
+                    "LECCIÓN " + String(currentLesson + 1).padStart(2, "0") +
+                    " / " + String(lessons.length).padStart(2, "0");
+
+                lessonTitle.textContent = lesson.title;
+                lessonText.textContent = lesson.text;
+                lessonExample.innerHTML = lesson.example;
+
+                progressText.textContent =
+                    "Lección " + (currentLesson + 1) +
+                    " de " + lessons.length;
+
+                progressFill.style.width =
+                    (((currentLesson + 1) / lessons.length) * 100) + "%";
+
+                previousButton.disabled = currentLesson === 0;
+
+                nextButton.textContent =
+                    currentLesson === lessons.length - 1
+                        ? "Volver al explorador ↗"
+                        : "Siguiente →";
+
+                moduleButtons.forEach((button, index) => {
+                    const active = index === currentLesson;
+
+                    button.classList.toggle("is-active", active);
+
+                    if (active) {
+                        button.setAttribute("aria-current", "step");
+                    } else {
+                        button.removeAttribute("aria-current");
+                    }
+                });
+
+                updatePractice();
+            }
+
+            function openExplorer(event) {
+                if (event) {
+                    event.preventDefault();
+                }
+
+                clearTimeout(closeTimer);
+
+                academy.classList.remove("is-open");
+                academy.setAttribute("aria-hidden", "true");
+
+                exploreSection.style.removeProperty("display");
+                exploreSection.classList.remove("is-leaving");
+                exploreSection.classList.add("is-visible");
+
+                document.body.classList.add("explorer-open");
+
+                history.replaceState(null, "", "#explorar-novix");
+
+                requestAnimationFrame(() => {
+                    exploreSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
+            }
+
+            function closeExplorer(event) {
+                if (event) {
+                    event.preventDefault();
+                }
+
+                exploreSection.classList.remove("is-visible");
+                exploreSection.classList.add("is-leaving");
+
+                document.body.classList.remove("explorer-open");
+
+                closeTimer = setTimeout(() => {
+                    exploreSection.classList.remove("is-leaving");
+                    exploreSection.style.display = "none";
+
+                    welcomeSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                    history.replaceState(null, "", location.pathname);
+                }, 400);
+            }
+
+            function openAcademy(index) {
+                currentLesson = Number.isInteger(index) ? index : 0;
+
+                currentLesson = Math.max(
+                    0,
+                    Math.min(currentLesson, lessons.length - 1)
+                );
+
+                exploreSection.classList.remove("is-visible");
+                exploreSection.style.display = "none";
+
+                academy.classList.add("is-open");
+                academy.setAttribute("aria-hidden", "false");
+
+                document.body.classList.add("explorer-open");
+
+                renderLesson();
+
+                history.replaceState(null, "", "#novix-academy");
+
+                requestAnimationFrame(() => {
+                    academy.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
+            }
+
+            function closeAcademy() {
+                academy.classList.remove("is-open");
+                academy.setAttribute("aria-hidden", "true");
+
+                exploreSection.style.removeProperty("display");
+                exploreSection.classList.remove("is-leaving");
+                exploreSection.classList.add("is-visible");
+
+                document.body.classList.add("explorer-open");
+
+                history.replaceState(null, "", "#explorar-novix");
+
+                requestAnimationFrame(() => {
+                    exploreSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+                });
+            }
+
+            exploreButton?.addEventListener("click", openExplorer);
+            backButton?.addEventListener("click", closeExplorer);
+            academyClose?.addEventListener("click", closeAcademy);
+
+            cards.forEach((card, index) => {
+                card.addEventListener("click", function () {
+                    openAcademy(index);
+                });
+
+                card.setAttribute(
+                    "aria-label",
+                    "Abrir lección interactiva " + (index + 1)
+                );
+            });
+
+            moduleButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    openAcademy(Number(button.dataset.lesson));
+                });
+            });
+
+            previousButton?.addEventListener("click", function () {
+                if (currentLesson > 0) {
+                    currentLesson--;
+                    renderLesson();
+                }
+            });
+
+            nextButton?.addEventListener("click", function () {
+                if (currentLesson < lessons.length - 1) {
+                    currentLesson++;
+                    renderLesson();
+                } else {
+                    openExplorer();
+                }
+            });
+
+            academy.addEventListener("input", updatePractice);
+            academy.addEventListener("change", updatePractice);
+
+            document.addEventListener("keydown", function (event) {
+                if (
+                    event.key === "Escape" &&
+                    academy.classList.contains("is-open")
+                ) {
+                    closeAcademy();
+                }
+            });
+
+            renderLesson();
+
+            if (window.location.hash === "#explorar-novix") {
+                openExplorer();
+            }
+
+            if (window.location.hash === "#novix-academy") {
+                openExplorer();
+                openAcademy(0);
+            }
+        });
+    </script>
+</body>
+</html>

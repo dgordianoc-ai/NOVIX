@@ -1,0 +1,91 @@
+﻿@model List<NOVIX.Models.MovimientoFinanciero>
+@using System.Globalization
+@{
+    Layout = null;
+    var cultura = CultureInfo.GetCultureInfo("es-GT");
+    var categorias = ViewBag.Categorias as List<string> ?? new List<string>();
+    decimal ingresos = ViewBag.TotalIngresos == null ? 0m : (decimal)ViewBag.TotalIngresos;
+    decimal gastos = ViewBag.TotalGastos == null ? 0m : (decimal)ViewBag.TotalGastos;
+    decimal balance = ViewBag.Balance == null ? 0m : (decimal)ViewBag.Balance;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030305" />
+    <title>NOVIX | Registros</title>
+    <link rel="stylesheet" href="~/css/registros.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="space-background" aria-hidden="true"><canvas id="starsCanvas"></canvas><div class="nebula nebula-one"></div><div class="nebula nebula-two"></div></div>
+    <div class="orbital-scene" aria-hidden="true"><div class="orbital-aura"></div><div class="orbital-ring ring-back"></div><div class="orbital-core"></div><div class="orbital-ring ring-front"></div><div class="orbital-sweep"></div><i class="particle particle-one"></i><i class="particle particle-two"></i><i class="particle particle-three"></i></div>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a href="/Home/Index" class="brand"><span class="brand-name">NOVIX<span>.</span></span><span class="brand-caption">FINANCIAL INTELLIGENCE</span></a>
+            <div class="nav-label">MENÚ PRINCIPAL</div>
+            <nav class="nav-menu">
+                <a href="/Dashboard/Index" class="nav-link"><span class="nav-icon">⌂</span>Dashboard</a>
+                <a href="/Ingresos/Index" class="nav-link"><span class="nav-icon">↗</span>Ingresos</a>
+                <a href="/Gastos/Index" class="nav-link"><span class="nav-icon">↘</span>Gastos</a>
+                <a href="/Registros/Index" class="nav-link active"><span class="nav-icon">▤</span>Registros</a>
+                <a href="/Home/Analisis" class="nav-link"><span class="nav-icon">⌁</span>Análisis</a>
+                <a href="/Home/Reportes" class="nav-link"><span class="nav-icon">▧</span>Reportes</a>
+            </nav>
+            <div class="sidebar-bottom"><div class="system-status"><span class="status-dot"></span>SISTEMA ACTIVO</div><div class="system-version">NOVIX CORE / ARCHIVE 01</div></div>
+        </aside>
+        <main class="main-content">
+            <header class="topbar"><div class="breadcrumb">NOVIX CORE <span>/ REGISTROS</span></div><div class="secure-pill"><span class="status-dot"></span>ARCHIVO FINANCIERO</div></header>
+            <section class="page-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span>ARCHIVO CENTRAL · ORBITAL INDEX</div><h1>Centro de <span>registros.</span></h1><p class="page-description">Explora los movimientos financieros almacenados en NOVIX. Cada operación forma parte de tu universo financiero.</p></div><div class="orbital-status"><span class="status-dot"></span>SISTEMA DE ARCHIVO ACTIVO</div></section>
+            @if (TempData["Mensaje"] != null) { <div class="alert">@TempData["Mensaje"]</div> }
+            @if (TempData["Error"] != null) { <div class="alert error">@TempData["Error"]</div> }
+            @if (ViewBag.Error != null) { <div class="alert error">@ViewBag.Error</div> }
+            <section class="summary-grid">
+                <article class="summary-card"><div class="summary-label">MOVIMIENTOS ENCONTRADOS</div><div class="summary-value">@ViewBag.TotalRegistros</div><div class="summary-note">Coincidencias con los filtros actuales</div></article>
+                <article class="summary-card"><div class="summary-label">INGRESOS FILTRADOS</div><div class="summary-value positive">@ingresos.ToString("C2", cultura)</div><div class="summary-note">Suma de ingresos mostrados</div></article>
+                <article class="summary-card"><div class="summary-label">GASTOS FILTRADOS</div><div class="summary-value negative">@gastos.ToString("C2", cultura)</div><div class="summary-note">Suma de gastos mostrados</div></article>
+                <article class="summary-card"><div class="summary-label">BALANCE DEL FILTRO</div><div class="summary-value">@balance.ToString("C2", cultura)</div><div class="summary-note">Ingresos menos gastos mostrados</div></article>
+            </section>
+            <section class="glass-panel">
+                <div class="panel-heading"><div><h2>Explorador de movimientos</h2><p>Busca y filtra los datos guardados en la base de datos.</p></div><span class="panel-orbit">◎</span></div>
+                <form method="get" action="/Registros/Index" class="filter-form">
+                    <div class="form-field search-field"><label for="buscar">BÚSQUEDA</label><input id="buscar" name="buscar" value="@ViewBag.Buscar" class="field-control" placeholder="Descripción o categoría..." /></div>
+                    <div class="form-field"><label for="tipo">TIPO</label><select id="tipo" name="tipo" class="field-control"><option value="">Todos</option><option value="Ingreso" selected="@((string)ViewBag.TipoSeleccionado == "Ingreso")">Ingreso</option><option value="Gasto" selected="@((string)ViewBag.TipoSeleccionado == "Gasto")">Gasto</option></select></div>
+                    <div class="form-field"><label for="categoria">CATEGORÍA</label><select id="categoria" name="categoria" class="field-control"><option value="">Todas</option>@foreach (string categoria in categorias) { <option value="@categoria" selected="@((string)ViewBag.CategoriaSeleccionada == categoria)">@categoria</option> }</select></div>
+                    <div class="form-field"><label for="desde">DESDE</label><input id="desde" name="desde" type="date" value="@ViewBag.Desde" class="field-control" /></div>
+                    <div class="form-field"><label for="hasta">HASTA</label><input id="hasta" name="hasta" type="date" value="@ViewBag.Hasta" class="field-control" /></div>
+                    <div class="filter-actions"><button type="submit" class="primary-button">APLICAR FILTROS</button><a href="/Registros/Index" class="reset-button">LIMPIAR</a></div>
+                </form>
+            </section>
+            <section class="glass-panel history-panel">
+                <div class="table-toolbar"><div><h2>Archivo de movimientos</h2><p>Ordenado por fecha, del más reciente al más antiguo.</p></div><span class="table-count">@Model.Count MOVIMIENTOS</span></div>
+                @if (Model.Count > 0)
+                {
+                    <div class="table-scroll"><table class="records-table"><thead><tr><th>FECHA</th><th>DESCRIPCIÓN</th><th>TIPO</th><th>CATEGORÍA</th><th>MONTO</th></tr></thead><tbody>
+                    @foreach (var registro in Model)
+                    {
+                        <tr><td class="date-cell">@registro.Fecha.ToString("dd/MM/yyyy")</td><td><span class="record-description">@registro.Descripcion</span><small class="record-id">ID · @registro.Id</small></td><td><span class="type-tag @(registro.Tipo == "Ingreso" ? "type-income" : "type-expense")">@registro.Tipo</span></td><td><span class="category-tag">@registro.Categoria</span></td><td class="amount-cell @(registro.Tipo == "Ingreso" ? "positive" : "negative")">@registro.Monto.ToString("C2", cultura)</td></tr>
+                    }
+                    </tbody></table></div>
+                }
+                else
+                {
+                    <div class="empty-state"><div class="empty-orbit"><span></span></div><h3>El archivo está en silencio</h3><p>No hay movimientos que coincidan con los filtros actuales. Cuando registres ingresos o gastos, aparecerán aquí automáticamente.</p><div class="empty-links"><a href="/Ingresos/Index">Ir a Ingresos ↗</a><a href="/Gastos/Index">Ir a Gastos ↘</a></div></div>
+                }
+                <div class="table-footer">Datos consultados directamente desde NOVIXDB · MovimientosFinancieros</div>
+            </section>
+        </main>
+    </div>
+    <script>
+        (function () {
+            const canvas = document.getElementById("starsCanvas"); if (!canvas) return;
+            const ctx = canvas.getContext("2d"); if (!ctx) return;
+            let stars = [], w = 0, h = 0, frame = 0;
+            const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            function resize() { const ratio = Math.min(window.devicePixelRatio || 1, 2); w = innerWidth; h = innerHeight; canvas.width = w * ratio; canvas.height = h * ratio; ctx.setTransform(ratio,0,0,ratio,0,0); stars = []; for (let i=0,n=Math.min(170,Math.floor(w*h/8000));i<n;i++) stars.push({x:Math.random()*w,y:Math.random()*h,size:Math.random()*1.35+.2,opacity:Math.random()*.55+.15,speed:Math.random()*.004+.001,phase:Math.random()*Math.PI*2}); }
+            function draw(t) { ctx.clearRect(0,0,w,h); for (const s of stars) { const a = reduced ? s.opacity : s.opacity*(.65+.35*Math.sin(t*s.speed+s.phase)); ctx.beginPath();ctx.arc(s.x,s.y,s.size,0,Math.PI*2);ctx.fillStyle="rgba(225,230,245,"+a+")";ctx.fill(); } if (!reduced) frame=requestAnimationFrame(draw); }
+            resize();draw(0);window.addEventListener("resize",function(){cancelAnimationFrame(frame);resize();draw(0);});
+        })();
+    </script>
+</body>
+</html>

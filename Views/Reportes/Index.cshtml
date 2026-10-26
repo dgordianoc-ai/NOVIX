@@ -1,0 +1,1448 @@
+﻿
+@using System
+@using System.Linq
+@using System.Collections.Generic
+@using System.Globalization
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Reportes";
+
+    decimal ingresos = ViewBag.Ingresos != null
+        ? Convert.ToDecimal(ViewBag.Ingresos)
+        : 0m;
+
+    decimal gastos = ViewBag.Gastos != null
+        ? Convert.ToDecimal(ViewBag.Gastos)
+        : 0m;
+
+    decimal balance = ingresos - gastos;
+
+    string[] meses = ViewBag.Meses as string[] ?? new string[]
+    {
+        "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+        "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+    };
+
+    decimal[] ingresosMensuales =
+        ViewBag.IngresosMensuales as decimal[] ?? new decimal[12];
+
+    decimal[] gastosMensuales =
+        ViewBag.GastosMensuales as decimal[] ?? new decimal[12];
+
+    var movimientos = ViewBag.Movimientos as IEnumerable<dynamic>
+        ?? Enumerable.Empty<dynamic>();
+
+    string Moneda(decimal cantidad)
+    {
+        return cantidad.ToString("N2", CultureInfo.GetCultureInfo("es-GT"));
+    }
+}
+
+@section Styles {
+<style>
+    /* CONFIGURACIÓN GENERAL */
+
+    .reports-page,
+    .reports-page * {
+        box-sizing: border-box;
+    }
+
+    .reports-page {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        min-height: 100vh;
+        padding: 28px;
+        overflow-x: clip;
+        color: #eeeeF2;
+        background:
+            radial-gradient(ellipse at 75% 10%, rgba(190,190,205,.07), transparent 35%),
+            radial-gradient(ellipse at 10% 75%, rgba(150,150,165,.04), transparent 40%),
+            #09090b;
+        isolation: isolate;
+    }
+
+    .reports-content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 1500px;
+        margin: 0 auto;
+        min-width: 0;
+    }
+
+    .reports-page::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        opacity: .25;
+        background-image:
+            radial-gradient(1px 1px at 20% 30%, #fff 99%, transparent),
+            radial-gradient(2px 2px at 70% 20%, #ddd 99%, transparent),
+            radial-gradient(1px 1px at 50% 80%, #fff 99%, transparent),
+            radial-gradient(1px 1px at 90% 60%, #aaa 99%, transparent);
+        background-size: 190px 190px, 260px 260px, 220px 220px, 300px 300px;
+        animation: backgroundStars 70s linear infinite;
+    }
+
+    /* ENCABEZADO */
+
+    .reports-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+        animation: revealDown .8s ease both;
+    }
+
+    .reports-eyebrow {
+        margin-bottom: 8px;
+        color: #a7a7b2;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+    }
+
+    .reports-title {
+        margin: 0;
+        color: #f5f5f8;
+        font-size: clamp(29px, 4vw, 42px);
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        line-height: 1.12;
+    }
+
+    .reports-subtitle {
+        margin-top: 10px;
+        color: #93939e;
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .report-date {
+        padding: 12px 16px;
+        border: 1px solid #383840;
+        border-radius: 12px;
+        background: rgba(255,255,255,.025);
+        color: #d7d7df;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    /* ESCENA ASTRAL */
+
+    .jupiter-scene {
+        position: relative;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        min-width: 0;
+        min-height: 370px;
+        margin-bottom: 25px;
+        padding: 40px 30px;
+        overflow: hidden;
+        isolation: isolate;
+        border: 1px solid rgba(215,215,230,.19);
+        border-radius: 20px;
+        background:
+            radial-gradient(ellipse at 72% 45%, rgba(200,200,215,.10), transparent 36%),
+            linear-gradient(115deg, #08080a, #141418 55%, #09090b);
+        box-shadow:
+            inset 0 0 45px rgba(255,255,255,.02),
+            0 18px 45px rgba(0,0,0,.18);
+        animation: sceneEntrance 1.2s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    .jupiter-scene::before,
+    .jupiter-scene::after {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        z-index: -2;
+        pointer-events: none;
+        background-image:
+            radial-gradient(1px 1px at 10% 20%, #fff 99%, transparent),
+            radial-gradient(2px 2px at 30% 70%, #ddd 99%, transparent),
+            radial-gradient(1px 1px at 75% 35%, #fff 99%, transparent),
+            radial-gradient(1px 1px at 90% 80%, #bbb 99%, transparent);
+        background-size: 210px 190px;
+        opacity: .32;
+        animation: starDrift 65s linear infinite;
+    }
+
+    .jupiter-scene::after {
+        background-size: 310px 270px;
+        opacity: .16;
+        animation-duration: 95s;
+        animation-direction: reverse;
+    }
+
+    .space-grid {
+        position: absolute;
+        inset: 55% -20% -100%;
+        z-index: -1;
+        pointer-events: none;
+        background-image:
+            linear-gradient(rgba(210,210,225,.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(210,210,225,.05) 1px, transparent 1px);
+        background-size: 36px 36px;
+        transform: perspective(250px) rotateX(55deg);
+        transform-origin: top center;
+        mask-image: linear-gradient(to bottom, transparent, #000 30%, transparent);
+    }
+
+    .space-glow {
+        position: absolute;
+        top: 50%;
+        left: 73%;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(220,220,235,.10);
+        filter: blur(75px);
+        transform: translate(-50%, -50%);
+        animation: glowPulse 5s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    .planet-label {
+        position: absolute;
+        top: 22px;
+        left: 25px;
+        z-index: 5;
+        color: #dedee5;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 1.8px;
+    }
+
+    .planet-label small {
+        display: block;
+        margin-top: 7px;
+        color: #777782;
+        font-size: 8px;
+        font-weight: 500;
+        letter-spacing: 1.2px;
+    }
+
+    .planet-status,
+    .counter-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 7px;
+        border-radius: 50%;
+        background: #eeeeF5;
+        box-shadow: 0 0 10px rgba(255,255,255,.7);
+        animation: statusPulse 2s ease-in-out infinite;
+    }
+
+    /* PLANETA */
+
+    .jupiter-system {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: min(320px, 100%);
+        max-width: 100%;
+        aspect-ratio: 1;
+        margin: 22px auto 0;
+        animation: planetReveal 1.5s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    .jupiter-planet {
+        position: relative;
+        z-index: 2;
+        width: 56%;
+        aspect-ratio: 1;
+        overflow: hidden;
+        border-radius: 50%;
+        background:
+            repeating-linear-gradient(
+                0deg,
+                #28282e 0px,
+                #777780 5px,
+                #dedee5 9px,
+                #65656e 13px,
+                #1d1d22 18px,
+                #aaaab4 23px,
+                #45454d 29px,
+                #e3e3e8 34px,
+                #36363d 40px
+            );
+        box-shadow:
+            inset -25px -8px 38px rgba(0,0,0,.96),
+            inset 12px 0 22px rgba(255,255,255,.17),
+            0 0 25px rgba(235,235,245,.15),
+            0 0 65px rgba(220,220,235,.09);
+        animation: jupiterFloat 7s ease-in-out infinite;
+    }
+
+    .jupiter-bands {
+        position: absolute;
+        inset: -15%;
+        border-radius: 50%;
+        background:
+            repeating-linear-gradient(
+                0deg,
+                transparent 0px,
+                rgba(0,0,0,.5) 5px,
+                rgba(255,255,255,.25) 10px,
+                rgba(20,20,25,.75) 17px,
+                transparent 24px,
+                rgba(230,230,240,.4) 31px,
+                rgba(0,0,0,.5) 38px
+            );
+        filter: blur(1.5px);
+        transform: rotate(-14deg) scale(1.05);
+        animation: bandsMove 18s linear infinite;
+    }
+
+    .jupiter-shadow {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        border-radius: 50%;
+        background: linear-gradient(
+            90deg,
+            rgba(0,0,0,.02) 10%,
+            rgba(0,0,0,.10) 40%,
+            rgba(0,0,0,.72) 85%,
+            rgba(0,0,0,.97) 100%
+        );
+        pointer-events: none;
+    }
+
+    .jupiter-atmosphere {
+        position: absolute;
+        inset: -4%;
+        z-index: 4;
+        border: 1px solid rgba(245,245,255,.4);
+        border-radius: 50%;
+        box-shadow:
+            inset 0 0 12px rgba(255,255,255,.13),
+            0 0 14px rgba(235,235,245,.17);
+        pointer-events: none;
+    }
+
+    .jupiter-storm {
+        position: absolute;
+        top: 54%;
+        left: 22%;
+        z-index: 2;
+        width: 24%;
+        height: 13%;
+        border-radius: 50%;
+        background: radial-gradient(
+            ellipse at center,
+            #e2e2e8 0%,
+            #85858e 28%,
+            #38383f 52%,
+            #151519 75%,
+            transparent 78%
+        );
+        transform: rotate(-15deg);
+        animation: stormMotion 9s ease-in-out infinite;
+    }
+
+    /* ÓRBITAS */
+
+    .planet-orbit {
+        position: absolute;
+        z-index: 1;
+        width: 94%;
+        height: 30%;
+        border: 1px solid rgba(230,230,240,.34);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .orbit-one {
+        animation: orbitOne 14s linear infinite;
+    }
+
+    .orbit-two {
+        width: 112%;
+        height: 42%;
+        border-color: rgba(190,190,205,.18);
+        animation: orbitTwo 23s linear infinite;
+    }
+
+    .orbit-three {
+        width: 120%;
+        height: 53%;
+        border-color: rgba(255,255,255,.09);
+        animation: orbitThree 32s linear infinite;
+    }
+
+    /* PARTÍCULAS */
+
+    .planet-particle {
+        position: absolute;
+        z-index: 5;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #f5f5fa;
+        box-shadow: 0 0 10px rgba(255,255,255,.8);
+    }
+
+    .particle-one {
+        top: 20%;
+        left: 23%;
+        animation: particleFloat 4s ease-in-out infinite;
+    }
+
+    .particle-two {
+        top: 75%;
+        left: 20%;
+        width: 3px;
+        height: 3px;
+        animation: particleFloat 6s ease-in-out infinite reverse;
+    }
+
+    .particle-three {
+        top: 17%;
+        right: 15%;
+        animation: particleFloat 5s ease-in-out infinite;
+    }
+
+    .particle-four {
+        bottom: 14%;
+        right: 20%;
+        width: 3px;
+        height: 3px;
+        animation: particleFloat 7s ease-in-out infinite reverse;
+    }
+
+    /* TEXTO DEL PLANETA */
+
+    .planet-information {
+        position: relative;
+        z-index: 5;
+        width: 100%;
+        min-width: 0;
+        max-width: 390px;
+        padding: 35px 15px 25px 0;
+        animation: textReveal 1.2s .2s ease both;
+    }
+
+    .planet-kicker {
+        margin-bottom: 16px;
+        color: #a6a6b1;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2.5px;
+    }
+
+    .planet-information h2 {
+        margin: 0;
+        color: #f6f6f8;
+        font-size: clamp(27px, 3vw, 39px);
+        line-height: 1.15;
+        font-weight: 800;
+        letter-spacing: -1.4px;
+        overflow-wrap: anywhere;
+        text-shadow: 0 0 25px rgba(255,255,255,.08);
+    }
+
+    .planet-information p {
+        max-width: 330px;
+        margin: 17px 0 24px;
+        color: #a4a4af;
+        font-size: 13px;
+        line-height: 1.9;
+    }
+
+    .planet-coordinates {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        color: #777782;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .planet-counter {
+        position: absolute;
+        right: 20px;
+        bottom: 17px;
+        z-index: 5;
+        color: #9999a4;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+    }
+
+    /* TARJETAS */
+
+    .report-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 22px;
+    }
+
+    .report-card {
+        position: relative;
+        min-width: 0;
+        padding: 23px;
+        overflow: hidden;
+        border: 1px solid #303037;
+        border-radius: 18px;
+        background: linear-gradient(145deg, rgba(27,27,32,.97), rgba(13,13,16,.98));
+        box-shadow: 0 15px 45px rgba(0,0,0,.18);
+        animation: cardRise .85s cubic-bezier(.16,1,.3,1) both;
+        transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    .report-card:nth-child(2) {
+        animation-delay: .12s;
+    }
+
+    .report-card:nth-child(3) {
+        animation-delay: .24s;
+    }
+
+    .report-card::after {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 120px;
+        height: 120px;
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 50%;
+        transition: transform .5s ease;
+    }
+
+    .report-card:hover::after {
+        transform: scale(1.5);
+    }
+
+    .metric-symbol {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        margin-bottom: 18px;
+        border: 1px solid #45454e;
+        border-radius: 10px;
+        color: #e2e2e8;
+        background: rgba(255,255,255,.035);
+        font-size: 18px;
+    }
+
+    .metric-label {
+        color: #a6a6b1;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+    }
+
+    .metric-value {
+        margin-top: 15px;
+        color: #f5f5f7;
+        font-size: clamp(23px, 2.5vw, 33px);
+        font-weight: 800;
+        letter-spacing: -1px;
+        overflow-wrap: anywhere;
+    }
+
+    .metric-description {
+        margin-top: 10px;
+        color: #777782;
+        font-size: 12px;
+    }
+
+    .report-card.balance .metric-value {
+        color: @(balance < 0 ? "#b7b7c0" : "#ffffff");
+    }
+
+    /* PANELES DE GRÁFICOS */
+
+    .report-panels {
+        display: grid;
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+        gap: 18px;
+        margin-bottom: 22px;
+        animation: cardRise .9s .25s ease both;
+    }
+
+    .panel {
+        min-width: 0;
+        padding: 23px;
+        border: 1px solid #303037;
+        border-radius: 18px;
+        background: rgba(16,16,19,.94);
+        box-shadow: 0 15px 45px rgba(0,0,0,.16);
+        transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    .panel-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .panel-eyebrow {
+        margin-bottom: 7px;
+        color: #a2a2ad;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+
+    .panel-title {
+        margin: 0;
+        color: #f1f1f4;
+        font-size: 17px;
+        font-weight: 800;
+    }
+
+    .panel-caption {
+        margin-top: 7px;
+        color: #777782;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .chart-container {
+        position: relative;
+        width: 100%;
+        height: 290px;
+    }
+
+    /* TABLA */
+
+    .activity-panel {
+        min-width: 0;
+        padding: 23px 20px 16px;
+        border: 1px solid #303037;
+        border-radius: 18px;
+        background: rgba(16,16,19,.95);
+        box-shadow: 0 15px 45px rgba(0,0,0,.16);
+        animation: cardRise .9s .4s ease both;
+        transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: #e4e4e9;
+        font-size: 12px;
+        text-align: left;
+    }
+
+    .activity-table th {
+        padding: 15px 10px;
+        border-bottom: 1px solid #34343b;
+        color: #a4a4af;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .activity-table td {
+        padding: 17px 10px;
+        border-bottom: 1px solid rgba(255,255,255,.07);
+        color: #dedee5;
+        white-space: nowrap;
+    }
+
+    .activity-table tbody tr {
+        transition: background .25s ease;
+    }
+
+    .activity-table tbody tr:hover {
+        background: rgba(255,255,255,.035);
+    }
+
+    .activity-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .movement-type {
+        display: inline-block;
+        padding: 5px 9px;
+        border: 1px solid #45454e;
+        border-radius: 7px;
+        color: #ededf2;
+        background: rgba(255,255,255,.035);
+        font-size: 10px;
+    }
+
+    .movement-amount {
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .empty-state {
+        padding: 35px 15px !important;
+        color: #8d8d98 !important;
+        text-align: center;
+    }
+
+    .report-footer {
+        padding: 18px 4px 0;
+        color: #696974;
+        font-size: 9px;
+        letter-spacing: 1px;
+        text-align: right;
+        text-transform: uppercase;
+    }
+
+    /* INTERACCIONES */
+
+    .report-card:hover,
+    .panel:hover,
+    .activity-panel:hover {
+        transform: translateY(-3px);
+        border-color: rgba(225,225,238,.4);
+        box-shadow: 0 18px 45px rgba(0,0,0,.28), 0 0 18px rgba(255,255,255,.025);
+    }
+
+    body.novix-leaving .reports-content {
+        animation: astralExit .45s ease forwards;
+        pointer-events: none;
+    }
+
+    /* ANIMACIONES */
+
+    @@keyframes sceneEntrance {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(.99);
+            filter: blur(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+    }
+
+    @@keyframes planetReveal {
+        from {
+            opacity: 0;
+            transform: scale(.55) rotate(-15deg);
+            filter: blur(10px);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1) rotate(0);
+            filter: blur(0);
+        }
+    }
+
+    @@keyframes textReveal {
+        from {
+            opacity: 0;
+            transform: translateX(22px);
+            filter: blur(4px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+            filter: blur(0);
+        }
+    }
+
+    @@keyframes revealDown {
+        from { opacity: 0; transform: translateY(-12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @@keyframes jupiterFloat {
+        0%, 100% { transform: translateY(0) rotate(-3deg); }
+        50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    @@keyframes bandsMove {
+        from { background-position-y: 0; }
+        to { background-position-y: 180px; }
+    }
+
+    @@keyframes stormMotion {
+        0%, 100% { transform: translate(0,0) rotate(-15deg); }
+        50% { transform: translate(7px,-3px) rotate(-10deg); }
+    }
+
+    @@keyframes orbitOne {
+        from { transform: rotate(-28deg); }
+        to { transform: rotate(332deg); }
+    }
+
+    @@keyframes orbitTwo {
+        from { transform: rotate(42deg); }
+        to { transform: rotate(-318deg); }
+    }
+
+    @@keyframes orbitThree {
+        from { transform: rotate(-55deg); }
+        to { transform: rotate(305deg); }
+    }
+
+    @@keyframes starDrift {
+        from { transform: translate3d(0,0,0); }
+        to { transform: translate3d(-70px,45px,0); }
+    }
+
+    @@keyframes backgroundStars {
+        from { background-position: 0 0, 0 0, 0 0, 0 0; }
+        to { background-position: 190px 190px, -260px 260px, 220px -220px, -300px -300px; }
+    }
+
+    @@keyframes glowPulse {
+        0%, 100% {
+            opacity: .5;
+            transform: translate(-50%,-50%) scale(.9);
+        }
+        50% {
+            opacity: 1;
+            transform: translate(-50%,-50%) scale(1.1);
+        }
+    }
+
+    @@keyframes particleFloat {
+        0%, 100% { transform: translate(0,0); opacity: .45; }
+        50% { transform: translate(8px,-12px); opacity: 1; }
+    }
+
+    @@keyframes statusPulse {
+        0%, 100% { opacity: .45; }
+        50% { opacity: 1; }
+    }
+
+    @@keyframes cardRise {
+        from { opacity: 0; transform: translateY(18px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @@keyframes astralExit {
+        to {
+            opacity: 0;
+            transform: translateY(-12px) scale(.99);
+            filter: blur(4px);
+        }
+    }
+
+    /* TABLETAS */
+
+    @@media (max-width: 1000px) {
+        .reports-page {
+            padding: 20px;
+        }
+
+        .report-panels {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .jupiter-scene {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            padding: 40px 22px;
+        }
+
+        .jupiter-system {
+            width: min(270px, 100%);
+        }
+
+        .planet-information {
+            padding-right: 5px;
+        }
+    }
+
+    /* MÓVILES */
+
+    @@media (max-width: 760px) {
+        .reports-page {
+            padding: 14px;
+        }
+
+        .reports-header {
+            align-items: flex-start;
+        }
+
+        .reports-title {
+            font-size: 31px;
+        }
+
+        .jupiter-scene {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+            padding: 60px 18px 45px;
+        }
+
+        .jupiter-system {
+            width: min(270px, 90%);
+            margin: 10px auto 0;
+        }
+
+        .planet-information {
+            max-width: 100%;
+            padding: 10px 8px 20px;
+            text-align: center;
+        }
+
+        .planet-information h2 {
+            font-size: 31px;
+        }
+
+        .planet-information p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .planet-coordinates {
+            justify-content: center;
+        }
+
+        .planet-label {
+            top: 18px;
+            left: 18px;
+            font-size: 8px;
+        }
+
+        .planet-counter {
+            right: 12px;
+            bottom: 10px;
+            font-size: 7px;
+        }
+
+        .space-glow {
+            left: 50%;
+            top: 30%;
+            width: 220px;
+            height: 220px;
+        }
+
+        .report-grid {
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .report-card,
+        .panel {
+            padding: 18px;
+        }
+
+        .chart-container {
+            height: 250px;
+        }
+
+        .activity-panel {
+            padding: 18px 12px 12px;
+        }
+
+        .panel-heading {
+            flex-wrap: wrap;
+        }
+    }
+
+    /* RESPETO A PREFERENCIAS DE MOVIMIENTO */
+
+    @@media (prefers-reduced-motion: reduce) {
+        .reports-page::before,
+        .jupiter-scene,
+        .jupiter-scene::before,
+        .jupiter-scene::after,
+        .jupiter-system,
+        .jupiter-planet,
+        .jupiter-bands,
+        .jupiter-storm,
+        .planet-orbit,
+        .planet-particle,
+        .space-glow,
+        .planet-information,
+        .reports-header,
+        .report-card,
+        .report-panels,
+        .activity-panel {
+            animation: none !important;
+        }
+
+        .report-card,
+        .panel,
+        .activity-panel {
+            transition: none !important;
+        }
+    }
+</style>
+}
+
+<div class="reports-page">
+    <div class="reports-content">
+
+        <!-- ENCABEZADO -->
+        <header class="reports-header">
+            <div>
+                <div class="reports-eyebrow">
+                    NOVIX · CENTRO DE INTELIGENCIA FINANCIERA
+                </div>
+
+                <h1 class="reports-title">Reportes financieros</h1>
+
+                <div class="reports-subtitle">
+                    Resumen de ingresos, gastos y movimientos registrados.
+                </div>
+            </div>
+
+            <div class="report-date">
+                @DateTime.Now.ToString("dd/MM/yyyy")
+            </div>
+        </header>
+
+        <!-- JÚPITER ASTRAL -->
+        <section class="jupiter-scene">
+            <div class="space-grid"></div>
+            <div class="space-glow"></div>
+
+            <div class="planet-label">
+                <span class="planet-status"></span>
+                NOVIX / OBSERVATORIO ASTRAL
+                <small>SISTEMA FINANCIERO · EN LÍNEA</small>
+            </div>
+
+            <div class="jupiter-system">
+                <div class="planet-orbit orbit-one"></div>
+                <div class="planet-orbit orbit-two"></div>
+                <div class="planet-orbit orbit-three"></div>
+
+                <div class="jupiter-planet">
+                    <div class="jupiter-bands"></div>
+                    <div class="jupiter-shadow"></div>
+                    <div class="jupiter-atmosphere"></div>
+                    <div class="jupiter-storm"></div>
+                </div>
+
+                <div class="planet-particle particle-one"></div>
+                <div class="planet-particle particle-two"></div>
+                <div class="planet-particle particle-three"></div>
+                <div class="planet-particle particle-four"></div>
+            </div>
+
+            <div class="planet-information">
+                <div class="planet-kicker">EXPLORACIÓN FINANCIERA</div>
+
+                <h2>El universo de tus finanzas.</h2>
+
+                <p>
+                    Cada movimiento cuenta. Explora tus ingresos, gastos
+                    y balance desde una nueva perspectiva.
+                </p>
+
+                <div class="planet-coordinates">
+                    <span>SECTOR 05</span>
+                    <span>•</span>
+                    <span>JUPITER SYSTEM</span>
+                    <span>•</span>
+                    <span>MONOCHROME EDITION</span>
+                </div>
+            </div>
+
+            <div class="planet-counter">
+                <span class="counter-dot"></span>
+                SISTEMA NOVIX ACTIVO
+            </div>
+        </section>
+
+        <!-- TARJETAS FINANCIERAS -->
+        <section class="report-grid">
+
+            <article class="report-card">
+                <div class="metric-symbol">↗</div>
+                <div class="metric-label">Ingresos totales</div>
+                <div class="metric-value">Q @Moneda(ingresos)</div>
+                <div class="metric-description">
+                    Total de ingresos registrados.
+                </div>
+            </article>
+
+            <article class="report-card">
+                <div class="metric-symbol">↘</div>
+                <div class="metric-label">Gastos totales</div>
+                <div class="metric-value">Q @Moneda(gastos)</div>
+                <div class="metric-description">
+                    Total de gastos registrados.
+                </div>
+            </article>
+
+            <article class="report-card balance">
+                <div class="metric-symbol">◎</div>
+                <div class="metric-label">Balance general</div>
+                <div class="metric-value">Q @Moneda(balance)</div>
+                <div class="metric-description">
+                    Ingresos menos gastos.
+                </div>
+            </article>
+
+        </section>
+
+        <!-- GRÁFICOS -->
+        <section class="report-panels">
+
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <div class="panel-eyebrow">Análisis temporal</div>
+                        <h2 class="panel-title">
+                            Actividad financiera mensual
+                        </h2>
+                        <div class="panel-caption">
+                            Comparación de ingresos y gastos por mes.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="financialChart"></canvas>
+                </div>
+            </article>
+
+            <article class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <div class="panel-eyebrow">Distribución financiera</div>
+                        <h2 class="panel-title">Ingresos vs. gastos</h2>
+                        <div class="panel-caption">
+                            Distribución de los movimientos registrados.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- TABLA -->
+        <section class="activity-panel">
+            <div class="panel-heading">
+                <div>
+                    <div class="panel-eyebrow">Registro de actividad</div>
+                    <h2 class="panel-title">Movimientos financieros</h2>
+                    <div class="panel-caption">
+                        Detalle de los movimientos registrados en el sistema.
+                    </div>
+                </div>
+
+                <div class="metric-symbol">⌘</div>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Descripción</th>
+                            <th>Categoría</th>
+                            <th>Tipo</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (movimientos.Any())
+                        {
+                            foreach (var movimiento in movimientos)
+                            {
+                                <tr>
+                                    <td>
+                                        @{
+                                            DateTime fechaMovimiento;
+
+                                            string textoFecha = Convert.ToString(
+                                                movimiento.Fecha,
+                                                CultureInfo.InvariantCulture
+                                            ) ?? "";
+
+                                            bool fechaValida = DateTime.TryParse(
+                                                textoFecha,
+                                                CultureInfo.InvariantCulture,
+                                                DateTimeStyles.None,
+                                                out fechaMovimiento
+                                            );
+
+                                            if (!fechaValida)
+                                            {
+                                                fechaValida = DateTime.TryParse(
+                                                    textoFecha,
+                                                    out fechaMovimiento
+                                                );
+                                            }
+                                        }
+
+                                        @if (fechaValida)
+                                        {
+                                            @fechaMovimiento.ToString("dd/MM/yyyy")
+                                        }
+                                        else
+                                        {
+                                            <span>Fecha no disponible</span>
+                                        }
+                                    </td>
+
+                                    <td>@movimiento.Descripcion</td>
+                                    <td>@movimiento.Categoria</td>
+
+                                    <td>
+                                        <span class="movement-type">
+                                            @movimiento.Tipo
+                                        </span>
+                                    </td>
+
+                                    <td class="movement-amount">
+                                        Q @Moneda(Convert.ToDecimal(movimiento.Monto))
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    No hay movimientos financieros registrados.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="report-footer">
+                NOVIX Financial System · Observatorio de datos
+            </div>
+        </section>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const meses = @Html.Raw(JsonSerializer.Serialize(meses));
+        const ingresosMensuales = @Html.Raw(JsonSerializer.Serialize(ingresosMensuales));
+        const gastosMensuales = @Html.Raw(JsonSerializer.Serialize(gastosMensuales));
+
+        const colorTexto = "#a4a4af";
+        const colorCuadricula = "rgba(255,255,255,0.08)";
+
+        if (typeof Chart !== "undefined") {
+            const financialCanvas = document.getElementById("financialChart");
+
+            if (financialCanvas) {
+                new Chart(financialCanvas, {
+                    type: "line",
+                    data: {
+                        labels: meses,
+                        datasets: [
+                            {
+                                label: "Ingresos",
+                                data: ingresosMensuales,
+                                borderColor: "#f1f1f5",
+                                backgroundColor: "rgba(241,241,245,0.08)",
+                                pointBackgroundColor: "#ffffff",
+                                pointBorderColor: "#ffffff",
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                borderWidth: 2,
+                                tension: 0.35,
+                                fill: true
+                            },
+                            {
+                                label: "Gastos",
+                                data: gastosMensuales,
+                                borderColor: "#777782",
+                                backgroundColor: "rgba(119,119,130,0.04)",
+                                pointBackgroundColor: "#9999a3",
+                                pointBorderColor: "#9999a3",
+                                pointRadius: 3,
+                                pointHoverRadius: 6,
+                                borderWidth: 2,
+                                tension: 0.35,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 1500,
+                            easing: "easeOutQuart"
+                        },
+                        interaction: {
+                            intersect: false,
+                            mode: "index"
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: colorTexto,
+                                    usePointStyle: true,
+                                    boxWidth: 8,
+                                    padding: 18
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: "#17171b",
+                                borderColor: "#45454e",
+                                borderWidth: 1,
+                                titleColor: "#ffffff",
+                                bodyColor: "#ddddE5",
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.dataset.label + ": Q " +
+                                            Number(context.raw || 0).toLocaleString("es-GT", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            });
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: colorTexto },
+                                grid: { color: colorCuadricula },
+                                border: { color: colorCuadricula }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: colorTexto,
+                                    callback: function (value) {
+                                        return "Q " + Number(value).toLocaleString("es-GT");
+                                    }
+                                },
+                                grid: { color: colorCuadricula },
+                                border: { color: colorCuadricula }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const distributionCanvas = document.getElementById("distributionChart");
+
+            if (distributionCanvas) {
+                new Chart(distributionCanvas, {
+                    type: "doughnut",
+                    data: {
+                        labels: ["Ingresos", "Gastos"],
+                        datasets: [{
+                            data: [
+                                @ingresos.ToString(CultureInfo.InvariantCulture),
+                                @gastos.ToString(CultureInfo.InvariantCulture)
+                            ],
+                            backgroundColor: ["#ededf2", "#666671"],
+                            hoverBackgroundColor: ["#ffffff", "#92929e"],
+                            borderColor: "#101013",
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: "70%",
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true,
+                            duration: 1500,
+                            easing: "easeOutQuart"
+                        },
+                        plugins: {
+                            legend: {
+                                position: "bottom",
+                                labels: {
+                                    color: colorTexto,
+                                    padding: 22,
+                                    usePointStyle: true,
+                                    boxWidth: 8
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: "#17171b",
+                                borderColor: "#45454e",
+                                borderWidth: 1,
+                                titleColor: "#ffffff",
+                                bodyColor: "#ddddE5",
+                                callbacks: {
+                                    label: function (context) {
+                                        return context.label + ": Q " +
+                                            Number(context.raw || 0).toLocaleString("es-GT", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        } else {
+            console.error("No se pudo cargar Chart.js.");
+        }
+
+        /* SALIDA ANIMADA AL NAVEGAR */
+        document.querySelectorAll("a[href]").forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                const href = link.getAttribute("href");
+
+                if (
+                    !href ||
+                    href.startsWith("#") ||
+                    href.startsWith("javascript:") ||
+                    link.target === "_blank" ||
+                    event.ctrlKey ||
+                    event.metaKey ||
+                    event.shiftKey ||
+                    event.altKey
+                ) {
+                    return;
+                }
+
+                const destino = new URL(href, window.location.href);
+
+                if (
+                    destino.origin !== window.location.origin ||
+                    destino.href === window.location.href
+                ) {
+                    return;
+                }
+
+                event.preventDefault();
+                document.body.classList.add("novix-leaving");
+
+                setTimeout(function () {
+                    window.location.href = destino.href;
+                }, 450);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,365 @@
+﻿
+@{
+    Layout = null;
+    ViewData["Title"] = "NOVIX | Dashboard";
+
+    decimal totalIngresos = ViewBag.TotalIngresos == null
+        ? 0m : Convert.ToDecimal(ViewBag.TotalIngresos);
+
+    decimal totalGastos = ViewBag.TotalGastos == null
+        ? 0m : Convert.ToDecimal(ViewBag.TotalGastos);
+
+    decimal balance = ViewBag.Balance == null
+        ? 0m : Convert.ToDecimal(ViewBag.Balance);
+
+    int totalMovimientos = ViewBag.TotalMovimientos == null
+        ? 0 : Convert.ToInt32(ViewBag.TotalMovimientos);
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050505" />
+    <title>NOVIX | Dashboard</title>
+    <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="dashboard-universe" aria-hidden="true">
+        <div class="star-layer stars-distant"></div>
+        <div class="star-layer stars-middle"></div>
+        <div class="star-layer stars-near"></div>
+        <div class="nebula nebula-one"></div>
+        <div class="nebula nebula-two"></div>
+        <div class="shooting-star shooting-star-one"></div>
+        <div class="shooting-star shooting-star-two"></div>
+    </div>
+
+    <div class="dashboard-layout">
+        <aside class="dashboard-sidebar">
+            <a class="dashboard-brand" href="/Dashboard">
+                <h2>NOVIX<span>.</span></h2>
+                <p>FINANCIAL INTELLIGENCE</p>
+            </a>
+
+            <p class="sidebar-label">MENÚ PRINCIPAL</p>
+
+            <nav class="dashboard-nav">
+                <a href="/Dashboard" class="active">
+                    <span class="nav-symbol">◈</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="/Ingresos">
+                    <span class="nav-symbol">↗</span>
+                    <span>Ingresos</span>
+                </a>
+
+                <a href="/Gastos">
+                    <span class="nav-symbol">↘</span>
+                    <span>Gastos</span>
+                </a>
+
+                <a href="/Registros">
+                    <span class="nav-symbol">▤</span>
+                    <span>Registros</span>
+                </a>
+
+                <a href="/Analisis">
+                    <span class="nav-symbol">◷</span>
+                    <span>Análisis</span>
+                </a>
+
+                <a href="/Reportes">
+                    <span class="nav-symbol">▧</span>
+                    <span>Reportes</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="admin-status">
+                    <div class="admin-avatar">A</div>
+
+                    <div class="admin-info">
+                        <strong>Administrador</strong>
+                        <span>Sesión de demostración</span>
+                    </div>
+
+                    <span class="status-indicator"></span>
+                </div>
+
+                <a href="/Home/Login" class="logout-link">
+                    <span class="nav-symbol">↪</span>
+                    <span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <main class="dashboard-content">
+            <header class="dashboard-topbar">
+                <div class="dashboard-breadcrumb">
+                    NOVIX <span>/</span> <strong>Dashboard</strong>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="topbar-status">
+                        <span class="live-indicator"></span>
+                        SISTEMA EN LÍNEA
+                    </div>
+
+                    <div class="dashboard-date">
+                        @DateTime.Now.ToString("dd/MM/yyyy")
+                    </div>
+                </div>
+            </header>
+
+            <section class="dashboard-intro">
+                <div class="intro-copy">
+                    <span class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        CENTRO DE INTELIGENCIA FINANCIERA
+                    </span>
+
+                    <h1>
+                        El futuro de<br />
+                        tus finanzas<br />
+                        <span>comienza aquí.</span>
+                    </h1>
+
+                    <p>
+                        Una nueva perspectiva para administrar tu dinero.
+                        Organiza tus movimientos, comprende tu balance
+                        y toma decisiones financieras con mayor claridad.
+                    </p>
+
+                    <div class="intro-decoration">
+                        <span class="decoration-line"></span>
+                        <span>PRECISIÓN EN CADA MOVIMIENTO</span>
+                    </div>
+                </div>
+
+                <div class="intro-visual" aria-label="Logo holográfico NOVIX">
+                    <div class="logo-orbit logo-orbit-one"></div>
+                    <div class="logo-orbit logo-orbit-two"></div>
+                    <div class="logo-orbit logo-orbit-three"></div>
+
+                    <div class="novix-energy-core">
+                        <div class="energy-glow"></div>
+
+                        <div class="energy-crystal">
+                            <div class="crystal-face crystal-face-one"></div>
+                            <div class="crystal-face crystal-face-two"></div>
+                            <div class="crystal-face crystal-face-three"></div>
+                            <div class="crystal-highlight"></div>
+                        </div>
+
+                        <span class="energy-particle particle-one"></span>
+                        <span class="energy-particle particle-two"></span>
+                        <span class="energy-particle particle-three"></span>
+                        <span class="energy-particle particle-four"></span>
+                    </div>
+
+                    <div class="logo-caption">NOVIX</div>
+                    <div class="logo-caption-sub">FINANCIAL INTELLIGENCE</div>
+                </div>
+            </section>
+
+            <section class="cosmic-dashboard">
+                <div class="cosmic-heading">
+                    <span>RESUMEN FINANCIERO</span>
+                    <span class="heading-caption">VISIÓN GENERAL</span>
+                </div>
+
+                <div class="cosmic-stage">
+                    <div class="stage-stars stage-stars-one"></div>
+                    <div class="stage-stars stage-stars-two"></div>
+
+                    <div class="orbit orbit-outer"></div>
+                    <div class="orbit orbit-middle"></div>
+                    <div class="orbit orbit-inner"></div>
+
+                    <div class="moon-system" aria-hidden="true">
+                        <div class="moon-aura"></div>
+                        <div class="moon-halo"></div>
+                        <div class="moon-ring"></div>
+
+                        <div class="moon">
+                            <div class="moon-texture"></div>
+                            <div class="moon-crater crater-one"></div>
+                            <div class="moon-crater crater-two"></div>
+                            <div class="moon-crater crater-three"></div>
+                            <div class="moon-crater crater-four"></div>
+                            <div class="moon-crater crater-five"></div>
+                            <div class="moon-crater crater-six"></div>
+                            <div class="moon-highlight"></div>
+                            <div class="moon-shadow"></div>
+                        </div>
+
+                        <div class="moon-glint"></div>
+                    </div>
+
+                    <div class="orbit-satellite satellite-one"></div>
+                    <div class="orbit-satellite satellite-two"></div>
+                    <div class="orbit-satellite satellite-three"></div>
+
+                    <div class="cosmic-core-label">
+                        <span class="core-line"></span>
+                        <strong>NOVIX CORE</strong>
+                        <span class="core-subtitle">FINANCIAL SYSTEM</span>
+                    </div>
+
+                    <article class="orbit-panel panel-income">
+                        <div class="orbit-panel-top">
+                            <span class="panel-icon">↗</span>
+                            <span class="panel-status">INGRESOS</span>
+                        </div>
+
+                        <span class="orbit-panel-label">INGRESOS TOTALES</span>
+
+                        <strong class="orbit-panel-value">
+                            Q @totalIngresos.ToString("N2")
+                        </strong>
+
+                        <span class="orbit-panel-foot">Capital recibido</span>
+                        <div class="panel-progress"><span></span></div>
+                    </article>
+
+                    <article class="orbit-panel panel-expenses">
+                        <div class="orbit-panel-top">
+                            <span class="panel-icon">↘</span>
+                            <span class="panel-status">GASTOS</span>
+                        </div>
+
+                        <span class="orbit-panel-label">GASTOS TOTALES</span>
+
+                        <strong class="orbit-panel-value">
+                            Q @totalGastos.ToString("N2")
+                        </strong>
+
+                        <span class="orbit-panel-foot">Capital utilizado</span>
+                        <div class="panel-progress"><span></span></div>
+                    </article>
+
+                    <article class="orbit-panel panel-balance">
+                        <div class="orbit-panel-top">
+                            <span class="panel-icon">◇</span>
+                            <span class="panel-status">BALANCE</span>
+                        </div>
+
+                        <span class="orbit-panel-label">BALANCE TOTAL</span>
+
+                        <strong class="orbit-panel-value">
+                            Q @balance.ToString("N2")
+                        </strong>
+
+                        <span class="orbit-panel-foot">Ingresos menos gastos</span>
+                        <div class="panel-progress"><span></span></div>
+                    </article>
+
+                    <article class="orbit-panel panel-movements">
+                        <div class="orbit-panel-top">
+                            <span class="panel-icon">▤</span>
+                            <span class="panel-status">ACTIVIDAD</span>
+                        </div>
+
+                        <span class="orbit-panel-label">MOVIMIENTOS</span>
+
+                        <strong class="orbit-panel-value">
+                            @totalMovimientos
+                        </strong>
+
+                        <span class="orbit-panel-foot">Operaciones registradas</span>
+                        <div class="panel-progress"><span></span></div>
+                    </article>
+                </div>
+
+                <div class="cosmic-legend">
+                    <span><i class="legend-dot"></i> NÚCLEO FINANCIERO</span>
+                    <span>GTQ · QUETZALES</span>
+                </div>
+            </section>
+
+            <section class="dashboard-panels">
+                <article class="dashboard-panel activity-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="panel-overline">SEGUIMIENTO</span>
+                            <h3>Actividad financiera</h3>
+                        </div>
+
+                        <span class="panel-heading-symbol">◷</span>
+                    </div>
+
+                    <div class="dashboard-empty">
+                        <div class="empty-orbit"><span>◌</span></div>
+
+                        <strong>Tu actividad aparecerá aquí</strong>
+
+                        <p>
+                            Registra tus movimientos para consultar
+                            su evolución y mantener tus finanzas organizadas.
+                        </p>
+                    </div>
+
+                    <div class="panel-bottom-note">
+                        <span class="live-indicator"></span>
+                        DATOS CONECTADOS A NOVIXDB
+                    </div>
+                </article>
+
+                <article class="dashboard-panel quick-actions-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <span class="panel-overline">ACCESO DIRECTO</span>
+                            <h3>Acciones rápidas</h3>
+                        </div>
+
+                        <span class="panel-heading-symbol">⌘</span>
+                    </div>
+
+                    <div class="quick-actions">
+                        <a class="quick-action" href="/Ingresos">
+                            <span class="quick-action-icon">↗</span>
+
+                            <span class="quick-action-text">
+                                <strong>Nuevo ingreso</strong>
+                                <small>Registrar capital recibido</small>
+                            </span>
+
+                            <span class="quick-action-arrow">→</span>
+                        </a>
+
+                        <a class="quick-action" href="/Gastos">
+                            <span class="quick-action-icon">↘</span>
+
+                            <span class="quick-action-text">
+                                <strong>Nuevo gasto</strong>
+                                <small>Registrar una salida</small>
+                            </span>
+
+                            <span class="quick-action-arrow">→</span>
+                        </a>
+
+                        <a class="quick-action" href="/Registros">
+                            <span class="quick-action-icon">▤</span>
+
+                            <span class="quick-action-text">
+                                <strong>Ver registros</strong>
+                                <small>Consultar movimientos</small>
+                            </span>
+
+                            <span class="quick-action-arrow">→</span>
+                        </a>
+                    </div>
+                </article>
+            </section>
+
+            <footer class="dashboard-footer">
+                <span>© @DateTime.Now.Year NOVIX</span>
+                <span>PRECISIÓN <i>·</i> VISIÓN <i>·</i> CONTROL</span>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>

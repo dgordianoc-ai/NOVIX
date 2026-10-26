@@ -1,0 +1,235 @@
+﻿
+@{
+    Layout = null;
+    ViewData["Title"] = "NOVIX | Acceso Seguro";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030305" />
+    <title>NOVIX | Acceso Seguro</title>
+
+    <link rel="stylesheet"
+          href="~/css/login.css"
+          asp-append-version="true" />
+</head>
+<body>
+    <div class="login-universe">
+        <canvas id="login-stars"></canvas>
+        <div class="login-nebula nebula-a"></div>
+        <div class="login-nebula nebula-b"></div>
+        <div class="login-vignette"></div>
+    </div>
+
+    <header class="login-header">
+        <a href="/Home/Index" class="login-brand">
+            <span class="login-brand-name">NOVIX<span>.</span></span>
+            <span class="login-brand-caption">FINANCIAL INTELLIGENCE</span>
+        </a>
+
+        <div class="secure-status">
+            <span class="status-light"></span>
+            <span>ENTORNO DE ACCESO</span>
+            <span class="secure-divider">/</span>
+            <span class="secure-muted">NOVIX CORE</span>
+        </div>
+
+        <a href="/Home/Index" class="back-home">
+            <span>←</span> INICIO
+        </a>
+    </header>
+
+    <main class="login-main">
+        <section class="login-panel">
+            <div class="panel-topline">
+                <span class="panel-index">N.º 01 / ACCESS</span>
+                <span class="panel-status">
+                    <span class="status-light"></span>
+                    ACCESO PRIVADO
+                </span>
+            </div>
+
+            <div class="login-heading">
+                <div class="login-symbol">
+                    <span class="symbol-orbit orbit-one"></span>
+                    <span class="symbol-orbit orbit-two"></span>
+                    <span class="symbol-core">N</span>
+                </div>
+
+                <p class="login-eyebrow">BIENVENIDO DE NUEVO</p>
+                <h1>Tu universo.<br /><span>Tu control.</span></h1>
+
+                <p class="login-description">
+                    Ingresa a NOVIX para administrar tus operaciones
+                    y mantener tus finanzas bajo control.
+                </p>
+            </div>
+
+            <form id="loginForm"
+                  class="login-form"
+                  action="/Home/Login"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div class="form-field">
+                    <label for="email">CORREO ELECTRÓNICO</label>
+
+                    <div class="input-shell">
+                        <span class="input-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                                <path d="m4 7 8 6 8-6"></path>
+                            </svg>
+                        </span>
+
+                        <input id="email"
+                               name="email"
+                               type="email"
+                               autocomplete="username"
+                               placeholder="tu@empresa.com"
+                               maxlength="254"
+                               required />
+
+                        <span class="input-line"></span>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <div class="password-label-row">
+                        <label for="password">CONTRASEÑA</label>
+                        <span class="field-security">● ACCESO DE DEMOSTRACIÓN</span>
+                    </div>
+
+                    <div class="input-shell">
+                        <span class="input-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+                                <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                                <path d="M12 14v3"></path>
+                            </svg>
+                        </span>
+
+                        <input id="password"
+                               name="password"
+                               type="password"
+                               autocomplete="current-password"
+                               placeholder="Ingresa tu contraseña"
+                               required />
+
+                        <button type="button"
+                                id="togglePassword"
+                                class="toggle-password"
+                                aria-label="Mostrar contraseña"
+                                aria-pressed="false">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+
+                        <span class="input-line"></span>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-option">
+                        <input type="checkbox"
+                               id="remember"
+                               name="remember"
+                               value="true" />
+                        <span class="custom-check"></span>
+                        <span>Recordarme</span>
+                    </label>
+
+                    <a href="/Home/RecuperarPassword" class="forgot-link">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+
+                @if (ViewBag.LoginError != null)
+                {
+                    <div class="login-message visible error"
+                         role="alert"
+                         aria-live="assertive">
+                        <span class="error-icon">!</span>
+                        <span>@ViewBag.LoginError</span>
+                    </div>
+                }
+
+                <div id="loginMessage"
+                     class="login-message"
+                     role="alert"
+                     aria-live="polite">
+                </div>
+
+                <button type="submit" class="login-submit">
+                    <span class="submit-text">INGRESAR A NOVIX</span>
+                    <span class="submit-arrow">↗</span>
+                    <span class="submit-shine"></span>
+                </button>
+
+                <div class="form-footnote">
+                    <span class="footnote-lock">◇</span>
+                    ACCESO EXCLUSIVO PARA USUARIOS AUTORIZADOS
+                </div>
+            </form>
+
+            <div class="panel-bottom">
+                <span>SECURE SESSION</span>
+                <span>NVX / 001</span>
+            </div>
+        </section>
+
+        <aside class="login-visual">
+            <div class="visual-top-label">
+                <span class="visual-label-line"></span>
+                <span>EL UNIVERSO NOVIX</span>
+            </div>
+
+            <div class="login-planet-wrap">
+                <div class="planet-halo"></div>
+                <div class="login-planet-orbit orbit-large"></div>
+                <div class="login-planet-orbit orbit-medium"></div>
+                <div class="login-planet-orbit orbit-small"></div>
+
+                <div class="login-planet" id="loginPlanet">
+                    <div class="planet-texture"></div>
+                    <div class="planet-highlight"></div>
+                    <div class="planet-shadow"></div>
+                </div>
+
+                <div class="planet-moon"></div>
+            </div>
+
+            <div class="visual-bottom">
+                <div class="visual-number">01</div>
+
+                <div class="visual-copy">
+                    <strong>UNA VISIÓN DIFERENTE</strong>
+                    <span>Todo tu universo financiero, en un solo lugar.</span>
+                </div>
+
+                <div class="visual-coordinates">
+                    <span>NVX</span>
+                    <span>CORE</span>
+                </div>
+            </div>
+
+            <div class="visual-decoration decoration-one"></div>
+            <div class="visual-decoration decoration-two"></div>
+        </aside>
+    </main>
+
+    <footer class="login-footer">
+        <span>© @DateTime.Now.Year NOVIX</span>
+        <span class="footer-message">PRECISIÓN · VISIÓN · CONTROL</span>
+        <a href="/Home/Index">VOLVER A LA BIENVENIDA ↗</a>
+    </footer>
+
+    <script src="~/js/login.js" asp-append-version="true"></script>
+</body>
+</html>

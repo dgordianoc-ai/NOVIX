@@ -1,0 +1,1257 @@
+﻿
+/* =========================================
+   NOVIX — SECURE LOGIN
+   BLACK / WHITE / SILVER
+   ========================================= */
+
+:root {
+    --bg: #030305;
+    --white: #ffffff;
+    --silver: #d8d8e2;
+    --muted: #858592;
+    --line: rgba(255,255,255,.12);
+    --font: "Segoe UI", Arial, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    background: var(--bg);
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font);
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* FONDO ESPACIAL */
+
+.login-universe {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 75% 45%, rgba(145,145,175,.09), transparent 42%), radial-gradient(ellipse at 15% 85%, rgba(255,255,255,.025), transparent 38%), #030305;
+}
+
+#login-stars {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.login-nebula {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(210,210,235,.16), rgba(100,100,130,.05) 42%, transparent 70%);
+    filter: blur(90px);
+    animation: loginNebula 18s ease-in-out infinite alternate;
+}
+
+.nebula-a {
+    top: -300px;
+    right: -150px;
+}
+
+.nebula-b {
+    bottom: -400px;
+    left: 5%;
+    width: 700px;
+    height: 700px;
+    opacity: .6;
+    animation-delay: -7s;
+}
+
+.login-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 15%, rgba(0,0,0,.30) 65%, rgba(0,0,0,.8) 100%);
+}
+
+/* ENCABEZADO */
+
+.login-header {
+    position: relative;
+    z-index: 5;
+    min-height: 78px;
+    padding: 0 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+    background: rgba(3,3,5,.65);
+    backdrop-filter: blur(18px);
+    animation: loginEnterTop .8s ease both;
+}
+
+.login-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.login-brand-name {
+    font-size: 25px;
+    font-weight: 300;
+    letter-spacing: 7px;
+}
+
+    .login-brand-name > span {
+        color: #aaaab8;
+    }
+
+.login-brand-caption {
+    color: #858592;
+    font-size: 7px;
+    letter-spacing: 3px;
+}
+
+.secure-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #c9c9d4;
+    font-size: 9px;
+    letter-spacing: 1.8px;
+}
+
+.status-light {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 12px rgba(255,255,255,.8);
+    animation: loginPulse 2s ease-in-out infinite;
+}
+
+.secure-divider {
+    color: #555560;
+}
+
+.secure-muted {
+    color: #777784;
+}
+
+.back-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 13px;
+    border: 1px solid var(--line);
+    color: #d5d5df;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    transition: .3s ease;
+}
+
+    .back-home > span {
+        font-size: 15px;
+    }
+
+    .back-home:hover {
+        border-color: rgba(255,255,255,.5);
+        background: rgba(255,255,255,.05);
+    }
+
+/* DISTRIBUCIÓN */
+
+.login-main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+    padding: 45px 7%;
+    display: grid;
+    grid-template-columns: minmax(390px,.9fr) minmax(0,1.1fr);
+    align-items: center;
+    gap: clamp(35px,7vw,110px);
+}
+
+/* PANEL */
+
+.login-panel {
+    position: relative;
+    width: 100%;
+    max-width: 490px;
+    justify-self: center;
+    padding: 30px 32px 20px;
+    border: 1px solid rgba(255,255,255,.13);
+    background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012) 45%, rgba(255,255,255,.025));
+    backdrop-filter: blur(24px);
+    box-shadow: 0 30px 100px rgba(0,0,0,.38), inset 0 1px rgba(255,255,255,.045);
+    animation: loginPanelEnter 1s .12s ease both;
+}
+
+    .login-panel::before,
+    .login-panel::after {
+        content: "";
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        pointer-events: none;
+    }
+
+    .login-panel::before {
+        top: -1px;
+        left: -1px;
+        border-top: 2px solid rgba(255,255,255,.8);
+        border-left: 2px solid rgba(255,255,255,.8);
+    }
+
+    .login-panel::after {
+        right: -1px;
+        bottom: -1px;
+        border-right: 2px solid rgba(255,255,255,.5);
+        border-bottom: 2px solid rgba(255,255,255,.5);
+    }
+
+.panel-topline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 19px;
+    border-bottom: 1px solid rgba(255,255,255,.09);
+}
+
+.panel-index {
+    color: #858592;
+    font-size: 8px;
+    letter-spacing: 2px;
+}
+
+.panel-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #bfc0cb;
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+/* IDENTIDAD NOVIX */
+
+.login-heading {
+    padding: 27px 0 23px;
+}
+
+.login-symbol {
+    position: relative;
+    width: 54px;
+    height: 54px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.symbol-core {
+    position: relative;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.7);
+    background: rgba(255,255,255,.055);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 300;
+    box-shadow: 0 0 20px rgba(255,255,255,.1);
+}
+
+.symbol-orbit {
+    position: absolute;
+    inset: 1px;
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50%;
+}
+
+.orbit-one {
+    transform: rotate(30deg) scaleY(.42);
+    animation: loginOrbit 8s linear infinite;
+}
+
+.orbit-two {
+    inset: 3px;
+    transform: rotate(-45deg) scaleY(.65);
+    border-color: rgba(255,255,255,.35);
+    animation: loginOrbitReverse 12s linear infinite;
+}
+
+.login-eyebrow {
+    margin-bottom: 13px;
+    color: #bdbdc9;
+    font-size: 9px;
+    letter-spacing: 3px;
+}
+
+.login-heading h1 {
+    color: #fff;
+    font-size: clamp(32px,3vw,43px);
+    font-weight: 300;
+    letter-spacing: -1.5px;
+    line-height: 1.2;
+}
+
+    .login-heading h1 span {
+        color: transparent;
+        background: linear-gradient(100deg,#fff,#bdbdc9 55%,#777784);
+        background-clip: text;
+        -webkit-background-clip: text;
+    }
+
+.login-description {
+    max-width: 380px;
+    margin-top: 15px;
+    color: #92929f;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.9;
+}
+
+/* FORMULARIO */
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 21px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+    .form-field > label,
+    .password-label-row > label {
+        color: #c8c8d3;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 1.7px;
+    }
+
+.password-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.field-security {
+    color: #747480;
+    font-size: 7px;
+    letter-spacing: .8px;
+}
+
+/* =========================================
+   CAMPOS MODERNOS
+   SIN BLOQUES OSCUROS PARA LOS ICONOS
+   ========================================= */
+
+@property --novix-border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.login-form .input-shell {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 54px;
+    padding: 0 13px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    /* El interior es uniforme, sin zonas oscuras */
+    background: linear-gradient(#e8f0fe,#e8f0fe) padding-box, conic-gradient( from var(--novix-border-angle), #6d6d7a, #b8b8c7, #ffffff, #a4a4b5, #6d6d7a ) border-box;
+    animation: novixBorderRotation 6s linear infinite;
+    transition: box-shadow .35s ease;
+}
+
+    /* Icono flotante, sin cuadro propio */
+    .login-form .input-shell .input-icon {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 18px;
+        width: 18px;
+        height: 18px;
+        padding: 0;
+        margin: 0;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        color: #555563;
+        transition: color .3s ease, filter .3s ease;
+    }
+
+        .login-form .input-shell .input-icon svg {
+            display: block;
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+    /* Texto sin marcos ni fondos adicionales */
+    .login-form .input-shell input {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 50px;
+        padding: 0;
+        margin: 0;
+        border: none !important;
+        border-radius: 0 !important;
+        outline: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        color: #101016;
+        font-size: 12px;
+    }
+
+        .login-form .input-shell input::placeholder {
+            color: #777784;
+            opacity: 1;
+        }
+
+    /* Quita la línea inferior del diseño anterior */
+    .login-form .input-shell .input-line {
+        display: none !important;
+    }
+
+    /* Ojo transparente */
+    .login-form .input-shell .toggle-password {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 24px;
+        width: 24px;
+        height: 24px;
+        padding: 3px;
+        margin: 0;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        color: #555563;
+        cursor: pointer;
+        transition: color .3s ease, filter .3s ease;
+    }
+
+        .login-form .input-shell .toggle-password svg {
+            display: block;
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+    /* Interacción */
+    .login-form .input-shell:hover {
+        box-shadow: 0 0 13px rgba(255,255,255,.10);
+    }
+
+    .login-form .input-shell:focus-within {
+        animation-duration: 2s;
+        box-shadow: 0 0 10px rgba(255,255,255,.2), 0 0 24px rgba(190,190,220,.13);
+    }
+
+        .login-form .input-shell:focus-within .input-icon,
+        .login-form .input-shell .toggle-password:hover {
+            color: #171720;
+            filter: drop-shadow(0 0 4px rgba(255,255,255,.8));
+        }
+
+    .login-form .input-shell .toggle-password:focus-visible {
+        outline: 1px solid #555563;
+        outline-offset: 3px;
+    }
+
+/* OPCIONES */
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: -2px;
+}
+
+.remember-option {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #9b9ba8;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+    .remember-option input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+    }
+
+.custom-check {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    border: 1px solid rgba(255,255,255,.28);
+    background: rgba(255,255,255,.025);
+    transition: .2s ease;
+}
+
+.remember-option input:checked + .custom-check {
+    border-color: #fff;
+    background: #fff;
+    box-shadow: inset 0 0 0 4px #111116;
+}
+
+.remember-option input:focus-visible + .custom-check {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+}
+
+.forgot-link {
+    color: #b7b7c3;
+    font-size: 9px;
+    transition: color .2s ease;
+}
+
+    .forgot-link:hover {
+        color: #fff;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+    }
+
+/* BOTÓN DE INGRESO */
+
+.login-submit {
+    position: relative;
+    min-height: 53px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 0 19px;
+    border: 0;
+    background: linear-gradient(110deg,#fff,#d5d5df);
+    color: #070709;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.7px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(255,255,255,.06);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+    .login-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 35px rgba(255,255,255,.15);
+    }
+
+    .login-submit:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 4px;
+    }
+
+    .login-submit:disabled {
+        opacity: .65;
+        cursor: wait;
+        transform: none;
+    }
+
+.submit-text,
+.submit-arrow {
+    position: relative;
+    z-index: 2;
+}
+
+.submit-arrow {
+    font-size: 17px;
+}
+
+.submit-shine {
+    position: absolute;
+    top: -80%;
+    left: -80%;
+    width: 35%;
+    height: 260%;
+    transform: rotate(25deg);
+    background: rgba(255,255,255,.65);
+    transition: left .7s ease;
+}
+
+.login-submit:hover .submit-shine {
+    left: 150%;
+}
+
+.form-footnote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #777784;
+    font-size: 7px;
+    letter-spacing: 1.1px;
+    text-align: center;
+}
+
+.footnote-lock {
+    color: #dedee8;
+    font-size: 13px;
+}
+
+/* MENSAJES */
+
+.login-message {
+    display: none;
+    padding: 11px 12px;
+    border: 1px solid rgba(255,255,255,.2);
+    color: #ededf5;
+    background: rgba(255,255,255,.04);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+    .login-message.visible {
+        display: block;
+    }
+
+    .login-message.error {
+        border-color: rgba(255,180,180,.4);
+        color: #ffdada;
+    }
+
+    .login-message.success {
+        border-color: rgba(255,255,255,.4);
+    }
+
+/* PIE DEL PANEL */
+
+.panel-bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 24px;
+    padding-top: 17px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    color: #666673;
+    font-size: 7px;
+    letter-spacing: 1.5px;
+}
+
+/* PANEL ASTRAL */
+
+.login-visual {
+    position: relative;
+    min-width: 0;
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: loginVisualEnter 1.2s .2s ease both;
+}
+
+.visual-top-label {
+    position: absolute;
+    top: 6%;
+    left: 5%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #b8b8c5;
+    font-size: 9px;
+    letter-spacing: 2px;
+}
+
+.visual-label-line {
+    width: 28px;
+    height: 1px;
+    background: #fff;
+    box-shadow: 0 0 12px rgba(255,255,255,.4);
+}
+
+/* PLANETA */
+
+.login-planet-wrap {
+    position: relative;
+    width: min(100%,470px);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 900px;
+    isolation: isolate;
+}
+
+.planet-halo {
+    position: absolute;
+    inset: 12%;
+    border-radius: 50%;
+    background: radial-gradient(circle,rgba(210,210,235,.15),rgba(150,150,180,.045) 48%,transparent 72%);
+    filter: blur(25px);
+    animation: haloPulse 5s ease-in-out infinite alternate;
+}
+
+.login-planet-orbit {
+    position: absolute;
+    inset: 5%;
+    border: 1px solid rgba(255,255,255,.24);
+    border-radius: 50%;
+    transform: rotate(-25deg) scaleY(.37);
+    box-shadow: 0 0 15px rgba(255,255,255,.04);
+    pointer-events: none;
+}
+
+.orbit-large {
+    inset: -3%;
+    transform: rotate(35deg) scaleY(.43);
+    border-color: rgba(255,255,255,.18);
+    animation: orbitSpin 35s linear infinite;
+}
+
+.orbit-medium {
+    inset: 8%;
+    transform: rotate(-35deg) scaleY(.52);
+    border-color: rgba(255,255,255,.32);
+    animation: orbitSpinReverse 25s linear infinite;
+}
+
+.orbit-small {
+    inset: 14%;
+    transform: rotate(65deg) scaleY(.35);
+    border-color: rgba(255,255,255,.14);
+}
+
+.login-planet {
+    position: relative;
+    z-index: 1;
+    width: 55%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 50%;
+    cursor: grab;
+    transform-style: preserve-3d;
+    background: radial-gradient(circle at 31% 27%,#e8e8f0 0%,#b6b6c3 7%,#777783 20%,#393943 45%,#15151c 72%,#050507 100%);
+    box-shadow: inset -35px -22px 50px #000, inset 10px 7px 25px rgba(255,255,255,.28), 0 0 25px rgba(255,255,255,.12), 0 0 75px rgba(200,200,230,.12);
+    transition: box-shadow .4s ease;
+}
+
+    .login-planet:active {
+        cursor: grabbing;
+    }
+
+.planet-texture {
+    position: absolute;
+    inset: -25%;
+    border-radius: 50%;
+    background: repeating-linear-gradient(164deg,transparent 0 13px,rgba(255,255,255,.06) 15px 18px,transparent 20px 33px);
+    animation: planetSurfaceSpin 28s linear infinite;
+}
+
+.planet-highlight {
+    position: absolute;
+    top: 5%;
+    left: 8%;
+    width: 42%;
+    height: 65%;
+    border-radius: 50%;
+    transform: rotate(30deg);
+    background: linear-gradient(120deg,rgba(255,255,255,.20),transparent 65%);
+    filter: blur(7px);
+}
+
+.planet-shadow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(110deg,transparent 30%,rgba(0,0,0,.12) 45%,rgba(0,0,0,.85) 100%);
+}
+
+.planet-moon {
+    position: absolute;
+    z-index: 2;
+    top: 23%;
+    right: 17%;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px #fff, 0 0 25px rgba(255,255,255,.6);
+    animation: moonOrbit 12s linear infinite;
+}
+
+.visual-bottom {
+    position: absolute;
+    right: 3%;
+    bottom: 5%;
+    left: 3%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-top: 19px;
+    border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.visual-number {
+    color: rgba(255,255,255,.75);
+    font-size: 25px;
+    font-weight: 200;
+}
+
+.visual-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+    .visual-copy strong {
+        color: #dcdce6;
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+    }
+
+    .visual-copy > span {
+        color: #777784;
+        font-size: 10px;
+    }
+
+.visual-coordinates {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-left: auto;
+    color: #858592;
+    font-size: 8px;
+    letter-spacing: 2px;
+    text-align: right;
+}
+
+.visual-decoration {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border: 1px solid rgba(255,255,255,.7);
+    transform: rotate(45deg);
+    pointer-events: none;
+}
+
+.decoration-one {
+    top: 25%;
+    left: 5%;
+}
+
+.decoration-two {
+    right: 8%;
+    bottom: 26%;
+}
+
+/* PIE DE PÁGINA */
+
+.login-footer {
+    position: relative;
+    z-index: 5;
+    min-height: 53px;
+    padding: 12px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    background: rgba(3,3,5,.65);
+    color: #737380;
+    font-size: 8px;
+    letter-spacing: 1.3px;
+}
+
+    .login-footer a {
+        color: #aaaab7;
+        transition: color .2s ease;
+    }
+
+        .login-footer a:hover {
+            color: #fff;
+        }
+
+.footer-message {
+    text-align: center;
+}
+
+/* ANIMACIONES */
+
+@keyframes novixBorderRotation {
+    from {
+        --novix-border-angle: 0deg;
+    }
+
+    to {
+        --novix-border-angle: 360deg;
+    }
+}
+
+@keyframes loginNebula {
+    from {
+        transform: translate(-10px,0) scale(.95);
+    }
+
+    to {
+        transform: translate(30px,25px) scale(1.08);
+    }
+}
+
+@keyframes loginPulse {
+    0%, 100% {
+        opacity: .45;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes loginEnterTop {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes loginPanelEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes loginVisualEnter {
+    from {
+        opacity: 0;
+        transform: translateX(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes loginOrbit {
+    from {
+        transform: rotate(30deg) scaleY(.42);
+    }
+
+    to {
+        transform: rotate(390deg) scaleY(.42);
+    }
+}
+
+@keyframes loginOrbitReverse {
+    from {
+        transform: rotate(-45deg) scaleY(.65);
+    }
+
+    to {
+        transform: rotate(-405deg) scaleY(.65);
+    }
+}
+
+@keyframes orbitSpin {
+    from {
+        transform: rotate(35deg) scaleY(.43);
+    }
+
+    to {
+        transform: rotate(395deg) scaleY(.43);
+    }
+}
+
+@keyframes orbitSpinReverse {
+    from {
+        transform: rotate(-35deg) scaleY(.52);
+    }
+
+    to {
+        transform: rotate(-395deg) scaleY(.52);
+    }
+}
+
+@keyframes planetSurfaceSpin {
+    from {
+        transform: rotate(0deg) scale(1.2);
+    }
+
+    to {
+        transform: rotate(360deg) scale(1.2);
+    }
+}
+
+@keyframes haloPulse {
+    from {
+        opacity: .45;
+        transform: scale(.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
+
+@keyframes moonOrbit {
+    from {
+        transform: rotate(0deg) translateX(0);
+    }
+
+    to {
+        transform: rotate(360deg) translateX(0);
+    }
+}
+
+/* TABLETS */
+
+@media (max-width: 1000px) {
+    .login-main {
+        padding: 35px 4%;
+        gap: 25px;
+        grid-template-columns: minmax(350px,.95fr) minmax(0,1.05fr);
+    }
+
+    .login-panel {
+        padding: 25px 24px 18px;
+    }
+
+    .login-visual {
+        min-height: 490px;
+    }
+
+    .secure-status {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    .login-heading h1 {
+        font-size: 36px;
+    }
+
+    .login-planet-wrap {
+        width: 115%;
+    }
+}
+
+/* MÓVILES */
+
+@media (max-width: 760px) {
+    .login-header {
+        min-height: 70px;
+        padding: 0 5%;
+    }
+
+    .login-brand-name {
+        font-size: 22px;
+        letter-spacing: 5px;
+    }
+
+    .login-brand-caption {
+        font-size: 6px;
+        letter-spacing: 2px;
+    }
+
+    .secure-status {
+        display: none;
+    }
+
+    .back-home {
+        padding: 9px 11px;
+        font-size: 8px;
+    }
+
+    .login-main {
+        grid-template-columns: 1fr;
+        padding: 35px 6% 25px;
+        gap: 10px;
+    }
+
+    .login-panel {
+        max-width: 480px;
+        padding: 24px 23px 18px;
+    }
+
+    .login-heading {
+        padding: 23px 0;
+    }
+
+    .login-symbol {
+        margin-bottom: 19px;
+    }
+
+    .login-heading h1 {
+        font-size: clamp(33px,8vw,42px);
+    }
+
+    .login-description {
+        font-size: 12px;
+    }
+
+    .login-visual {
+        min-height: 350px;
+        max-height: 470px;
+    }
+
+    .login-planet-wrap {
+        width: min(100%,360px);
+    }
+
+    .visual-top-label {
+        top: 1%;
+        left: 4%;
+    }
+
+    .visual-bottom {
+        bottom: 0;
+    }
+
+    .visual-decoration {
+        display: none;
+    }
+
+    .login-footer {
+        padding: 15px 6%;
+        flex-wrap: wrap;
+        font-size: 7px;
+    }
+
+    .footer-message {
+        display: none;
+    }
+}
+
+@media (max-width: 420px) {
+    .login-main {
+        padding: 25px 4% 20px;
+    }
+
+    .login-panel {
+        padding: 20px 17px 16px;
+    }
+
+    .panel-index,
+    .panel-status {
+        font-size: 7px;
+    }
+
+    .login-heading h1 {
+        font-size: 33px;
+    }
+
+    .login-form {
+        gap: 18px;
+    }
+
+    .password-label-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .form-options {
+        align-items: flex-start;
+    }
+
+    .forgot-link {
+        font-size: 8px;
+    }
+
+    .login-visual {
+        min-height: 300px;
+    }
+
+    .login-footer {
+        gap: 12px;
+    }
+}
+
+/* ACCESIBILIDAD */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+}

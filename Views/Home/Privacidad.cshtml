@@ -1,0 +1,364 @@
+﻿@{
+    ViewData["Title"] = "Privacidad | NOVIX";
+}
+
+<section class="privacy-page">
+    <div class="privacy-glow"></div>
+
+    <header class="privacy-header">
+        <span class="privacy-tag">NOVIX / CENTRO DE PRIVACIDAD</span>
+
+        <h1>Tu información,<br><span>tu privacidad.</span></h1>
+
+        <p>
+            Conoce cómo NOVIX gestiona la información y qué principios
+            seguimos para proteger la privacidad de quienes utilizan la plataforma.
+        </p>
+
+        <div class="privacy-updated">
+            <span class="privacy-status"></span>
+            POLÍTICA DE PRIVACIDAD
+        </div>
+    </header>
+
+    <div class="privacy-grid">
+        <article class="privacy-card">
+            <span class="privacy-number">01</span>
+            <div class="privacy-icon">◈</div>
+            <h2>Información recopilada</h2>
+            <p>
+                NOVIX puede utilizar la información que introduces al utilizar
+                sus funcionalidades, como los registros financieros y los datos
+                necesarios para operar el sistema.
+            </p>
+        </article>
+
+        <article class="privacy-card">
+            <span class="privacy-number">02</span>
+            <div class="privacy-icon">⌘</div>
+            <h2>Uso de la información</h2>
+            <p>
+                La información registrada se utiliza para facilitar la
+                administración, consulta y análisis de los movimientos
+                financieros disponibles en la plataforma.
+            </p>
+        </article>
+
+        <article class="privacy-card">
+            <span class="privacy-number">03</span>
+            <div class="privacy-icon">⬡</div>
+            <h2>Almacenamiento y seguridad</h2>
+            <p>
+                Las medidas de protección dependen de la configuración de NOVIX,
+                su base de datos y su alojamiento. Es importante mantener
+                protegidas las credenciales y limitar el acceso autorizado.
+            </p>
+        </article>
+
+        <article class="privacy-card">
+            <span class="privacy-number">04</span>
+            <div class="privacy-icon">◎</div>
+            <h2>Acceso a los datos</h2>
+            <p>
+                Los usuarios deben evitar compartir información financiera
+                confidencial y utilizar únicamente los accesos que les
+                correspondan dentro del sistema.
+            </p>
+        </article>
+
+        <article class="privacy-card">
+            <span class="privacy-number">05</span>
+            <div class="privacy-icon">◇</div>
+            <h2>Cookies y tecnologías</h2>
+            <p>
+                La plataforma puede utilizar cookies técnicas necesarias para
+                determinadas funciones. Las tecnologías que realmente se utilicen
+                deberán identificarse en la configuración final del sitio.
+            </p>
+        </article>
+
+        <article class="privacy-card">
+            <span class="privacy-number">06</span>
+            <div class="privacy-icon">↗</div>
+            <h2>Consultas y solicitudes</h2>
+            <p>
+                Si tienes dudas sobre la privacidad o el tratamiento de la
+                información, utiliza el medio de contacto que el responsable
+                de NOVIX habilite para atender estas solicitudes.
+            </p>
+        </article>
+    </div>
+
+    <div class="privacy-notice">
+        <div class="notice-line"></div>
+        <div>
+            <span class="notice-label">TRANSPARENCIA / NOVIX</span>
+            <h2>La confianza comienza con la transparencia.</h2>
+            <p>
+                Esta página presenta los principios generales de privacidad de
+                NOVIX. Antes de publicar el sistema, esta política debe revisarse
+                para reflejar fielmente los datos recopilados, su almacenamiento,
+                los responsables del tratamiento y los medios de contacto.
+            </p>
+        </div>
+    </div>
+
+    <footer class="privacy-footer">
+        <span>NOVIX — CENTRO DE PRIVACIDAD</span>
+        <span>Consulta la versión vigente de esta política.</span>
+    </footer>
+</section>
+
+<style>
+    .privacy-page {
+        position: relative;
+        min-height: 100vh;
+        padding: 75px 7% 35px;
+        overflow: hidden;
+        color: #eeeeee;
+        background:
+            radial-gradient(ellipse at 50% 0%, rgba(180, 190, 200, .10), transparent 48%),
+            #070809;
+        font-family: inherit;
+    }
+
+    .privacy-glow {
+        position: absolute;
+        top: 40px;
+        left: 50%;
+        width: 400px;
+        height: 250px;
+        transform: translateX(-50%);
+        background: rgba(190, 205, 220, .06);
+        filter: blur(90px);
+        pointer-events: none;
+    }
+
+    .privacy-header {
+        position: relative;
+        max-width: 800px;
+        margin: 0 auto 55px;
+        text-align: center;
+        animation: privacyAppear 1s ease both;
+    }
+
+    .privacy-tag,
+    .notice-label {
+        color: #aeb6bf;
+        font-size: 11px;
+        letter-spacing: 4px;
+    }
+
+    .privacy-header h1 {
+        margin: 25px 0 20px;
+        color: #f4f4f4;
+        font-size: clamp(38px, 6vw, 68px);
+        font-weight: 300;
+        line-height: 1.08;
+        letter-spacing: -2px;
+    }
+
+    .privacy-header h1 span {
+        color: #aeb8c3;
+        text-shadow: 0 0 25px rgba(190, 205, 220, .25);
+    }
+
+    .privacy-header > p {
+        max-width: 620px;
+        margin: 0 auto;
+        color: #a0a5ab;
+        font-size: 15px;
+        line-height: 1.9;
+    }
+
+    .privacy-updated {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 28px;
+        padding: 10px 16px;
+        border: 1px solid rgba(210, 220, 230, .18);
+        border-radius: 3px;
+        color: #c5cbd1;
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+
+    .privacy-status {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #aebbc7;
+        box-shadow: 0 0 12px rgba(200, 215, 230, .6);
+    }
+
+    .privacy-grid {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .privacy-card {
+        position: relative;
+        min-height: 245px;
+        padding: 28px 25px;
+        overflow: hidden;
+        border: 1px solid rgba(210, 220, 230, .12);
+        background: linear-gradient(145deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, .012));
+        transition: transform .35s ease, border-color .35s ease, background .35s ease;
+        animation: privacyAppear .8s ease both;
+    }
+
+    .privacy-card:nth-child(2) { animation-delay: .08s; }
+    .privacy-card:nth-child(3) { animation-delay: .16s; }
+    .privacy-card:nth-child(4) { animation-delay: .24s; }
+    .privacy-card:nth-child(5) { animation-delay: .32s; }
+    .privacy-card:nth-child(6) { animation-delay: .40s; }
+
+    .privacy-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: #dce3eb;
+        transition: width .4s ease;
+    }
+
+    .privacy-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(210, 225, 240, .35);
+        background: linear-gradient(145deg, rgba(255, 255, 255, .075), rgba(255, 255, 255, .018));
+    }
+
+    .privacy-card:hover::before {
+        width: 100%;
+    }
+
+    .privacy-number {
+        position: absolute;
+        top: 20px;
+        right: 22px;
+        color: #666e77;
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .privacy-icon {
+        margin-bottom: 22px;
+        color: #d1d8df;
+        font-size: 30px;
+        text-shadow: 0 0 20px rgba(200, 215, 230, .2);
+    }
+
+    .privacy-card h2 {
+        margin: 0 0 13px;
+        color: #eeeeee;
+        font-size: 17px;
+        font-weight: 500;
+    }
+
+    .privacy-card p {
+        margin: 0;
+        color: #9da3aa;
+        font-size: 13px;
+        line-height: 1.85;
+    }
+
+    .privacy-notice {
+        position: relative;
+        display: flex;
+        gap: 25px;
+        max-width: 1200px;
+        margin: 65px auto 50px;
+        padding: 30px;
+        border: 1px solid rgba(210, 220, 230, .12);
+        background: rgba(255, 255, 255, .025);
+    }
+
+    .notice-line {
+        flex: 0 0 2px;
+        background: linear-gradient(to bottom, #d6dce3, transparent);
+    }
+
+    .privacy-notice h2 {
+        margin: 13px 0;
+        font-size: 22px;
+        font-weight: 400;
+    }
+
+    .privacy-notice p {
+        max-width: 850px;
+        margin: 0;
+        color: #9da3aa;
+        font-size: 13px;
+        line-height: 1.9;
+    }
+
+    .privacy-footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 20px;
+        border-top: 1px solid rgba(210, 220, 230, .12);
+        color: #777f88;
+        font-size: 10px;
+        letter-spacing: 1.5px;
+    }
+
+    @@keyframes privacyAppear {
+        from {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@media (max-width: 900px) {
+        .privacy-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .privacy-page {
+            padding: 50px 20px 25px;
+        }
+
+        .privacy-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .privacy-card {
+            min-height: auto;
+        }
+
+        .privacy-notice {
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .privacy-footer {
+            flex-direction: column;
+            line-height: 1.8;
+        }
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .privacy-page *,
+        .privacy-page *::before,
+        .privacy-page *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>

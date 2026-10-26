@@ -1,0 +1,540 @@
+﻿
+@using System.Globalization
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Análisis";
+
+    decimal ingresos = ViewBag.Ingresos != null
+        ? Convert.ToDecimal(ViewBag.Ingresos)
+        : 0m;
+
+    decimal gastos = ViewBag.Gastos != null
+        ? Convert.ToDecimal(ViewBag.Gastos)
+        : 0m;
+
+    decimal balance = ingresos - gastos;
+
+    var meses = ViewBag.Meses as string[] ?? Array.Empty<string>();
+    var ingresosMensuales = ViewBag.IngresosMensuales as decimal[] ?? Array.Empty<decimal>();
+    var gastosMensuales = ViewBag.GastosMensuales as decimal[] ?? Array.Empty<decimal>();
+
+    decimal totalMovimientos = ingresos + gastos;
+
+    decimal porcentajeIngresos = totalMovimientos > 0
+        ? ingresos / totalMovimientos * 100m
+        : 0m;
+
+    string formatoMoneda(decimal cantidad) =>
+        cantidad.ToString("N2", CultureInfo.GetCultureInfo("es-GT"));
+
+    string colorBalance = balance < 0 ? "#ff858b" : "#e4e6ed";
+}
+
+<link rel="stylesheet" href="~/css/analisis.css" asp-append-version="true" />
+
+<style>
+    .analisis-page {
+        opacity: 0;
+        animation: novixEntrada 0.65s ease-out forwards;
+        transform-origin: center;
+    }
+
+    .analisis-page.saliendo {
+        animation: novixSalida 0.35s ease-in forwards;
+        pointer-events: none;
+    }
+
+    .analisis-page .analysis-header,
+    .analisis-page .analysis-intro,
+    .analisis-page .analysis-cards,
+    .analisis-page .analysis-grid,
+    .analisis-page .insight-panel {
+        animation: novixContenido 0.55s ease-out both;
+    }
+
+    .analisis-page .analysis-intro {
+        animation-delay: 0.06s;
+    }
+
+    .analisis-page .analysis-cards {
+        animation-delay: 0.12s;
+    }
+
+    .analisis-page .analysis-grid {
+        animation-delay: 0.18s;
+    }
+
+    .analisis-page .insight-panel {
+        animation-delay: 0.24s;
+    }
+
+    @@keyframes novixEntrada {
+        from {
+            opacity: 0;
+            filter: blur(5px);
+        }
+
+        to {
+            opacity: 1;
+            filter: blur(0);
+        }
+    }
+
+    @@keyframes novixSalida {
+        from {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        to {
+            opacity: 0;
+            filter: blur(4px);
+        }
+    }
+
+    @@keyframes novixContenido {
+        from {
+            opacity: 0;
+            filter: blur(2px);
+        }
+
+        to {
+            opacity: 1;
+            filter: blur(0);
+        }
+    }
+
+    .analisis-page .analysis-card,
+    .analisis-page .hologram-panel {
+        transition: border-color 0.25s ease,
+                    box-shadow 0.25s ease;
+    }
+
+    .analisis-page .analysis-card:hover,
+    .analisis-page .hologram-panel:hover {
+        border-color: rgba(210, 215, 230, 0.32);
+    }
+
+    .analisis-page .donut-center span {
+        font-variant-numeric: tabular-nums;
+    }
+
+    .analisis-page .balance-card h3 {
+        color: @colorBalance;
+    }
+
+    @@media (prefers-reduced-motion: reduce) {
+        .analisis-page,
+        .analisis-page.saliendo,
+        .analisis-page .analysis-header,
+        .analisis-page .analysis-intro,
+        .analisis-page .analysis-cards,
+        .analisis-page .analysis-grid,
+        .analisis-page .insight-panel {
+            animation: none !important;
+            opacity: 1;
+            filter: none;
+        }
+
+        .analisis-page .analysis-card,
+        .analisis-page .hologram-panel {
+            transition: none !important;
+        }
+    }
+</style>
+
+<div class="analisis-page" id="analisisPage">
+
+    <div class="cosmos-background">
+        <div class="stars stars-one"></div>
+        <div class="stars stars-two"></div>
+
+        <div class="black-hole">
+            <div class="black-hole-core"></div>
+            <div class="black-hole-ring ring-one"></div>
+            <div class="black-hole-ring ring-two"></div>
+        </div>
+    </div>
+
+    <header class="analysis-header">
+        <div>
+            <span class="eyebrow">NOVIX / CENTRO FINANCIERO</span>
+            <h1>Análisis <span>Financiero</span></h1>
+            <p>Explora el universo de tus finanzas y descubre nuevas perspectivas.</p>
+        </div>
+
+        <div class="system-status">
+            <span class="status-light"></span>
+            SISTEMA ACTIVO
+        </div>
+    </header>
+
+    <section class="analysis-intro">
+        <div>
+            <span class="section-label">VISIÓN GENERAL</span>
+            <h2>Tu universo financiero</h2>
+            <p>Una perspectiva visual de tus movimientos económicos.</p>
+        </div>
+
+        <div class="orbit-icon">
+            <span>✦</span>
+        </div>
+    </section>
+
+    @if (ViewBag.ErrorAnalisis != null)
+    {
+        <div class="alert alert-warning">
+            No fue posible cargar los datos financieros.
+            @ViewBag.ErrorAnalisis
+        </div>
+    }
+
+    <section class="analysis-cards">
+
+        <article class="analysis-card income-card">
+            <div class="card-top">
+                <span>Ingresos totales</span>
+                <span class="card-icon">↗</span>
+            </div>
+
+            <h3>Q @formatoMoneda(ingresos)</h3>
+
+            <div class="card-bottom">
+                <span class="mini-orb green-orb"></span>
+                <span>Entradas financieras</span>
+            </div>
+        </article>
+
+        <article class="analysis-card expense-card">
+            <div class="card-top">
+                <span>Gastos totales</span>
+                <span class="card-icon">↘</span>
+            </div>
+
+            <h3>Q @formatoMoneda(gastos)</h3>
+
+            <div class="card-bottom">
+                <span class="mini-orb red-orb"></span>
+                <span>Salidas financieras</span>
+            </div>
+        </article>
+
+        <article class="analysis-card balance-card">
+            <div class="card-top">
+                <span>Balance disponible</span>
+                <span class="card-icon">◈</span>
+            </div>
+
+            <h3>Q @formatoMoneda(balance)</h3>
+
+            <div class="card-bottom">
+                <span class="mini-orb purple-orb"></span>
+                <span>Ingresos menos gastos</span>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="analysis-grid">
+
+        <article class="hologram-panel chart-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <span class="section-label">OBSERVATORIO ECONÓMICO</span>
+                    <h2>Flujo financiero</h2>
+                </div>
+
+                <span class="panel-symbol">◉</span>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="flujoChart"></canvas>
+            </div>
+
+            <p class="panel-note">
+                <span class="status-light"></span>
+                Movimientos financieros registrados en NOVIX.
+            </p>
+
+        </article>
+
+        <article class="hologram-panel distribution-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <span class="section-label">MAPA DE RECURSOS</span>
+                    <h2>Distribución</h2>
+                </div>
+
+                <span class="panel-symbol">✧</span>
+            </div>
+
+            <div class="donut-container">
+                <div class="donut-chart">
+                    <div class="donut-center">
+                        <span>@porcentajeIngresos.ToString("N0")%</span>
+                        <small>INGRESOS</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div>
+                    <span class="legend-dot income-dot"></span>
+                    <span>Ingresos</span>
+                    <strong>Q @formatoMoneda(ingresos)</strong>
+                </div>
+
+                <div>
+                    <span class="legend-dot expense-dot"></span>
+                    <span>Gastos</span>
+                    <strong>Q @formatoMoneda(gastos)</strong>
+                </div>
+
+                <div>
+                    <span class="legend-dot balance-dot"></span>
+                    <span>Balance</span>
+                    <strong style="color: @colorBalance">
+                        Q @formatoMoneda(balance)
+                    </strong>
+                </div>
+            </div>
+
+        </article>
+
+    </section>
+
+    <section class="hologram-panel insight-panel">
+
+        <div class="insight-symbol">✦</div>
+
+        <div>
+            <span class="section-label">INTELIGENCIA FINANCIERA</span>
+            <h2>El siguiente horizonte</h2>
+
+            @if (balance > 0)
+            {
+                <p>
+                    Tus ingresos superan tus gastos por
+                    Q @formatoMoneda(balance).
+                    Continúa registrando tus movimientos para mantener
+                    actualizado tu análisis financiero.
+                </p>
+            }
+            else if (balance < 0)
+            {
+                <p>
+                    Tus gastos superan tus ingresos por
+                    Q @formatoMoneda(Math.Abs(balance)).
+                    Revisa tus movimientos para comprender mejor
+                    el comportamiento de tus finanzas.
+                </p>
+            }
+            else
+            {
+                <p>
+                    Tu balance actual es de Q 0.00.
+                    Registra tus ingresos y gastos para analizar
+                    la evolución de tus finanzas.
+                </p>
+            }
+        </div>
+
+        <div class="insight-orbit">◉</div>
+
+    </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    (() => {
+        const pagina = document.getElementById('analisisPage');
+
+        if (!pagina) {
+            return;
+        }
+
+        // Animación de salida al navegar mediante enlaces internos.
+        document.addEventListener('click', function (evento) {
+            const enlace = evento.target.closest('a');
+
+            if (!enlace || evento.defaultPrevented) {
+                return;
+            }
+
+            if (evento.ctrlKey || evento.shiftKey ||
+                evento.altKey || evento.metaKey ||
+                evento.button !== 0 ||
+                enlace.target === '_blank' ||
+                enlace.hasAttribute('download')) {
+                return;
+            }
+
+            const destino = new URL(enlace.href, window.location.href);
+
+            if (destino.origin !== window.location.origin ||
+                destino.href === window.location.href ||
+                enlace.hasAttribute('data-no-transition')) {
+                return;
+            }
+
+            evento.preventDefault();
+
+            pagina.classList.add('saliendo');
+
+            window.setTimeout(function () {
+                window.location.href = destino.href;
+            }, 350);
+        });
+
+        // Animación de salida al cerrar o actualizar la pestaña,
+        // cuando el navegador permite mostrarla.
+        window.addEventListener('pagehide', function () {
+            pagina.classList.add('saliendo');
+        });
+
+        const canvas = document.getElementById('flujoChart');
+
+        const meses = @Html.Raw(JsonSerializer.Serialize(meses));
+        const ingresosMensuales = @Html.Raw(JsonSerializer.Serialize(ingresosMensuales));
+        const gastosMensuales = @Html.Raw(JsonSerializer.Serialize(gastosMensuales));
+
+        if (!canvas || typeof Chart === 'undefined') {
+            return;
+        }
+
+        const graficoExistente = Chart.getChart(canvas);
+
+        if (graficoExistente) {
+            graficoExistente.destroy();
+        }
+
+        const reducirMovimiento = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches;
+
+        new Chart(canvas, {
+            type: 'line',
+
+            data: {
+                labels: meses,
+
+                datasets: [
+                    {
+                        label: 'Ingresos',
+                        data: ingresosMensuales,
+                        borderColor: '#e5e7ed',
+                        backgroundColor: 'rgba(229, 231, 237, 0.09)',
+                        fill: true,
+                        tension: 0.3,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: '#e5e7ed'
+                    },
+                    {
+                        label: 'Gastos',
+                        data: gastosMensuales,
+                        borderColor: '#9297a2',
+                        backgroundColor: 'rgba(146, 151, 162, 0.05)',
+                        fill: true,
+                        tension: 0.3,
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: '#9297a2'
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                animation: {
+                    duration: reducirMovimiento ? 0 : 850,
+                    easing: 'easeOutQuart'
+                },
+
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+
+                plugins: {
+                    legend: {
+                        position: 'top',
+
+                        labels: {
+                            color: '#d8dbe2',
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 20
+                        }
+                    },
+
+                    tooltip: {
+                        backgroundColor: 'rgba(12, 12, 18, 0.96)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#d8dbe2',
+                        borderColor: 'rgba(220, 225, 235, 0.18)',
+                        borderWidth: 1,
+                        padding: 12,
+
+                        callbacks: {
+                            label: function (context) {
+                                const valor = Number(context.raw ?? 0);
+
+                                return context.dataset.label + ': Q ' +
+                                    valor.toLocaleString('es-GT', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                            }
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#b5b8c2'
+                        },
+
+                        grid: {
+                            color: 'rgba(220, 225, 235, 0.07)'
+                        },
+
+                        border: {
+                            display: false
+                        }
+                    },
+
+                    y: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            color: '#b5b8c2',
+
+                            callback: function (valor) {
+                                return 'Q ' + Number(valor).toLocaleString('es-GT');
+                            }
+                        },
+
+                        grid: {
+                            color: 'rgba(220, 225, 235, 0.07)'
+                        },
+
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    })();
+</script>

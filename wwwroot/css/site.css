@@ -1,0 +1,243 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* ==========================================
+   NOVIX | ESTRUCTURA GENERAL
+========================================== */
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: #f1f2f6;
+    background: #050507;
+}
+
+/* Barra principal */
+.novix-header {
+    position: relative;
+    z-index: 100;
+}
+
+.novix-navbar {
+    min-height: 66px;
+    background: rgba(5, 5, 8, 0.97);
+    border-bottom: 1px solid rgba(210, 215, 228, 0.23);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.novix-brand {
+    color: #f5f6fa !important;
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+    .novix-brand span {
+        color: #aeb3bf;
+    }
+
+.novix-navbar .nav-link {
+    position: relative;
+    margin: 0 7px;
+    padding: 12px 10px !important;
+    color: #c7cad3 !important;
+    font-size: 13px;
+    transition: color .3s ease;
+}
+
+    .novix-navbar .nav-link:hover,
+    .novix-navbar .nav-link:focus {
+        color: #fff !important;
+        text-shadow: 0 0 12px rgba(255, 255, 255, .4);
+    }
+
+    .novix-navbar .nav-link::after {
+        content: "";
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+        left: 10px;
+        height: 1px;
+        background: #dfe2e9;
+        transform: scaleX(0);
+        transition: transform .3s ease;
+    }
+
+    .novix-navbar .nav-link:hover::after {
+        transform: scaleX(1);
+    }
+
+/* Contenido: sin el contenedor estrecho predeterminado */
+.novix-main {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* Pie */
+.novix-footer {
+    position: relative;
+    z-index: 5;
+    padding: 18px 0;
+    color: #aeb2bd;
+    background: #050507;
+    border-top: 1px solid rgba(210, 215, 228, .17);
+    font-size: 12px;
+}
+
+.footer-separator {
+    margin: 0 10px;
+    color: #646975;
+}
+
+/* Navegación móvil */
+@media (max-width: 991px) {
+    .novix-navbar .navbar-nav {
+        align-items: stretch !important;
+        padding: 12px 0;
+    }
+
+    .novix-navbar .nav-link {
+        margin: 2px 0;
+    }
+}
+
+/* ==========================================
+   NOVIX | ESTRUCTURA GENERAL
+========================================== */
+
+html {
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    color: #f1f2f6;
+    background: #050507;
+}
+
+/* Barra principal */
+.novix-header {
+    position: relative;
+    z-index: 100;
+}
+
+.novix-navbar {
+    min-height: 66px;
+    background: rgba(5, 5, 8, 0.97);
+    border-bottom: 1px solid rgba(210, 215, 228, 0.23);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.novix-brand {
+    color: #f5f6fa !important;
+    font-size: 23px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+    .novix-brand span {
+        color: #aeb3bf;
+    }
+
+.novix-navbar .nav-link {
+    position: relative;
+    margin: 0 7px;
+    padding: 12px 10px !important;
+    color: #c7cad3 !important;
+    font-size: 13px;
+    transition: color .3s ease;
+}
+
+    .novix-navbar .nav-link:hover,
+    .novix-navbar .nav-link:focus {
+        color: #fff !important;
+        text-shadow: 0 0 12px rgba(255, 255, 255, .4);
+    }
+
+    .novix-navbar .nav-link::after {
+        content: "";
+        position: absolute;
+        right: 10px;
+        bottom: 5px;
+        left: 10px;
+        height: 1px;
+        background: #dfe2e9;
+        transform: scaleX(0);
+        transition: transform .3s ease;
+    }
+
+    .novix-navbar .nav-link:hover::after {
+        transform: scaleX(1);
+    }
+
+/* Contenido: sin el contenedor estrecho predeterminado */
+.novix-main {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* Pie */
+.novix-footer {
+    position: relative;
+    z-index: 5;
+    padding: 18px 0;
+    color: #aeb2bd;
+    background: #050507;
+    border-top: 1px solid rgba(210, 215, 228, .17);
+    font-size: 12px;
+}
+
+.footer-separator {
+    margin: 0 10px;
+    color: #646975;
+}
+
+/* Navegación móvil */
+@media (max-width: 991px) {
+    .novix-navbar .navbar-nav {
+        align-items: stretch !important;
+        padding: 12px 0;
+    }
+
+    .novix-navbar .nav-link {
+        margin: 2px 0;
+    }
+}
