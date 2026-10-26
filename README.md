@@ -219,7 +219,7 @@ NOVIX continúa evolucionando mediante mejoras en sus funcionalidades, experienc
 
 ### ◉ NOVIX
 
-**THE FUTURE IS IN YOUR CONTROL.**
+**THE FUTURE IS IN YOUR CONTROL**
 
 *Una nueva perspectiva para tus finanzas.*
 
