@@ -241,3 +241,17 @@ body {
         margin: 2px 0;
     }
 }
+```css
+/* ==========================================
+   NOVIX | TRANSICIÓN ENTRE PÁGINAS
+========================================== */
+body {
+    opacity: 1;
+    transition: opacity 0.45s ease;
+}
+
+body.novix-transitioning {
+    opacity: 0;
+}
+
+```

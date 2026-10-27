@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     Layout = null;
     ViewData["Title"] = "NOVIX | Dashboard";
 
@@ -14,6 +13,8 @@
 
     int totalMovimientos = ViewBag.TotalMovimientos == null
         ? 0 : Convert.ToInt32(ViewBag.TotalMovimientos);
+
+    bool mostrarIntro = TempData["MostrarIntro"] is bool valor && valor;
 }
 
 <!DOCTYPE html>
@@ -45,9 +46,10 @@
         <div class="shooting-star shooting-star-two"></div>
     </div>
 
-
     <!-- INTRODUCCIÓN CINEMATOGRÁFICA -->
-    <div id="novix-intro" class="novix-intro" aria-label="Introducción NOVIX">
+    <div id="novix-intro"
+         class="novix-intro"
+         aria-label="Introducción NOVIX">
 
         <div class="intro-universe" aria-hidden="true">
             <div class="intro-stars intro-stars-one"></div>
@@ -119,7 +121,6 @@
         </div>
     </div>
 
-
     <!-- CONTENIDO PRINCIPAL -->
     <div class="dashboard-layout">
 
@@ -170,7 +171,6 @@
             <div class="sidebar-bottom">
 
                 <div class="admin-status">
-
                     <div class="admin-avatar">A</div>
 
                     <div class="admin-info">
@@ -179,7 +179,6 @@
                     </div>
 
                     <span class="status-indicator"></span>
-
                 </div>
 
                 <a href="/Home/Login" class="logout-link">
@@ -188,9 +187,7 @@
                 </a>
 
             </div>
-
         </aside>
-
 
         <!-- ÁREA PRINCIPAL -->
         <main class="dashboard-content">
@@ -214,9 +211,7 @@
                     </div>
 
                 </div>
-
             </header>
-
 
             <!-- PRESENTACIÓN -->
             <section class="dashboard-intro">
@@ -247,7 +242,6 @@
 
                 </div>
 
-
                 <!-- LOGO HOLOGRÁFICO -->
                 <div class="intro-visual" aria-label="Logo holográfico NOVIX">
 
@@ -277,9 +271,7 @@
                     <div class="logo-caption-sub">FINANCIAL INTELLIGENCE</div>
 
                 </div>
-
             </section>
-
 
             <!-- RESUMEN FINANCIERO -->
             <section class="cosmic-dashboard">
@@ -288,7 +280,6 @@
                     <span>RESUMEN FINANCIERO</span>
                     <span class="heading-caption">VISIÓN GENERAL</span>
                 </div>
-
 
                 <!-- ESCENARIO ESPACIAL -->
                 <div class="cosmic-stage">
@@ -300,7 +291,6 @@
                     <div class="orbit orbit-middle"></div>
                     <div class="orbit orbit-inner"></div>
 
-
                     <!-- PLANETA CENTRAL -->
                     <div class="moon-system" aria-hidden="true">
 
@@ -309,7 +299,6 @@
                         <div class="moon-ring"></div>
 
                         <div class="moon">
-
                             <div class="moon-texture"></div>
 
                             <div class="moon-crater crater-one"></div>
@@ -321,19 +310,15 @@
 
                             <div class="moon-highlight"></div>
                             <div class="moon-shadow"></div>
-
                         </div>
 
                         <div class="moon-glint"></div>
-
                     </div>
-
 
                     <!-- SATÉLITES -->
                     <div class="orbit-satellite satellite-one"></div>
                     <div class="orbit-satellite satellite-two"></div>
                     <div class="orbit-satellite satellite-three"></div>
-
 
                     <!-- IDENTIDAD DEL NÚCLEO -->
                     <div class="cosmic-core-label">
@@ -341,7 +326,6 @@
                         <strong>NOVIX CORE</strong>
                         <span class="core-subtitle">FINANCIAL SYSTEM</span>
                     </div>
-
 
                     <!-- INGRESOS -->
                     <article class="orbit-panel panel-income">
@@ -351,24 +335,18 @@
                             <span class="panel-status">INGRESOS</span>
                         </div>
 
-                        <span class="orbit-panel-label">
-                            INGRESOS TOTALES
-                        </span>
+                        <span class="orbit-panel-label">INGRESOS TOTALES</span>
 
                         <strong class="orbit-panel-value">
                             Q @totalIngresos.ToString("N2")
                         </strong>
 
-                        <span class="orbit-panel-foot">
-                            Capital recibido
-                        </span>
+                        <span class="orbit-panel-foot">Capital recibido</span>
 
                         <div class="panel-progress">
                             <span></span>
                         </div>
-
                     </article>
-
 
                     <!-- GASTOS -->
                     <article class="orbit-panel panel-expenses">
@@ -378,24 +356,18 @@
                             <span class="panel-status">GASTOS</span>
                         </div>
 
-                        <span class="orbit-panel-label">
-                            GASTOS TOTALES
-                        </span>
+                        <span class="orbit-panel-label">GASTOS TOTALES</span>
 
                         <strong class="orbit-panel-value">
                             Q @totalGastos.ToString("N2")
                         </strong>
 
-                        <span class="orbit-panel-foot">
-                            Capital utilizado
-                        </span>
+                        <span class="orbit-panel-foot">Capital utilizado</span>
 
                         <div class="panel-progress">
                             <span></span>
                         </div>
-
                     </article>
-
 
                     <!-- BALANCE -->
                     <article class="orbit-panel panel-balance">
@@ -405,24 +377,18 @@
                             <span class="panel-status">BALANCE</span>
                         </div>
 
-                        <span class="orbit-panel-label">
-                            BALANCE TOTAL
-                        </span>
+                        <span class="orbit-panel-label">BALANCE TOTAL</span>
 
                         <strong class="orbit-panel-value">
                             Q @balance.ToString("N2")
                         </strong>
 
-                        <span class="orbit-panel-foot">
-                            Ingresos menos gastos
-                        </span>
+                        <span class="orbit-panel-foot">Ingresos menos gastos</span>
 
                         <div class="panel-progress">
                             <span></span>
                         </div>
-
                     </article>
-
 
                     <!-- MOVIMIENTOS -->
                     <article class="orbit-panel panel-movements">
@@ -432,26 +398,20 @@
                             <span class="panel-status">ACTIVIDAD</span>
                         </div>
 
-                        <span class="orbit-panel-label">
-                            MOVIMIENTOS
-                        </span>
+                        <span class="orbit-panel-label">MOVIMIENTOS</span>
 
                         <strong class="orbit-panel-value">
                             @totalMovimientos
                         </strong>
 
-                        <span class="orbit-panel-foot">
-                            Operaciones registradas
-                        </span>
+                        <span class="orbit-panel-foot">Operaciones registradas</span>
 
                         <div class="panel-progress">
                             <span></span>
                         </div>
-
                     </article>
 
                 </div>
-
 
                 <!-- LEYENDA -->
                 <div class="cosmic-legend">
@@ -465,23 +425,19 @@
 
             </section>
 
-
             <!-- PANELES INFERIORES -->
             <section class="dashboard-panels">
-
 
                 <!-- ACTIVIDAD FINANCIERA -->
                 <article class="dashboard-panel activity-panel">
 
                     <div class="panel-heading">
-
                         <div>
                             <span class="panel-overline">SEGUIMIENTO</span>
                             <h3>Actividad financiera</h3>
                         </div>
 
                         <span class="panel-heading-symbol">◷</span>
-
                     </div>
 
                     <div class="dashboard-empty">
@@ -506,26 +462,21 @@
 
                 </article>
 
-
                 <!-- ACCIONES RÁPIDAS -->
                 <article class="dashboard-panel quick-actions-panel">
 
                     <div class="panel-heading">
-
                         <div>
                             <span class="panel-overline">ACCESO DIRECTO</span>
                             <h3>Acciones rápidas</h3>
                         </div>
 
                         <span class="panel-heading-symbol">⌘</span>
-
                     </div>
-
 
                     <div class="quick-actions">
 
                         <a class="quick-action" href="/Ingresos">
-
                             <span class="quick-action-icon">↗</span>
 
                             <span class="quick-action-text">
@@ -534,12 +485,9 @@
                             </span>
 
                             <span class="quick-action-arrow">→</span>
-
                         </a>
 
-
                         <a class="quick-action" href="/Gastos">
-
                             <span class="quick-action-icon">↘</span>
 
                             <span class="quick-action-text">
@@ -548,12 +496,9 @@
                             </span>
 
                             <span class="quick-action-arrow">→</span>
-
                         </a>
 
-
                         <a class="quick-action" href="/Registros">
-
                             <span class="quick-action-icon">▤</span>
 
                             <span class="quick-action-text">
@@ -562,15 +507,12 @@
                             </span>
 
                             <span class="quick-action-arrow">→</span>
-
                         </a>
 
                     </div>
-
                 </article>
 
             </section>
-
 
             <!-- PIE DE PÁGINA -->
             <footer class="dashboard-footer">
@@ -584,11 +526,9 @@
             </footer>
 
         </main>
-
     </div>
 
-
-    <!-- ANIMACIÓN DE ENTRADA -->
+    <!-- CONTROL DE LA INTRODUCCIÓN -->
     <script>
         (() => {
             const intro = document.getElementById("novix-intro");
@@ -597,18 +537,24 @@
                 return;
             }
 
-            const reduceMotion = window.matchMedia(
-                "(prefers-reduced-motion: reduce)"
-            ).matches;
+            const mostrarIntro = @Html.Raw(mostrarIntro ? "true" : "false");
 
-            if (reduceMotion) {
+            // La introducción solo se conserva si el inicio de sesión
+            // acaba de autorizarla desde el servidor.
+            if (!mostrarIntro) {
+                intro.remove();
+                return;
+            }
+
+            // Evitar que la introducción vuelva a mostrarse al recargar.
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
                 intro.remove();
                 return;
             }
 
             document.body.classList.add("novix-entering");
 
-            const elements = [
+            const elementos = [
                 ".dashboard-sidebar",
                 ".dashboard-topbar",
                 ".dashboard-intro",
@@ -619,28 +565,27 @@
                 ".dashboard-footer"
             ];
 
-            elements.forEach((selector, index) => {
-                document.querySelectorAll(selector).forEach(element => {
-                    element.classList.add("novix-reveal");
+            elementos.forEach((selector, indice) => {
+                document.querySelectorAll(selector).forEach(elemento => {
+                    elemento.classList.add("novix-reveal");
 
-                    element.style.setProperty(
+                    elemento.style.setProperty(
                         "--reveal-delay",
-                        `${2.5 + index * 0.35}s`
+                        `${2.5 + indice * 0.35}s`
                     );
                 });
             });
 
-            // La introducción desaparece después de 7 segundos.
+            // Ocultar la introducción después de siete segundos.
             window.setTimeout(() => {
                 intro.classList.add("intro-finished");
                 document.body.classList.remove("novix-entering");
             }, 7000);
 
-            // Se elimina del documento después de terminar el desvanecimiento.
+            // Retirar el elemento para que no bloquee el Dashboard.
             window.setTimeout(() => {
                 intro.remove();
             }, 7900);
-
         })();
     </script>
 

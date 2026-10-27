@@ -40,6 +40,10 @@ namespace NOVIX.Controllers
             if (email == "admin@novix.com" &&
                 password == "NovixDemo2026!")
             {
+                // Autorizar la introducción únicamente después
+                // de un inicio de sesión correcto.
+                TempData["MostrarIntro"] = true;
+
                 return RedirectToAction("Index", "Dashboard");
             }
 
@@ -187,7 +191,6 @@ namespace NOVIX.Controllers
             return View("~/Views/Analisis/Index.cshtml");
         }
 
-        // Redirige las direcciones antiguas de Reportes.
         [HttpGet]
         public IActionResult Reportes()
         {
@@ -261,7 +264,6 @@ namespace NOVIX.Controllers
             }
         }
 
-        // Página de privacidad de NOVIX.
         [HttpGet]
         public IActionResult Privacidad()
         {

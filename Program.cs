@@ -27,6 +27,11 @@ namespace NOVIX
                 return new SqlConnection(connectionString);
             });
 
+            // Configuración de cookies para TempData.
+            builder.Services.AddSingleton<
+                Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider,
+                Microsoft.AspNetCore.Mvc.ViewFeatures.CookieTempDataProvider>();
+
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
@@ -36,7 +41,9 @@ namespace NOVIX
             }
 
             app.UseHttpsRedirection();
+
             app.UseRouting();
+
             app.UseAuthorization();
 
             app.MapStaticAssets();
