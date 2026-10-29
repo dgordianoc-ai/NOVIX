@@ -1,228 +1,175 @@
 <div align="center">
 
-# ◉ NOVIX
-
-### FINANCIAL MANAGEMENT SYSTEM
-
-**El futuro de tus finanzas.**
-
-*Tecnología · Control · Inteligencia financiera*
+<img src="https://capsule-render.vercel.app/api?type=waving&height=230&color=0:000000,45:171717,75:444444,100:000000&text=NOVIX&fontColor=FFFFFF&fontSize=85&fontAlignY=40&desc=FINANCIAL%20MANAGEMENT%20SYSTEM&descAlignY=60&descSize=16&animation=fadeIn" width="100%" alt="NOVIX Silver Universe"/>
 
 <br>
 
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-MVC-FFFFFF?style=for-the-badge&logo=dotnet&logoColor=000000&labelColor=000000)
-![C#](https://img.shields.io/badge/C%23-Development-FFFFFF?style=for-the-badge&logo=csharp&logoColor=FFFFFF&labelColor=000000)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-FFFFFF?style=for-the-badge&logo=microsoftsqlserver&logoColor=FFFFFF&labelColor=000000)
-![Status](https://img.shields.io/badge/STATUS-In%20Development-FFFFFF?style=for-the-badge&labelColor=000000)
+# ◈ N O V I X ◈
 
----
+### FINANCIAL MANAGEMENT SYSTEM
 
-### ✦ EXPLORE THE FINANCIAL UNIVERSE ✦
+**◉ Beyond Numbers · Into the Universe ◉**
+
+<br>
+
+![ASP.NET Core MVC](https://img.shields.io/badge/ASP.NET%20Core-MVC-FFFFFF?style=for-the-badge&logo=dotnet&logoColor=000000&labelColor=777777)
+![C#](https://img.shields.io/badge/C%23-Development-D6D6D6?style=for-the-badge&logo=csharp&logoColor=FFFFFF&labelColor=333333)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-BBBBBB?style=for-the-badge&logo=microsoftsqlserver&logoColor=FFFFFF&labelColor=292929)
+![GitHub](https://img.shields.io/badge/GitHub-Repository-FFFFFF?style=for-the-badge&logo=github&logoColor=000000&labelColor=777777)
+
+<br>
+
+*Tecnología financiera bajo una nueva perspectiva del universo.*
 
 </div>
 
-## ◈ Acerca de NOVIX
+---
 
-**NOVIX** es una plataforma web de gestión financiera diseñada para facilitar el registro, la organización y el análisis de movimientos financieros mediante una interfaz moderna y tecnológica.
+## ◈ 01 — ABOUT NOVIX
 
-Su identidad visual está inspirada en el universo, los cuerpos celestes y la tecnología del futuro. El diseño combina fondos oscuros, detalles blancos y plateados, elementos visuales minimalistas y animaciones que buscan ofrecer una experiencia intuitiva y elegante.
+**NOVIX** es una aplicación web de gestión financiera desarrollada como proyecto académico en equipo. Su propósito es facilitar la administración de ingresos y gastos, el análisis de movimientos financieros y la consulta de información mediante una interfaz moderna.
 
-NOVIX integra funcionalidades orientadas al control financiero, permitiendo consultar información y comprender mejor el comportamiento de los ingresos y gastos.
+Su identidad visual está inspirada en el espacio profundo, los agujeros negros, los horizontes de sucesos y los reflejos metálicos. La combinación de negro absoluto, blanco y gris plateado crea una experiencia digital minimalista, elegante y futurista.
+
+> *Precision in every number. Infinity in every possibility.*
 
 ---
 
-## ✧ Funcionalidades
+## ◈ 02 — CORE FEATURES
 
 | Módulo | Descripción |
 |:---|:---|
-| ◉ Inicio | Página principal de la plataforma. |
-| ↗ Ingresos | Gestión y consulta de movimientos de ingresos. |
-| ↘ Gastos | Gestión y consulta de movimientos de gastos. |
-| ◈ Análisis | Consulta de información financiera y análisis de ingresos y gastos. |
-| ▤ Reportes | Acceso a los reportes financieros disponibles. |
-| ⬡ Privacidad | Información sobre privacidad y tratamiento de datos. |
-
-*Las funcionalidades disponibles dependen de la implementación actual de cada módulo.*
+| ◉ **Dashboard** | Visualización general de la información financiera. |
+| ◈ **Ingresos** | Registro y administración de ingresos. |
+| ◇ **Gastos** | Control y consulta de gastos. |
+| ⌘ **Análisis** | Consulta y análisis de movimientos financieros. |
+| ▤ **Reportes** | Información financiera organizada. |
+| ✧ **Astral Interface** | Interfaz oscura con efectos visuales y estética espacial. |
 
 ---
 
-## ✦ Identidad visual
+## ◈ 03 — TECHNOLOGY STACK
 
-NOVIX adopta una estética futurista inspirada en el espacio y los sistemas tecnológicos avanzados.
+<div align="center">
 
-- **Negro:** profundidad, elegancia y contraste.
-- **Blanco:** claridad y simplicidad.
-- **Plateado:** tecnología y sofisticación.
-- **Animaciones:** movimiento y dinamismo visual.
-- **Elementos astrales:** inspiración en el universo y los cuerpos celestes.
-- **Diseño adaptable:** orientación a una experiencia consistente en diferentes tamaños de pantalla.
-
-El objetivo es combinar funcionalidad financiera con una experiencia visual moderna.
-
----
-
-## ◈ Tecnologías utilizadas
-
-| Tecnología | Uso |
+| Tecnología | Función |
 |:---|:---|
-| C# | Lenguaje de programación principal. |
-| ASP.NET Core MVC | Estructura de la aplicación web. |
-| Razor | Construcción de vistas dinámicas. |
-| HTML5 | Estructura de las páginas. |
-| CSS3 | Diseño, estilos y animaciones. |
-| JavaScript | Interactividad de la interfaz. |
-| Bootstrap | Componentes y diseño adaptable. |
-| SQL Server | Almacenamiento y consulta de datos financieros. |
-| ADO.NET | Comunicación con la base de datos mediante `Microsoft.Data.SqlClient`. |
+| **C#** | Lógica de programación. |
+| **ASP.NET Core MVC** | Arquitectura de la aplicación web. |
+| **Razor** | Construcción de vistas dinámicas. |
+| **HTML5** | Estructura de las páginas. |
+| **CSS3** | Diseño, animaciones y efectos visuales. |
+| **JavaScript** | Interactividad de la interfaz. |
+| **Bootstrap** | Componentes y diseño adaptable. |
+| **SQL Server LocalDB** | Gestión local de datos durante el desarrollo. |
+
+</div>
 
 ---
 
-## ✧ Arquitectura general
+## ◈ 04 — SYSTEM ARCHITECTURE
 
-El proyecto utiliza el patrón **Modelo-Vista-Controlador (MVC)** de ASP.NET Core.
+NOVIX utiliza el patrón **Modelo-Vista-Controlador (MVC)** para organizar la lógica, las vistas y el manejo de las solicitudes.
 
 ```text
 NOVIX/
 │
 ├── Controllers/
-│   ├── HomeController.cs
-│   ├── DashboardController.cs
-│   ├── IngresosController.cs
-│   ├── GastosController.cs
-│   └── ReportesController.cs
-│
 ├── Models/
-│
 ├── Views/
 │   ├── Home/
-│   ├── Analisis/
 │   ├── Ingresos/
-│   ├── Gastos/
-│   ├── Reportes/
-│   └── Shared/
+│   └── Gastos/
 │
 ├── wwwroot/
 │   ├── css/
 │   ├── js/
-│   ├── images/
 │   └── lib/
 │
-├── appsettings.json
 ├── Program.cs
+├── appsettings.json
 └── README.md
 ```
 
-*La estructura anterior es ilustrativa. Los archivos y carpetas concretos pueden variar según la versión actual del proyecto.*
+*Estructura ilustrativa; los directorios reales pueden variar según la versión del proyecto.*
 
 ---
 
-## ◈ Instalación y ejecución
+## ◈ 05 — INSTALLATION
 
 ### Requisitos
 
-Antes de ejecutar NOVIX, asegúrate de contar con:
+- Visual Studio con soporte para ASP.NET Core.
+- SDK de .NET compatible con el proyecto.
+- SQL Server LocalDB, si se utiliza la configuración local.
+- Git.
 
-- Visual Studio con las herramientas de desarrollo ASP.NET y web.
-- El SDK de .NET compatible con el proyecto.
-- SQL Server o SQL Server LocalDB, según la configuración utilizada.
-- La base de datos y las tablas requeridas por la aplicación.
-
-### 1. Clonar el repositorio
+### Clonar el repositorio
 
 ```bash
-git clone URL_DE_TU_REPOSITORIO
+git clone https://github.com/dgordianoc-ai/Novix.git
 ```
 
-Sustituye `URL_DE_TU_REPOSITORIO` por la dirección real del repositorio de NOVIX.
+```bash
+cd Novix
+```
 
-### 2. Abrir el proyecto
+Abre la solución en Visual Studio, verifica la configuración de la base de datos y ejecuta la aplicación.
 
-Abre la solución de NOVIX en Visual Studio.
-
-### 3. Configurar la base de datos
-
-Revisa la cadena de conexión configurada en `appsettings.json` o en los mecanismos de configuración utilizados por el proyecto.
-
-La aplicación necesita una conexión válida con la base de datos para consultar y registrar movimientos financieros.
-
-**Importante:** no publiques contraseñas, credenciales ni cadenas de conexión que contengan información sensible.
-
-### 4. Ejecutar la aplicación
-
-Desde Visual Studio:
-
-1. Establece NOVIX como proyecto de inicio.
-2. Comprueba la configuración de la base de datos.
-3. Ejecuta el proyecto con `Ctrl + F5`.
-4. Abre la dirección local que muestra Visual Studio.
+> **Nota:** SQL Server LocalDB es una instancia local. Para ejecutar NOVIX en otro equipo, puede ser necesario configurar nuevamente la conexión y preparar la base de datos.
 
 ---
 
-## ✧ Base de datos
+## ◈ 06 — VISUAL IDENTITY
 
-NOVIX utiliza SQL Server para gestionar información financiera.
+<div align="center">
 
-La aplicación consulta la tabla `dbo.MovimientosFinancieros` para obtener los datos utilizados en el análisis financiero.
+| Elemento | Concepto |
+|:---:|:---|
+| ⚫ | Negro cósmico: profundidad y misterio. |
+| ⚪ | Blanco puro: claridad y precisión. |
+| ◈ | Gris plateado: tecnología y sofisticación. |
+| ◉ | Agujeros negros: inspiración cinematográfica. |
+| ✧ | Partículas estelares: movimiento y profundidad. |
 
-La estructura de la base de datos debe coincidir con las consultas y los modelos utilizados por la aplicación.
+### COLOR PALETTE
 
-Antes de desplegar NOVIX en internet, es necesario comprobar que la base de datos esté disponible desde el entorno de alojamiento.
+`#000000`　`#171717`　`#333333`　`#808080`　`#C0C0C0`　`#FFFFFF`
 
-Una base de datos SQL Server LocalDB instalada en una computadora no estará disponible automáticamente para una aplicación publicada en la nube.
-
----
-
-## ◈ Seguridad y privacidad
-
-La protección de la información financiera es un aspecto importante del proyecto.
-
-Se recomienda:
-
-- Mantener las credenciales fuera del repositorio público.
-- Utilizar una configuración segura para la cadena de conexión.
-- Restringir el acceso a los datos según las necesidades de la aplicación.
-- Validar la información recibida desde los formularios.
-- Revisar los mecanismos de autenticación y autorización antes de publicar el sistema.
-- Mantener actualizadas las dependencias del proyecto.
-- Documentar las prácticas reales de privacidad y tratamiento de datos.
-
-Las medidas de seguridad efectivamente implementadas deben verificarse antes de presentar NOVIX como un sistema listo para producción.
+</div>
 
 ---
 
-## ✦ Objetivo del proyecto
+## ◈ 07 — PROJECT OBJECTIVE
 
-El propósito de NOVIX es desarrollar una plataforma web que integre herramientas de gestión financiera con una interfaz moderna, intuitiva y visualmente diferenciada.
+NOVIX busca integrar programación, desarrollo web, diseño de interfaces y gestión de bases de datos en una plataforma de administración financiera.
 
-El proyecto busca facilitar la organización de los movimientos financieros y ofrecer una forma clara de consultar información relevante para el seguimiento de ingresos, gastos y balances.
-
----
-
-## ◈ Estado del proyecto
-
-**Estado:** En desarrollo.
-
-NOVIX continúa evolucionando mediante mejoras en sus funcionalidades, experiencia de usuario, presentación visual y preparación para su publicación en internet.
+Su propuesta combina funcionalidad y una identidad visual futurista, inspirada en los fenómenos astronómicos y la estética tecnológica.
 
 ---
 
-## ✧ Autoría
+## ◈ 08 — PROJECT INFORMATION
 
-**Proyecto:** NOVIX  
-**Categoría:** Aplicación web de gestión financiera  
-**Tecnología principal:** C# y ASP.NET Core MVC  
-**Base de datos:** SQL Server
+| Detalle | Información |
+|:---|:---|
+| **Proyecto** | NOVIX |
+| **Categoría** | Sistema de gestión financiera |
+| **Tipo** | Proyecto académico en equipo |
+| **Arquitectura** | ASP.NET Core MVC |
+| **Repositorio** | [dgordianoc-ai/Novix](https://github.com/dgordianoc-ai/Novix) |
 
 ---
 
 <div align="center">
 
-### ◉ NOVIX
+<img src="https://capsule-render.vercel.app/api?type=waving&height=130&color=0:000000,40:292929,75:555555,100:000000&section=footer" width="100%" alt="NOVIX Silver Universe Footer"/>
 
-**THE FUTURE IS IN YOUR CONTROL**
+### ◈ N O V I X ◈
 
-*Una nueva perspectiva para tus finanzas*
+**THE UNIVERSE OF FINANCIAL TECHNOLOGY**
 
-`BLACK • WHITE • SILVER`
+*Explore the unknown. Master the numbers.*
+
+<sub>© 2026 NOVIX · Proyecto académico</sub>
 
 </div>
