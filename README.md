@@ -1,101 +1,77 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=230&color=0:000000,45:171717,75:444444,100:000000&text=NOVIX&fontColor=FFFFFF&fontSize=85&fontAlignY=40&desc=FINANCIAL%20MANAGEMENT%20SYSTEM&descAlignY=60&descSize=16&animation=fadeIn" width="100%" alt="NOVIX Silver Universe"/>
+<img src="docs/novix-astral-cover.png" alt="NOVIX — Financial Management System, Silver Universe" width="100%">
 
 <br>
 
-# ◈ N O V I X ◈
-
+# NOVIX
 ### FINANCIAL MANAGEMENT SYSTEM
 
-**◉ Beyond Numbers · Into the Universe ◉**
+**Beyond Numbers. Into the Universe.**
 
-<br>
+![ASP.NET Core MVC](https://img.shields.io/badge/ASP.NET_Core-MVC-FFFFFF?style=for-the-badge&logo=dotnet&logoColor=FFFFFF&labelColor=292929)
+![C Sharp](https://img.shields.io/badge/C%23-Development-C0C0C0?style=for-the-badge&logo=csharp&logoColor=FFFFFF&labelColor=292929)
+![SQL Server](https://img.shields.io/badge/SQL_Server-Database-BBBBBB?style=for-the-badge&logo=microsoftsqlserver&logoColor=FFFFFF&labelColor=292929)
+![JavaScript](https://img.shields.io/badge/JavaScript-Interactive-FFFFFF?style=for-the-badge&logo=javascript&logoColor=FFFFFF&labelColor=292929)
 
-![ASP.NET Core MVC](https://img.shields.io/badge/ASP.NET%20Core-MVC-FFFFFF?style=for-the-badge&logo=dotnet&logoColor=000000&labelColor=777777)
-![C#](https://img.shields.io/badge/C%23-Development-D6D6D6?style=for-the-badge&logo=csharp&logoColor=FFFFFF&labelColor=333333)
-![SQL Server](https://img.shields.io/badge/SQL%20Server-Database-BBBBBB?style=for-the-badge&logo=microsoftsqlserver&logoColor=FFFFFF&labelColor=292929)
-![GitHub](https://img.shields.io/badge/GitHub-Repository-FFFFFF?style=for-the-badge&logo=github&logoColor=000000&labelColor=777777)
-
-<br>
-
-*Tecnología financiera bajo una nueva perspectiva del universo.*
+[Repositorio](https://github.com/dgordianoc-ai/Novix) · **Proyecto académico en equipo**
 
 </div>
 
 ---
 
-## ◈ 01 — ABOUT NOVIX
+## ◈ Sobre NOVIX
 
-**NOVIX** es una aplicación web de gestión financiera desarrollada como proyecto académico en equipo. Su propósito es facilitar la administración de ingresos y gastos, el análisis de movimientos financieros y la consulta de información mediante una interfaz moderna.
+**NOVIX** es una aplicación web de gestión financiera desarrollada como proyecto académico en equipo. Su objetivo es facilitar el registro y la administración de ingresos y gastos, el análisis de movimientos financieros y la consulta de información desde una interfaz moderna.
 
-Su identidad visual está inspirada en el espacio profundo, los agujeros negros, los horizontes de sucesos y los reflejos metálicos. La combinación de negro absoluto, blanco y gris plateado crea una experiencia digital minimalista, elegante y futurista.
+Su identidad visual está inspirada en el espacio profundo, los agujeros negros y los reflejos metálicos. La paleta de negro cósmico, gris carbón, plata y blanco aporta una estética futurista sin sacrificar la legibilidad.
 
-> *Precision in every number. Infinity in every possibility.*
+> *Cada número cuenta una historia dentro del universo financiero.*
 
----
-
-## ◈ 02 — CORE FEATURES
+## ◈ Funcionalidades
 
 | Módulo | Descripción |
-|:---|:---|
-| ◉ **Dashboard** | Visualización general de la información financiera. |
-| ◈ **Ingresos** | Registro y administración de ingresos. |
-| ◇ **Gastos** | Control y consulta de gastos. |
-| ⌘ **Análisis** | Consulta y análisis de movimientos financieros. |
-| ▤ **Reportes** | Información financiera organizada. |
-| ✧ **Astral Interface** | Interfaz oscura con efectos visuales y estética espacial. |
+|---|---|
+| **Dashboard** | Vista general de la información financiera disponible. |
+| **Ingresos** | Registro y administración de ingresos. |
+| **Gastos** | Control y consulta de gastos. |
+| **Análisis** | Consulta y análisis de movimientos financieros. |
+| **Reportes** | Información financiera organizada para su consulta. |
+| **Interfaz astral** | Diseño oscuro con elementos visuales y una estética inspirada en el espacio. |
 
----
+## ◈ Tecnologías
 
-## ◈ 03 — TECHNOLOGY STACK
-
-<div align="center">
-
-| Tecnología | Función |
-|:---|:---|
+| Tecnología | Uso |
+|---|---|
 | **C#** | Lógica de programación. |
-| **ASP.NET Core MVC** | Arquitectura de la aplicación web. |
+| **ASP.NET Core MVC** | Estructura de la aplicación web. |
 | **Razor** | Construcción de vistas dinámicas. |
-| **HTML5** | Estructura de las páginas. |
-| **CSS3** | Diseño, animaciones y efectos visuales. |
+| **HTML5 y CSS3** | Estructura, estilos y presentación visual. |
 | **JavaScript** | Interactividad de la interfaz. |
 | **Bootstrap** | Componentes y diseño adaptable. |
-| **SQL Server LocalDB** | Gestión local de datos durante el desarrollo. |
+| **SQL Server LocalDB** | Base de datos local durante el desarrollo. |
 
-</div>
+## ◈ Arquitectura
 
----
-
-## ◈ 04 — SYSTEM ARCHITECTURE
-
-NOVIX utiliza el patrón **Modelo-Vista-Controlador (MVC)** para organizar la lógica, las vistas y el manejo de las solicitudes.
+NOVIX sigue el patrón **Modelo–Vista–Controlador (MVC)** para separar responsabilidades entre los componentes de la aplicación.
 
 ```text
 NOVIX/
-│
 ├── Controllers/
 ├── Models/
 ├── Views/
-│   ├── Home/
-│   ├── Ingresos/
-│   └── Gastos/
-│
 ├── wwwroot/
 │   ├── css/
 │   ├── js/
 │   └── lib/
-│
 ├── Program.cs
 ├── appsettings.json
 └── README.md
 ```
 
-*Estructura ilustrativa; los directorios reales pueden variar según la versión del proyecto.*
+*Esta estructura es orientativa; los archivos y directorios pueden variar según la versión del proyecto.*
 
----
-
-## ◈ 05 — INSTALLATION
+## ◈ Instalación y ejecución
 
 ### Requisitos
 
@@ -108,67 +84,45 @@ NOVIX/
 
 ```bash
 git clone https://github.com/dgordianoc-ai/Novix.git
-```
-
-```bash
 cd Novix
 ```
 
-Abre la solución en Visual Studio, verifica la configuración de la base de datos y ejecuta la aplicación.
+Abre la solución del proyecto en Visual Studio, restaura las dependencias y revisa la configuración de la base de datos antes de ejecutar la aplicación.
 
-> **Nota:** SQL Server LocalDB es una instancia local. Para ejecutar NOVIX en otro equipo, puede ser necesario configurar nuevamente la conexión y preparar la base de datos.
+> **Importante:** SQL Server LocalDB funciona localmente. Para ejecutar NOVIX en otro equipo, puede ser necesario configurar la cadena de conexión y preparar la base de datos. No publiques contraseñas ni cadenas de conexión con credenciales en el repositorio.
 
----
-
-## ◈ 06 — VISUAL IDENTITY
+## ◈ Identidad visual
 
 <div align="center">
 
-| Elemento | Concepto |
-|:---:|:---|
-| ⚫ | Negro cósmico: profundidad y misterio. |
-| ⚪ | Blanco puro: claridad y precisión. |
-| ◈ | Gris plateado: tecnología y sofisticación. |
-| ◉ | Agujeros negros: inspiración cinematográfica. |
-| ✧ | Partículas estelares: movimiento y profundidad. |
+| Negro cósmico | Gris carbón | Gris metálico | Plata | Blanco estelar |
+|:---:|:---:|:---:|:---:|:---:|
+| `#000000` | `#171717` | `#808080` | `#C0C0C0` | `#FFFFFF` |
 
-### COLOR PALETTE
-
-`#000000`　`#171717`　`#333333`　`#808080`　`#C0C0C0`　`#FFFFFF`
+**Dirección visual:** agujeros negros · espacio profundo · reflejos metálicos · paneles futuristas.
 
 </div>
 
----
+## ◈ Objetivo académico
 
-## ◈ 07 — PROJECT OBJECTIVE
+El proyecto integra conocimientos de programación, desarrollo web, diseño de interfaces y gestión de bases de datos. Su propósito es combinar funcionalidad y una identidad visual distintiva en una plataforma orientada a la organización y consulta de información financiera.
 
-NOVIX busca integrar programación, desarrollo web, diseño de interfaces y gestión de bases de datos en una plataforma de administración financiera.
+## ◈ Información del proyecto
 
-Su propuesta combina funcionalidad y una identidad visual futurista, inspirada en los fenómenos astronómicos y la estética tecnológica.
-
----
-
-## ◈ 08 — PROJECT INFORMATION
-
-| Detalle | Información |
-|:---|:---|
-| **Proyecto** | NOVIX |
-| **Categoría** | Sistema de gestión financiera |
-| **Tipo** | Proyecto académico en equipo |
-| **Arquitectura** | ASP.NET Core MVC |
-| **Repositorio** | [dgordianoc-ai/Novix](https://github.com/dgordianoc-ai/Novix) |
+- **Nombre:** NOVIX
+- **Categoría:** Sistema de gestión financiera
+- **Tipo:** Proyecto académico en equipo
+- **Arquitectura:** ASP.NET Core MVC
+- **Repositorio:** [dgordianoc-ai/Novix](https://github.com/dgordianoc-ai/Novix)
 
 ---
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&height=130&color=0:000000,40:292929,75:555555,100:000000&section=footer" width="100%" alt="NOVIX Silver Universe Footer"/>
-
-### ◈ N O V I X ◈
-
+### ◈ NOVIX ◈
 **THE UNIVERSE OF FINANCIAL TECHNOLOGY**
 
-*Explore the unknown. Master the numbers.*
+*Explore. Analyze. Evolve.*
 
 <sub>© 2026 NOVIX · Proyecto académico</sub>
 
